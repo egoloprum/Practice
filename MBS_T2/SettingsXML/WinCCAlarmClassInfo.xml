@@ -1,0 +1,51 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<AlarmClasses>
+	<AlarmClass ID="31" Info="Критические" Symbol="!">
+		<IncomingAlarmStyle BackgroundColor="255,0,255" FontColor="255,255,255"></IncomingAlarmStyle>
+		<OutgoingAlarmStyle BackgroundColor="255,125,255" FontColor="0,0,0"></OutgoingAlarmStyle>	
+	</AlarmClass>	
+	<AlarmClass ID="35" Info="Аварии" Symbol="A">
+		<IncomingAlarmStyle BackgroundColor="255,25,25" FontColor="255,255,255"></IncomingAlarmStyle>
+		<OutgoingAlarmStyle BackgroundColor="255,125,125" FontColor="0,0,0"></OutgoingAlarmStyle>
+	</AlarmClass>
+	<AlarmClass ID="36" Info="Предупреждения" Symbol="W">
+		<IncomingAlarmStyle BackgroundColor="250,250,0" FontColor="0,0,0"></IncomingAlarmStyle>
+		<OutgoingAlarmStyle BackgroundColor="250,250,125" FontColor="0,0,0"></OutgoingAlarmStyle>
+	</AlarmClass>
+	<AlarmClass ID="37" Info="Технологические" Symbol="T">
+		<IncomingAlarmStyle BackgroundColor="0,255,0" FontColor="0,0,0"></IncomingAlarmStyle>
+		<OutgoingAlarmStyle BackgroundColor="125,255,125" FontColor="0,0,0"></OutgoingAlarmStyle>
+	</AlarmClass>
+	<AlarmClass ID="4" Info="Диагностические" Symbol="D">
+		<IncomingAlarmStyle BackgroundColor="255,255,255" FontColor="0,0,160"></IncomingAlarmStyle>
+		<OutgoingAlarmStyle BackgroundColor="255,255,255" FontColor="100,100,255"></OutgoingAlarmStyle>
+	</AlarmClass>
+	<AlarmClass ID="3" Info="Системные" Symbol="S">
+		<IncomingAlarmStyle BackgroundColor="255,255,255" FontColor="0,0,160"></IncomingAlarmStyle>
+		<OutgoingAlarmStyle BackgroundColor="255,255,255" FontColor="100,100,255"></OutgoingAlarmStyle>
+	</AlarmClass>
+	<AlarmClass ID="38" Info="Действия оператора" Symbol="O">
+		<IncomingAlarmStyle BackgroundColor="0,255,255" FontColor="0,0,0"></IncomingAlarmStyle>
+		<OutgoingAlarmStyle BackgroundColor="0,255,255" FontColor="0,0,0"></OutgoingAlarmStyle>
+	</AlarmClass>
+	<AlarmClass ID="39" Info="Изменение веса" Symbol="W">
+		<IncomingAlarmStyle BackgroundColor="255,153,0" FontColor="0,0,0"></IncomingAlarmStyle>
+		<OutgoingAlarmStyle BackgroundColor="255,153,0" FontColor="0,0,0"></OutgoingAlarmStyle>
+	</AlarmClass>	
+	<AlarmClass ID="40" Info="Блокировка" Symbol="B">
+		<IncomingAlarmStyle BackgroundColor="192,192,192" FontColor="0,0,0"></IncomingAlarmStyle>
+		<OutgoingAlarmStyle BackgroundColor="210,210,210" FontColor="0,0,0"></OutgoingAlarmStyle>
+	</AlarmClass>
+	<AlarmClass ID="41" Info="Приход материала" Symbol="M">
+		<IncomingAlarmStyle BackgroundColor="204,153,255" FontColor="0,0,0"></IncomingAlarmStyle>
+		<OutgoingAlarmStyle BackgroundColor="204,153,255" FontColor="0,0,0"></OutgoingAlarmStyle>
+	</AlarmClass>
+	<AlarmClass ID="42" Info="Заказ" Symbol="Or">
+		<IncomingAlarmStyle BackgroundColor="255,204,0" FontColor="0,0,0"></IncomingAlarmStyle>
+		<OutgoingAlarmStyle BackgroundColor="255,204,0" FontColor="0,0,0"></OutgoingAlarmStyle>
+	</AlarmClass>
+	<AlarmClass ID="43" Info="Автомат.управление" Symbol="C">
+		<IncomingAlarmStyle BackgroundColor="0,255,255" FontColor="0,0,0"></IncomingAlarmStyle>
+		<OutgoingAlarmStyle BackgroundColor="0,255,255" FontColor="0,0,0"></OutgoingAlarmStyle>
+	</AlarmClass>		
+</AlarmClasses>

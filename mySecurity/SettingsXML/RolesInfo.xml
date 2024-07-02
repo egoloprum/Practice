@@ -1,0 +1,15 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Roles>
+  <Role ID="0" >
+    <Name>Гость</Name>
+    <Privilege>0</Privilege>
+  </Role>
+  <Role ID="1">
+    <Name>Оператор</Name>
+    <Privilege>1</Privilege>
+  </Role> 
+  <Role ID="4">
+    <Name>Администратор</Name>
+    <Privilege>4</Privilege>
+  </Role>
+</Roles>

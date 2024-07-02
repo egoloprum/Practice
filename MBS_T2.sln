@@ -1,0 +1,31 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 17
+VisualStudioVersion = 17.9.34728.123
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MBS_T2", "MBS_T2\MBS_T2.csproj", "{272A0B4C-F79D-4B70-8756-8117AE8BEF04}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "mySecurity", "mySecurity\mySecurity.csproj", "{95008848-98FB-489E-A8FA-C8D5099F9F35}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{272A0B4C-F79D-4B70-8756-8117AE8BEF04}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{272A0B4C-F79D-4B70-8756-8117AE8BEF04}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{272A0B4C-F79D-4B70-8756-8117AE8BEF04}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{272A0B4C-F79D-4B70-8756-8117AE8BEF04}.Release|Any CPU.Build.0 = Release|Any CPU
+		{95008848-98FB-489E-A8FA-C8D5099F9F35}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{95008848-98FB-489E-A8FA-C8D5099F9F35}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{95008848-98FB-489E-A8FA-C8D5099F9F35}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{95008848-98FB-489E-A8FA-C8D5099F9F35}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {9F531F8D-7727-4E0D-80F4-F337214FD8A1}
+	EndGlobalSection
+EndGlobal

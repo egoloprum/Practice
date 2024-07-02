@@ -1,0 +1,118 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Requests>
+	<Request ID="Order" RequestString="EXECUTE [@BD].[dbo].[Order_Select] '@DAT_Start', '@DAT_End'">
+		<column name="ID" title="ID"></column>
+		<column name="Sts" title="Состояние"></column>
+		<column name="DAT_Create" title="Заказ создан"></column>
+		<column name="DAT_Start" title="Заказ запущен"></column>
+		<column name="DAT_End" title="Заказ завершен"></column>
+		<column name="Recipe" title="Рецепт"></column>
+		<column name="RecipeLabel" title="Наименование"></column>
+		<column name="BacthSet" title="Задано замесов"></column>
+		<column name="BacthDone" title="Выполнено замесов"></column>
+		<column name="WeightSet_kg" title="Заданный вес (кг)"></column>
+		<column name="WeightDone_kg" title="Полученный вес (кг)"></column>
+		<column name="WeightDiff_kg" title="Разница (кг)"></column>
+		<column name="WeightDiff_prc" title="Разница (%)"></column>
+		<column name="Line" title="Технологическая линия"></column>
+		<column name="UnloadPlace" title="Место выгрузки"></column>
+		<column name="FullTime" title="Длительность выполнения"></column>
+		<column name="Operator" title="Оператор"></column>
+	</Request> 
+	<Request ID="Batch" RequestString="EXECUTE [@BD].[dbo].[Batch_Select] '@DAT_Start', '@DAT_End'">
+		<column name="ID" title="ID"></column>
+		<column name="Sts" title="Состояние"></column>
+		<column name="OrderID" title="Заказ"></column>
+		<column name="BacthN" title="Номер замеса в заказе"></column>     
+		<column name="DAT_Start_Dosing" title="Начало дозирования"></column>
+		<column name="DAT_Start_Mixing" title="Начало домешивания"></column>
+		<column name="DAT_Start_Unload" title="Начало выгрузки"></column>  
+		<column name="DAT_End" title="Завершение замеса"></column>
+		<column name="WeightSet_kg" title="Заданный вес (кг)"></column>
+		<column name="WeightDone_kg" title="Полученный вес (кг)"></column>
+		<column name="WeightDiff_kg" title="Разница (кг)"></column>
+		<column name="WeightDiff_prc" title="Разница (%)"></column>   
+		<column name="DosingTime" title="Длительность дозирования"></column>
+		<column name="FullMixingTime" title="Длительность смешивания"></column>
+		<column name="MixingTime" title="Длительность домешивания"></column>
+		<column name="UnloadTime" title="Длительность выгрузки"></column>
+		<column name="Operator" title="Оператор"></column>
+	</Request>
+	<Request ID="ReportBatchByOrderID" RequestString="EXECUTE [@BD].[dbo].[ReportBatchByOrderID] '@OrderID'">
+		<column name="ID" title="ID"></column>
+		<column name="Sts" title="Состояние"></column>
+		<column name="OrderID" title="Заказ"></column>
+		<column name="BacthN" title="Номер замеса в заказе"></column>
+		<column name="DAT_Start_Dosing" title="Начало дозирования"></column>
+		<column name="DAT_Start_Mixing" title="Начало домешивания"></column>
+		<column name="DAT_Start_Unload" title="Начало выгрузки"></column>
+		<column name="DAT_End" title="Завершение замеса"></column>
+		<column name="WeightSet_kg" title="Заданный вес (кг)"></column>
+		<column name="WeightDone_kg" title="Полученный вес (кг)"></column>
+		<column name="WeightDiff_kg" title="Разница (кг)"></column>
+		<column name="WeightDiff_prc" title="Разница (%)"></column>
+		<column name="DosingTime" title="Длительность дозирования"></column>
+		<column name="FullMixingTime" title="Длительность смешивания"></column>
+		<column name="MixingTime" title="Длительность домешивания"></column>
+		<column name="UnloadTime" title="Длительность выгрузки"></column>
+		<column name="Operator" title="Оператор"></column>
+	</Request>
+	<Request ID="Dosing" RequestString="EXECUTE [@BD].[dbo].[Dosing_Select] '@DAT_Start', '@DAT_End'">
+		<column name="ID" title="ID"></column>
+		<column name="Sts" title="Состояние"></column>
+		<column name="SilosType" title="Тип силоса"></column>	  
+		<column name="SilosLabel" title="Наименование"></column>
+		<column name="SilosN" title="Номер силоса"></column>
+		<column name="SRC" title="Управление"></column>
+		<column name="DAT_Start" title="Начало дозирования"></column>
+		<column name="DAT_End" title="Завершение дозирования"></column>
+		<column name="BatchID" title="Замес(ID)"></column>
+		<column name="BacthStep" title="Шаг в замесе"></column>
+		<column name="BacthRank" title="Ранг в замесе"></column>
+		<column name="WeightSet_kg" title="Заданный вес (кг)"></column>
+		<column name="WeightDone_kg" title="Полученный вес (кг)"></column>
+		<column name="WeightDiff_kg" title="Разница (кг)"></column>
+		<column name="WeightDiff_prc" title="Разница (%)"></column> 
+		<column name="DosingTime" title="Длительность дозирования"></column>
+		<column name="Operator" title="Оператор"></column>	  
+	 </Request>
+	<Request ID="ReportDosingByBatchID" RequestString="EXECUTE [@BD].[dbo].[ReportDosingByBatchID] @BatchID">
+		<column name="ID" title="ID"></column>
+		<column name="Sts" title="Состояние"></column>
+		<column name="SilosType" title="Тип силоса"></column>
+		<column name="SilosLabel" title="Наименование"></column>
+		<column name="SilosN" title="Номер силоса"></column>
+		<column name="SRC" title="Управление"></column>
+		<column name="DAT_Start" title="Начало дозирования"></column>
+		<column name="DAT_End" title="Завершение дозирования"></column>
+		<column name="BatchID" title="Замес(ID)"></column>
+		<column name="BacthStep" title="Шаг в замесе"></column>
+		<column name="BacthRank" title="Ранг в замесе"></column>
+		<column name="WeightSet_kg" title="Заданный вес (кг)"></column>
+		<column name="WeightDone_kg" title="Полученный вес (кг)"></column>
+		<column name="WeightDiff_kg" title="Разница (кг)"></column>
+		<column name="WeightDiff_prc" title="Разница (%)"></column>
+		<column name="DosingTime" title="Длительность дозирования"></column>
+		<column name="Operator" title="Оператор"></column>
+	</Request>
+	<Request ID="ReportDosingByOrderID" RequestString="EXECUTE [@BD].[dbo].[ReportDosingByOrderID] @OrderID">
+		<column name="ID" title="ID"></column>
+		<column name="Sts" title="Состояние"></column>
+		<column name="SilosType" title="Тип силоса"></column>
+		<column name="SilosLabel" title="Наименование"></column>
+		<column name="SilosN" title="Номер силоса"></column>
+		<column name="SRC" title="Управление"></column>
+		<column name="DAT_Start" title="Начало дозирования"></column>
+		<column name="DAT_End" title="Завершение дозирования"></column>
+		<column name="BatchID" title="Замес(ID)"></column>
+		<column name="BacthStep" title="Шаг в замесе"></column>
+		<column name="BacthRank" title="Ранг в замесе"></column>
+		<column name="WeightSet_kg" title="Заданный вес (кг)"></column>
+		<column name="WeightDone_kg" title="Полученный вес (кг)"></column>
+		<column name="WeightDiff_kg" title="Разница (кг)"></column>
+		<column name="WeightDiff_prc" title="Разница (%)"></column>
+		<column name="DosingTime" title="Длительность дозирования"></column>
+		<column name="Operator" title="Оператор"></column>
+	</Request>	
+	
+</Requests>

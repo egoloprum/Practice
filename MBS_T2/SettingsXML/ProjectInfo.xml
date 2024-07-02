@@ -1,0 +1,15 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Projects>
+  <Project ID="MBS_T2" >
+    <ConnectionString>Data Source=.\SQLEXPRESS;Initial Catalog=MBS_T2;Integrated Security=True</ConnectionString>
+    <Name>MBS_T2</Name>
+    <Description>MBS_T2</Description>
+    <Default>1</Default>    
+  </Project>
+  <Project ID="MBS_T1" >
+    <ConnectionString>Data Source=.\SQLEXPRESS;Initial Catalog=MBS_T1;Integrated Security=True</ConnectionString>
+    <Name>MBS_T1</Name>
+    <Description>MBS_T1</Description>
+    <Default>0</Default>
+  </Project>  
+</Projects>
