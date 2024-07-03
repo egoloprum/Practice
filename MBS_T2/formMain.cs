@@ -139,6 +139,12 @@ namespace MBS
         {
             SQLControls.CloseDB();
         }
+        private void tsmi_1_Setting_Click(object sender, EventArgs e)
+        {
+            fSetting = new formSetting();
+            fSetting.ShowDialog();
+        }
+
         private void formMain_Shown(object sender, EventArgs e)
         {
             #if DEBUG
@@ -1206,12 +1212,6 @@ namespace MBS
 
             string sID = this.edgvBatchs.DGV.Rows[(e as DataGridViewCellEventArgs).RowIndex].Cells["ID"].Value.ToString();
             Report.GoToRowByID("Batch", sID);
-        }
-
-        private void tsmi_1_click_Click_1(object sender, EventArgs e)
-        {
-            fSetting = new formSetting();
-            fSetting.ShowDialog();
         }
     }
 }

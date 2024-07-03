@@ -28,6 +28,7 @@
         /// </summary>
         private void InitializeComponent()
         {
+            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(formSetting));
             this.btn_ProjectName_Change = new System.Windows.Forms.Button();
             this.textBox_ProjectName = new System.Windows.Forms.TextBox();
             this.btn_ProjectName_Save = new System.Windows.Forms.Button();
@@ -46,15 +47,13 @@
             this.textBox_AlarmConnection = new System.Windows.Forms.TextBox();
             this.btn_AlarmConnection_Change = new System.Windows.Forms.Button();
             this.btn_ProjectName_Cancel = new System.Windows.Forms.Button();
-            this.btn_ReportConnection_Cancel = new System.Windows.Forms.Button();
-            this.btn_AlarmConnection_Cancel = new System.Windows.Forms.Button();
             this.SuspendLayout();
             // 
             // btn_ProjectName_Change
             // 
-            this.btn_ProjectName_Change.Location = new System.Drawing.Point(22, 73);
+            this.btn_ProjectName_Change.Location = new System.Drawing.Point(12, 56);
             this.btn_ProjectName_Change.Name = "btn_ProjectName_Change";
-            this.btn_ProjectName_Change.Size = new System.Drawing.Size(75, 23);
+            this.btn_ProjectName_Change.Size = new System.Drawing.Size(105, 23);
             this.btn_ProjectName_Change.TabIndex = 0;
             this.btn_ProjectName_Change.Text = "Изменить";
             this.btn_ProjectName_Change.UseVisualStyleBackColor = true;
@@ -62,17 +61,18 @@
             // 
             // textBox_ProjectName
             // 
-            this.textBox_ProjectName.Location = new System.Drawing.Point(22, 47);
+            this.textBox_ProjectName.Location = new System.Drawing.Point(12, 30);
             this.textBox_ProjectName.Name = "textBox_ProjectName";
             this.textBox_ProjectName.ReadOnly = true;
-            this.textBox_ProjectName.Size = new System.Drawing.Size(183, 20);
+            this.textBox_ProjectName.Size = new System.Drawing.Size(197, 20);
             this.textBox_ProjectName.TabIndex = 1;
             // 
             // btn_ProjectName_Save
             // 
-            this.btn_ProjectName_Save.Location = new System.Drawing.Point(103, 73);
+            this.btn_ProjectName_Save.Enabled = false;
+            this.btn_ProjectName_Save.Location = new System.Drawing.Point(122, 56);
             this.btn_ProjectName_Save.Name = "btn_ProjectName_Save";
-            this.btn_ProjectName_Save.Size = new System.Drawing.Size(75, 23);
+            this.btn_ProjectName_Save.Size = new System.Drawing.Size(87, 23);
             this.btn_ProjectName_Save.TabIndex = 2;
             this.btn_ProjectName_Save.Text = "Сохранить";
             this.btn_ProjectName_Save.UseVisualStyleBackColor = true;
@@ -81,7 +81,7 @@
             // label_ProjectName
             // 
             this.label_ProjectName.AutoSize = true;
-            this.label_ProjectName.Location = new System.Drawing.Point(19, 31);
+            this.label_ProjectName.Location = new System.Drawing.Point(12, 14);
             this.label_ProjectName.Name = "label_ProjectName";
             this.label_ProjectName.Size = new System.Drawing.Size(76, 13);
             this.label_ProjectName.TabIndex = 3;
@@ -90,7 +90,7 @@
             // label_ReportPatch
             // 
             this.label_ReportPatch.AutoSize = true;
-            this.label_ReportPatch.Location = new System.Drawing.Point(19, 128);
+            this.label_ReportPatch.Location = new System.Drawing.Point(12, 132);
             this.label_ReportPatch.Name = "label_ReportPatch";
             this.label_ReportPatch.Size = new System.Drawing.Size(124, 13);
             this.label_ReportPatch.TabIndex = 7;
@@ -98,17 +98,17 @@
             // 
             // textBox_ReportPatch
             // 
-            this.textBox_ReportPatch.Location = new System.Drawing.Point(22, 144);
+            this.textBox_ReportPatch.Location = new System.Drawing.Point(12, 148);
             this.textBox_ReportPatch.Name = "textBox_ReportPatch";
             this.textBox_ReportPatch.ReadOnly = true;
-            this.textBox_ReportPatch.Size = new System.Drawing.Size(183, 20);
+            this.textBox_ReportPatch.Size = new System.Drawing.Size(197, 20);
             this.textBox_ReportPatch.TabIndex = 5;
             // 
             // btn_ReportPatch_Change
             // 
-            this.btn_ReportPatch_Change.Location = new System.Drawing.Point(22, 170);
+            this.btn_ReportPatch_Change.Location = new System.Drawing.Point(12, 174);
             this.btn_ReportPatch_Change.Name = "btn_ReportPatch_Change";
-            this.btn_ReportPatch_Change.Size = new System.Drawing.Size(75, 23);
+            this.btn_ReportPatch_Change.Size = new System.Drawing.Size(105, 23);
             this.btn_ReportPatch_Change.TabIndex = 4;
             this.btn_ReportPatch_Change.Text = "Изменить";
             this.btn_ReportPatch_Change.UseVisualStyleBackColor = true;
@@ -117,7 +117,7 @@
             // label_ReportConnection
             // 
             this.label_ReportConnection.AutoSize = true;
-            this.label_ReportConnection.Location = new System.Drawing.Point(239, 31);
+            this.label_ReportConnection.Location = new System.Drawing.Point(233, 14);
             this.label_ReportConnection.Name = "label_ReportConnection";
             this.label_ReportConnection.Size = new System.Drawing.Size(202, 13);
             this.label_ReportConnection.TabIndex = 10;
@@ -125,17 +125,17 @@
             // 
             // textBox_ReportConnection
             // 
-            this.textBox_ReportConnection.Location = new System.Drawing.Point(242, 47);
+            this.textBox_ReportConnection.Location = new System.Drawing.Point(232, 30);
             this.textBox_ReportConnection.Name = "textBox_ReportConnection";
             this.textBox_ReportConnection.ReadOnly = true;
-            this.textBox_ReportConnection.Size = new System.Drawing.Size(320, 20);
+            this.textBox_ReportConnection.Size = new System.Drawing.Size(360, 20);
             this.textBox_ReportConnection.TabIndex = 9;
             // 
             // btn_ReportConnection_Change
             // 
-            this.btn_ReportConnection_Change.Location = new System.Drawing.Point(242, 73);
+            this.btn_ReportConnection_Change.Location = new System.Drawing.Point(231, 56);
             this.btn_ReportConnection_Change.Name = "btn_ReportConnection_Change";
-            this.btn_ReportConnection_Change.Size = new System.Drawing.Size(75, 23);
+            this.btn_ReportConnection_Change.Size = new System.Drawing.Size(105, 23);
             this.btn_ReportConnection_Change.TabIndex = 8;
             this.btn_ReportConnection_Change.Text = "Изменить";
             this.btn_ReportConnection_Change.UseVisualStyleBackColor = true;
@@ -143,9 +143,9 @@
             // 
             // btn_ReportConnection_CheckCon
             // 
-            this.btn_ReportConnection_CheckCon.Location = new System.Drawing.Point(323, 73);
+            this.btn_ReportConnection_CheckCon.Location = new System.Drawing.Point(342, 56);
             this.btn_ReportConnection_CheckCon.Name = "btn_ReportConnection_CheckCon";
-            this.btn_ReportConnection_CheckCon.Size = new System.Drawing.Size(145, 23);
+            this.btn_ReportConnection_CheckCon.Size = new System.Drawing.Size(140, 23);
             this.btn_ReportConnection_CheckCon.TabIndex = 11;
             this.btn_ReportConnection_CheckCon.Text = "Проверить подключение";
             this.btn_ReportConnection_CheckCon.UseVisualStyleBackColor = true;
@@ -153,27 +153,27 @@
             // 
             // btn_ReportConnection_CreateDB
             // 
-            this.btn_ReportConnection_CreateDB.Location = new System.Drawing.Point(474, 73);
+            this.btn_ReportConnection_CreateDB.Location = new System.Drawing.Point(487, 56);
             this.btn_ReportConnection_CreateDB.Name = "btn_ReportConnection_CreateDB";
-            this.btn_ReportConnection_CreateDB.Size = new System.Drawing.Size(88, 23);
+            this.btn_ReportConnection_CreateDB.Size = new System.Drawing.Size(105, 23);
             this.btn_ReportConnection_CreateDB.TabIndex = 12;
             this.btn_ReportConnection_CreateDB.Text = "Создать БД";
             this.btn_ReportConnection_CreateDB.UseVisualStyleBackColor = true;
             // 
             // btn_AlarmConnection_CreateDB
             // 
-            this.btn_AlarmConnection_CreateDB.Location = new System.Drawing.Point(474, 170);
+            this.btn_AlarmConnection_CreateDB.Location = new System.Drawing.Point(488, 174);
             this.btn_AlarmConnection_CreateDB.Name = "btn_AlarmConnection_CreateDB";
-            this.btn_AlarmConnection_CreateDB.Size = new System.Drawing.Size(88, 23);
+            this.btn_AlarmConnection_CreateDB.Size = new System.Drawing.Size(105, 23);
             this.btn_AlarmConnection_CreateDB.TabIndex = 17;
             this.btn_AlarmConnection_CreateDB.Text = "Создать БД";
             this.btn_AlarmConnection_CreateDB.UseVisualStyleBackColor = true;
             // 
             // btn_AlarmConnection_CheckCon
             // 
-            this.btn_AlarmConnection_CheckCon.Location = new System.Drawing.Point(323, 170);
+            this.btn_AlarmConnection_CheckCon.Location = new System.Drawing.Point(342, 174);
             this.btn_AlarmConnection_CheckCon.Name = "btn_AlarmConnection_CheckCon";
-            this.btn_AlarmConnection_CheckCon.Size = new System.Drawing.Size(145, 23);
+            this.btn_AlarmConnection_CheckCon.Size = new System.Drawing.Size(140, 23);
             this.btn_AlarmConnection_CheckCon.TabIndex = 16;
             this.btn_AlarmConnection_CheckCon.Text = "Проверить подключение";
             this.btn_AlarmConnection_CheckCon.UseVisualStyleBackColor = true;
@@ -182,7 +182,7 @@
             // label_AlarmConnection
             // 
             this.label_AlarmConnection.AutoSize = true;
-            this.label_AlarmConnection.Location = new System.Drawing.Point(239, 128);
+            this.label_AlarmConnection.Location = new System.Drawing.Point(233, 132);
             this.label_AlarmConnection.Name = "label_AlarmConnection";
             this.label_AlarmConnection.Size = new System.Drawing.Size(206, 13);
             this.label_AlarmConnection.TabIndex = 15;
@@ -190,17 +190,17 @@
             // 
             // textBox_AlarmConnection
             // 
-            this.textBox_AlarmConnection.Location = new System.Drawing.Point(242, 144);
+            this.textBox_AlarmConnection.Location = new System.Drawing.Point(232, 148);
             this.textBox_AlarmConnection.Name = "textBox_AlarmConnection";
             this.textBox_AlarmConnection.ReadOnly = true;
-            this.textBox_AlarmConnection.Size = new System.Drawing.Size(320, 20);
+            this.textBox_AlarmConnection.Size = new System.Drawing.Size(360, 20);
             this.textBox_AlarmConnection.TabIndex = 14;
             // 
             // btn_AlarmConnection_Change
             // 
-            this.btn_AlarmConnection_Change.Location = new System.Drawing.Point(242, 170);
+            this.btn_AlarmConnection_Change.Location = new System.Drawing.Point(231, 174);
             this.btn_AlarmConnection_Change.Name = "btn_AlarmConnection_Change";
-            this.btn_AlarmConnection_Change.Size = new System.Drawing.Size(75, 23);
+            this.btn_AlarmConnection_Change.Size = new System.Drawing.Size(105, 23);
             this.btn_AlarmConnection_Change.TabIndex = 13;
             this.btn_AlarmConnection_Change.Text = "Изменить";
             this.btn_AlarmConnection_Change.UseVisualStyleBackColor = true;
@@ -208,42 +208,20 @@
             // 
             // btn_ProjectName_Cancel
             // 
-            this.btn_ProjectName_Cancel.Location = new System.Drawing.Point(22, 73);
+            this.btn_ProjectName_Cancel.Location = new System.Drawing.Point(12, 56);
             this.btn_ProjectName_Cancel.Name = "btn_ProjectName_Cancel";
-            this.btn_ProjectName_Cancel.Size = new System.Drawing.Size(75, 23);
+            this.btn_ProjectName_Cancel.Size = new System.Drawing.Size(105, 23);
             this.btn_ProjectName_Cancel.TabIndex = 18;
             this.btn_ProjectName_Cancel.Text = "Отменить";
             this.btn_ProjectName_Cancel.UseVisualStyleBackColor = true;
             this.btn_ProjectName_Cancel.Visible = false;
             this.btn_ProjectName_Cancel.Click += new System.EventHandler(this.btn_ProjectName_Cancel_Click);
             // 
-            // btn_ReportConnection_Cancel
-            // 
-            this.btn_ReportConnection_Cancel.Location = new System.Drawing.Point(242, 102);
-            this.btn_ReportConnection_Cancel.Name = "btn_ReportConnection_Cancel";
-            this.btn_ReportConnection_Cancel.Size = new System.Drawing.Size(75, 23);
-            this.btn_ReportConnection_Cancel.TabIndex = 20;
-            this.btn_ReportConnection_Cancel.Text = "Отменить";
-            this.btn_ReportConnection_Cancel.UseVisualStyleBackColor = true;
-            this.btn_ReportConnection_Cancel.Visible = false;
-            // 
-            // btn_AlarmConnection_Cancel
-            // 
-            this.btn_AlarmConnection_Cancel.Location = new System.Drawing.Point(242, 199);
-            this.btn_AlarmConnection_Cancel.Name = "btn_AlarmConnection_Cancel";
-            this.btn_AlarmConnection_Cancel.Size = new System.Drawing.Size(75, 23);
-            this.btn_AlarmConnection_Cancel.TabIndex = 21;
-            this.btn_AlarmConnection_Cancel.Text = "Отменить";
-            this.btn_AlarmConnection_Cancel.UseVisualStyleBackColor = true;
-            this.btn_AlarmConnection_Cancel.Visible = false;
-            // 
             // formSetting
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(626, 293);
-            this.Controls.Add(this.btn_AlarmConnection_Cancel);
-            this.Controls.Add(this.btn_ReportConnection_Cancel);
+            this.ClientSize = new System.Drawing.Size(604, 233);
             this.Controls.Add(this.btn_ProjectName_Cancel);
             this.Controls.Add(this.btn_AlarmConnection_CreateDB);
             this.Controls.Add(this.btn_AlarmConnection_CheckCon);
@@ -262,13 +240,14 @@
             this.Controls.Add(this.btn_ProjectName_Save);
             this.Controls.Add(this.textBox_ProjectName);
             this.Controls.Add(this.btn_ProjectName_Change);
+            this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
             this.MaximizeBox = false;
-            this.MaximumSize = new System.Drawing.Size(642, 332);
             this.MinimizeBox = false;
-            this.MinimumSize = new System.Drawing.Size(642, 332);
+            this.MinimumSize = new System.Drawing.Size(620, 272);
             this.Name = "formSetting";
             this.ShowInTaskbar = false;
             this.Text = "Настройка свойств";
+            this.Load += new System.EventHandler(this.formSetting_Load);
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -294,7 +273,5 @@
         private System.Windows.Forms.TextBox textBox_AlarmConnection;
         private System.Windows.Forms.Button btn_AlarmConnection_Change;
         private System.Windows.Forms.Button btn_ProjectName_Cancel;
-        private System.Windows.Forms.Button btn_ReportConnection_Cancel;
-        private System.Windows.Forms.Button btn_AlarmConnection_Cancel;
     }
 }

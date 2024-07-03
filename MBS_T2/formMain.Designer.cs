@@ -72,6 +72,7 @@ namespace MBS
             this.tsmi_2_AdminManual = new System.Windows.Forms.ToolStripMenuItem();
             this.tsmi_1_Help = new System.Windows.Forms.ToolStripMenuItem();
             this.tsmi_2_About = new System.Windows.Forms.ToolStripMenuItem();
+            this.tsmi_1_Setting = new System.Windows.Forms.ToolStripMenuItem();
             this.Main_tsc = new System.Windows.Forms.ToolStripContainer();
             this.scReports = new System.Windows.Forms.SplitContainer();
             this.bDATFiltr_BWD = new System.Windows.Forms.Button();
@@ -93,10 +94,15 @@ namespace MBS
             this.Technology_lUnit = new System.Windows.Forms.Label();
             this.Main_TabControl = new System.Windows.Forms.TabControl();
             this.tbOrders = new System.Windows.Forms.TabPage();
+            this.edgvOrders = new MBS.EDGV();
             this.tbBatchs = new System.Windows.Forms.TabPage();
+            this.edgvBatchs = new MBS.EDGV();
             this.tbDosing = new System.Windows.Forms.TabPage();
+            this.edgvDosing = new MBS.EDGV();
             this.tbMessages = new System.Windows.Forms.TabPage();
+            this.dgvWinCCAlarm = new MBS.WinCCAlarmView();
             this.tbReport = new System.Windows.Forms.TabPage();
+            this.Report = new MBS.ReportsControl();
             this.DS = new System.Data.DataSet();
             this.sqlDeleteCommand1 = new System.Data.SqlClient.SqlCommand();
             this.sqlUpdateCommand1 = new System.Data.SqlClient.SqlCommand();
@@ -104,12 +110,6 @@ namespace MBS
             this.sqlSelectCommand1 = new System.Data.SqlClient.SqlCommand();
             this.DA = new System.Data.SqlClient.SqlDataAdapter();
             this.splitter1 = new System.Windows.Forms.Splitter();
-            this.tsmi_1_click = new System.Windows.Forms.ToolStripMenuItem();
-            this.edgvOrders = new MBS.EDGV();
-            this.edgvBatchs = new MBS.EDGV();
-            this.edgvDosing = new MBS.EDGV();
-            this.dgvWinCCAlarm = new MBS.WinCCAlarmView();
-            this.Report = new MBS.ReportsControl();
             this.Main_StatusStrip.SuspendLayout();
             this.Main_MenuStrip.SuspendLayout();
             this.Main_tsc.BottomToolStripPanel.SuspendLayout();
@@ -290,7 +290,7 @@ namespace MBS
             this.tsmi_1_Service,
             this.tsmi_1_Documentation,
             this.tsmi_1_Help,
-            this.tsmi_1_click});
+            this.tsmi_1_Setting});
             this.Main_MenuStrip.Location = new System.Drawing.Point(0, 0);
             this.Main_MenuStrip.Name = "Main_MenuStrip";
             this.Main_MenuStrip.Size = new System.Drawing.Size(1272, 28);
@@ -315,7 +315,7 @@ namespace MBS
             this.tsmi_2_OpenProject.Image = global::MBS.Properties.Resources._1439314019_folder_open;
             this.tsmi_2_OpenProject.Name = "tsmi_2_OpenProject";
             this.tsmi_2_OpenProject.ShortcutKeys = ((System.Windows.Forms.Keys)((System.Windows.Forms.Keys.Control | System.Windows.Forms.Keys.O)));
-            this.tsmi_2_OpenProject.Size = new System.Drawing.Size(213, 22);
+            this.tsmi_2_OpenProject.Size = new System.Drawing.Size(209, 26);
             this.tsmi_2_OpenProject.Text = "Открыть проект";
             this.tsmi_2_OpenProject.ToolTipText = "Открыть существующий проект";
             this.tsmi_2_OpenProject.Click += new System.EventHandler(this.toolStripMenuItem_OpenProject_Click);
@@ -324,7 +324,7 @@ namespace MBS
             // 
             this.tsmi_2_CloseProject.Image = global::MBS.Properties.Resources._1439314340_folder_close;
             this.tsmi_2_CloseProject.Name = "tsmi_2_CloseProject";
-            this.tsmi_2_CloseProject.Size = new System.Drawing.Size(213, 22);
+            this.tsmi_2_CloseProject.Size = new System.Drawing.Size(209, 26);
             this.tsmi_2_CloseProject.Text = "Закрыть проект";
             this.tsmi_2_CloseProject.ToolTipText = "Закрыть проект";
             this.tsmi_2_CloseProject.Click += new System.EventHandler(this.toolStripMenuItem_CloseProject_Click);
@@ -332,13 +332,13 @@ namespace MBS
             // toolStripSeparator1
             // 
             this.toolStripSeparator1.Name = "toolStripSeparator1";
-            this.toolStripSeparator1.Size = new System.Drawing.Size(210, 6);
+            this.toolStripSeparator1.Size = new System.Drawing.Size(206, 6);
             // 
             // tsmi_2_Login
             // 
             this.tsmi_2_Login.Image = global::MBS.Properties.Resources._1439314055_login;
             this.tsmi_2_Login.Name = "tsmi_2_Login";
-            this.tsmi_2_Login.Size = new System.Drawing.Size(213, 22);
+            this.tsmi_2_Login.Size = new System.Drawing.Size(209, 26);
             this.tsmi_2_Login.Text = "Сменить пользователя";
             this.tsmi_2_Login.Click += new System.EventHandler(this.сменитьПользователяToolStripMenuItem_Click);
             // 
@@ -346,7 +346,7 @@ namespace MBS
             // 
             this.tsmi_2_Logout.Image = global::MBS.Properties.Resources._1439314064_logout;
             this.tsmi_2_Logout.Name = "tsmi_2_Logout";
-            this.tsmi_2_Logout.Size = new System.Drawing.Size(213, 22);
+            this.tsmi_2_Logout.Size = new System.Drawing.Size(209, 26);
             this.tsmi_2_Logout.Text = "Выйти из системы";
             // 
             // tsmi_1_Reports
@@ -389,7 +389,7 @@ namespace MBS
             this.tsmi_3_CopyBD});
             this.tsmi_2_BD.Image = global::MBS.Properties.Resources._1439314386_cog;
             this.tsmi_2_BD.Name = "tsmi_2_BD";
-            this.tsmi_2_BD.Size = new System.Drawing.Size(152, 22);
+            this.tsmi_2_BD.Size = new System.Drawing.Size(184, 26);
             this.tsmi_2_BD.Text = "Параметры";
             // 
             // tsmi_3_SetConnection
@@ -421,7 +421,7 @@ namespace MBS
             this.tsmi_3_Enter});
             this.tsmi_2_Users.Image = global::MBS.Properties.Resources._1439314044_user;
             this.tsmi_2_Users.Name = "tsmi_2_Users";
-            this.tsmi_2_Users.Size = new System.Drawing.Size(152, 22);
+            this.tsmi_2_Users.Size = new System.Drawing.Size(184, 26);
             this.tsmi_2_Users.Text = "Пользователи";
             // 
             // tsmi_3_AddUser
@@ -457,14 +457,14 @@ namespace MBS
             // 
             this.tsmi_2_UserManual.Image = global::MBS.Properties.Resources._2000px_PDF_file_icon_svg__1980x2432;
             this.tsmi_2_UserManual.Name = "tsmi_2_UserManual";
-            this.tsmi_2_UserManual.Size = new System.Drawing.Size(298, 22);
+            this.tsmi_2_UserManual.Size = new System.Drawing.Size(302, 26);
             this.tsmi_2_UserManual.Text = "Руководство оператора";
             // 
             // tsmi_2_AdminManual
             // 
             this.tsmi_2_AdminManual.Image = global::MBS.Properties.Resources._2000px_PDF_file_icon_svg__1980x2432;
             this.tsmi_2_AdminManual.Name = "tsmi_2_AdminManual";
-            this.tsmi_2_AdminManual.Size = new System.Drawing.Size(298, 22);
+            this.tsmi_2_AdminManual.Size = new System.Drawing.Size(302, 26);
             this.tsmi_2_AdminManual.Text = "Руководство системного администатора";
             // 
             // tsmi_1_Help
@@ -478,9 +478,16 @@ namespace MBS
             // tsmi_2_About
             // 
             this.tsmi_2_About.Name = "tsmi_2_About";
-            this.tsmi_2_About.Size = new System.Drawing.Size(149, 22);
+            this.tsmi_2_About.Size = new System.Drawing.Size(180, 22);
             this.tsmi_2_About.Text = "О программе";
             this.tsmi_2_About.Click += new System.EventHandler(this.tsmi_2_About_Click);
+            // 
+            // tsmi_1_Setting
+            // 
+            this.tsmi_1_Setting.Name = "tsmi_1_Setting";
+            this.tsmi_1_Setting.Size = new System.Drawing.Size(78, 24);
+            this.tsmi_1_Setting.Text = "Настройка";
+            this.tsmi_1_Setting.Click += new System.EventHandler(this.tsmi_1_Setting_Click);
             // 
             // Main_tsc
             // 
@@ -744,6 +751,18 @@ namespace MBS
             this.tbOrders.Text = "Заказы";
             this.tbOrders.UseVisualStyleBackColor = true;
             // 
+            // edgvOrders
+            // 
+            this.edgvOrders.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.edgvOrders.Location = new System.Drawing.Point(3, 3);
+            this.edgvOrders.Margin = new System.Windows.Forms.Padding(4);
+            this.edgvOrders.Name = "edgvOrders";
+            this.edgvOrders.Size = new System.Drawing.Size(1258, 519);
+            this.edgvOrders.TabIndex = 0;
+            this.edgvOrders.ExportExcell += new System.EventHandler(this.edgvOrders_ExportExcell);
+            this.edgvOrders.ExportHTML += new System.EventHandler(this.edgvOrders_ExportHTML);
+            this.edgvOrders.MakeReport += new System.EventHandler(this.edgvOrders_MakeReport);
+            // 
             // tbBatchs
             // 
             this.tbBatchs.Controls.Add(this.edgvBatchs);
@@ -754,6 +773,17 @@ namespace MBS
             this.tbBatchs.TabIndex = 1;
             this.tbBatchs.Text = "Замесы";
             this.tbBatchs.UseVisualStyleBackColor = true;
+            // 
+            // edgvBatchs
+            // 
+            this.edgvBatchs.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.edgvBatchs.Location = new System.Drawing.Point(3, 3);
+            this.edgvBatchs.Name = "edgvBatchs";
+            this.edgvBatchs.Size = new System.Drawing.Size(1258, 519);
+            this.edgvBatchs.TabIndex = 0;
+            this.edgvBatchs.ExportExcell += new System.EventHandler(this.edgvBatchs_ExportExcell);
+            this.edgvBatchs.ExportHTML += new System.EventHandler(this.edgvBatchs_ExportHTML);
+            this.edgvBatchs.MakeReport += new System.EventHandler(this.edgvBatchs_MakeReport);
             // 
             // tbDosing
             // 
@@ -766,6 +796,16 @@ namespace MBS
             this.tbDosing.Text = "Дозирования";
             this.tbDosing.UseVisualStyleBackColor = true;
             // 
+            // edgvDosing
+            // 
+            this.edgvDosing.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.edgvDosing.Location = new System.Drawing.Point(3, 3);
+            this.edgvDosing.Name = "edgvDosing";
+            this.edgvDosing.Size = new System.Drawing.Size(1258, 519);
+            this.edgvDosing.TabIndex = 1;
+            this.edgvDosing.ExportExcell += new System.EventHandler(this.edgvDosing_ExportExcell);
+            this.edgvDosing.ExportHTML += new System.EventHandler(this.edgvDosing_ExportHTML);
+            // 
             // tbMessages
             // 
             this.tbMessages.Controls.Add(this.dgvWinCCAlarm);
@@ -777,6 +817,16 @@ namespace MBS
             this.tbMessages.Text = "События";
             this.tbMessages.UseVisualStyleBackColor = true;
             // 
+            // dgvWinCCAlarm
+            // 
+            this.dgvWinCCAlarm.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.dgvWinCCAlarm.Location = new System.Drawing.Point(3, 3);
+            this.dgvWinCCAlarm.Name = "dgvWinCCAlarm";
+            this.dgvWinCCAlarm.Size = new System.Drawing.Size(1258, 519);
+            this.dgvWinCCAlarm.TabIndex = 1;
+            this.dgvWinCCAlarm.ExportExcell += new System.EventHandler(this.dgvWinCCAlarm_ExportExcell);
+            this.dgvWinCCAlarm.ExportHTML += new System.EventHandler(this.dgvWinCCAlarm_ExportHTML);
+            // 
             // tbReport
             // 
             this.tbReport.Controls.Add(this.Report);
@@ -787,6 +837,14 @@ namespace MBS
             this.tbReport.TabIndex = 4;
             this.tbReport.Text = "Отчеты";
             this.tbReport.UseVisualStyleBackColor = true;
+            // 
+            // Report
+            // 
+            this.Report.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.Report.Location = new System.Drawing.Point(3, 3);
+            this.Report.Name = "Report";
+            this.Report.Size = new System.Drawing.Size(1258, 519);
+            this.Report.TabIndex = 0;
             // 
             // DS
             // 
@@ -806,64 +864,6 @@ namespace MBS
             this.splitter1.Size = new System.Drawing.Size(3, 384);
             this.splitter1.TabIndex = 1;
             this.splitter1.TabStop = false;
-            // 
-            // tsmi_1_click
-            // 
-            this.tsmi_1_click.Name = "tsmi_1_click";
-            this.tsmi_1_click.Size = new System.Drawing.Size(76, 24);
-            this.tsmi_1_click.Text = "настройка";
-            this.tsmi_1_click.Click += new System.EventHandler(this.tsmi_1_click_Click_1);
-            // 
-            // edgvOrders
-            // 
-            this.edgvOrders.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.edgvOrders.Location = new System.Drawing.Point(3, 3);
-            this.edgvOrders.Margin = new System.Windows.Forms.Padding(4);
-            this.edgvOrders.Name = "edgvOrders";
-            this.edgvOrders.Size = new System.Drawing.Size(1258, 519);
-            this.edgvOrders.TabIndex = 0;
-            this.edgvOrders.ExportExcell += new System.EventHandler(this.edgvOrders_ExportExcell);
-            this.edgvOrders.ExportHTML += new System.EventHandler(this.edgvOrders_ExportHTML);
-            this.edgvOrders.MakeReport += new System.EventHandler(this.edgvOrders_MakeReport);
-            // 
-            // edgvBatchs
-            // 
-            this.edgvBatchs.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.edgvBatchs.Location = new System.Drawing.Point(3, 3);
-            this.edgvBatchs.Name = "edgvBatchs";
-            this.edgvBatchs.Size = new System.Drawing.Size(1258, 519);
-            this.edgvBatchs.TabIndex = 0;
-            this.edgvBatchs.ExportExcell += new System.EventHandler(this.edgvBatchs_ExportExcell);
-            this.edgvBatchs.ExportHTML += new System.EventHandler(this.edgvBatchs_ExportHTML);
-            this.edgvBatchs.MakeReport += new System.EventHandler(this.edgvBatchs_MakeReport);
-            // 
-            // edgvDosing
-            // 
-            this.edgvDosing.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.edgvDosing.Location = new System.Drawing.Point(3, 3);
-            this.edgvDosing.Name = "edgvDosing";
-            this.edgvDosing.Size = new System.Drawing.Size(1258, 519);
-            this.edgvDosing.TabIndex = 1;
-            this.edgvDosing.ExportExcell += new System.EventHandler(this.edgvDosing_ExportExcell);
-            this.edgvDosing.ExportHTML += new System.EventHandler(this.edgvDosing_ExportHTML);
-            // 
-            // dgvWinCCAlarm
-            // 
-            this.dgvWinCCAlarm.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.dgvWinCCAlarm.Location = new System.Drawing.Point(3, 3);
-            this.dgvWinCCAlarm.Name = "dgvWinCCAlarm";
-            this.dgvWinCCAlarm.Size = new System.Drawing.Size(1258, 519);
-            this.dgvWinCCAlarm.TabIndex = 1;
-            this.dgvWinCCAlarm.ExportExcell += new System.EventHandler(this.dgvWinCCAlarm_ExportExcell);
-            this.dgvWinCCAlarm.ExportHTML += new System.EventHandler(this.dgvWinCCAlarm_ExportHTML);
-            // 
-            // Report
-            // 
-            this.Report.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.Report.Location = new System.Drawing.Point(3, 3);
-            this.Report.Name = "Report";
-            this.Report.Size = new System.Drawing.Size(1258, 519);
-            this.Report.TabIndex = 0;
             // 
             // formMain
             // 
@@ -984,7 +984,7 @@ namespace MBS
         private ToolStripStatusLabel Empty;
         private TabPage tbReport;
         private ReportsControl Report;
-        private ToolStripMenuItem tsmi_1_click;
+        private ToolStripMenuItem tsmi_1_Setting;
     }
 }
 
