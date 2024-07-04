@@ -15,23 +15,26 @@ using System.Windows.Input;
 using System.Xml;
 using System.IO;
 using System.Xml.Linq;
+using Microsoft.ReportingServices.Interfaces;
 
 namespace MBS
 {
     public partial class formSetting : Form
     {
+        formSetting fSetting;
+        formCreateDB fCreateDB;
         public formSetting()
         {
             InitializeComponent();
             Load += new EventHandler(formSetting_Load);
         }
 
-        private void formSetting_Load(object sender, System.EventArgs e)
+        private void formSetting_Load(object sender, EventArgs e)
         {
-            textBox_ProjectName.Text = Properties.Settings.Default.ProjectName;
-            textBox_ReportPatch.Text = Properties.Settings.Default.ReportPatch;
-            textBox_ReportConnection.Text = Properties.Settings.Default.ReportConnectionString;
-            textBox_AlarmConnection.Text = Properties.Settings.Default.AlarmConnectionString;
+            textBox_ProjectName.Text = Settings.Default.ProjectName;
+            textBox_ReportPatch.Text = Settings.Default.ReportPatch;
+            textBox_ReportConnection.Text = Settings.Default.ReportConnectionString;
+            textBox_AlarmConnection.Text = Settings.Default.AlarmConnectionString;
             
         }
 
@@ -47,8 +50,8 @@ namespace MBS
 
         private void btn_ProjectName_Save_Click(object sender, EventArgs e)
         {
-            Properties.Settings.Default["ProjectName"] = textBox_ProjectName.Text;
-            Properties.Settings.Default.Save();
+            Settings.Default["ProjectName"] = textBox_ProjectName.Text;
+            Settings.Default.Save();
             textBox_ProjectName.ReadOnly = true;
             btn_ProjectName_Cancel.Visible = false;
             btn_ProjectName_Change.Visible = true;
@@ -59,7 +62,7 @@ namespace MBS
 
         private void btn_ProjectName_Cancel_Click(object sender, EventArgs e)
         {
-            textBox_ProjectName.Text = Properties.Settings.Default.ProjectName;
+            textBox_ProjectName.Text = Settings.Default.ProjectName;
             textBox_ProjectName.ReadOnly = true;
             btn_ProjectName_Cancel.Visible = false;
             btn_ProjectName_Change.Visible = true;
@@ -70,15 +73,15 @@ namespace MBS
         private void btn_ReportPatch_Change_Click(object sender, EventArgs e)
         {
             textBox_ReportPatch.ReadOnly = false;
-            Properties.Settings.Default.ReportPatch = @"D:\Projects\MBS\Report\отчеты"; 
+            Settings.Default.ReportPatch = @"D:\Projects\MBS\Report\отчеты"; 
 
             string sFilePatch = General.GetFilePatch();
 
             if (sFilePatch != "")
             {
                 textBox_ReportPatch.Text = sFilePatch;
-                Properties.Settings.Default.ReportPatch = textBox_ReportPatch.Text;
-                Properties.Settings.Default.Save();
+                Settings.Default.ReportPatch = textBox_ReportPatch.Text;
+                Settings.Default.Save();
                 textBox_ReportPatch.ReadOnly = true;
 
                 UpdateUser_AppConfig("ReportPatch", textBox_ReportPatch.Text);
@@ -246,6 +249,18 @@ namespace MBS
 
             xmlDoc.Save(configFilePath);
             // ConfigurationManager.RefreshSection(node.InnerXml);
+        }
+
+        private void btn_ReportConnection_CreateDB_Click(object sender, EventArgs e)
+        {
+            fCreateDB = new formCreateDB("Report");
+            fCreateDB.ShowDialog();
+        }
+
+        private void btn_AlarmConnection_CreateDB_Click(object sender, EventArgs e)
+        {
+            fCreateDB = new formCreateDB("Alarm");
+            fCreateDB.ShowDialog();
         }
     }
 }

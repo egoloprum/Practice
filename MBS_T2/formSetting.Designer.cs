@@ -159,6 +159,7 @@
             this.btn_ReportConnection_CreateDB.TabIndex = 12;
             this.btn_ReportConnection_CreateDB.Text = "Создать БД";
             this.btn_ReportConnection_CreateDB.UseVisualStyleBackColor = true;
+            this.btn_ReportConnection_CreateDB.Click += new System.EventHandler(this.btn_ReportConnection_CreateDB_Click);
             // 
             // btn_AlarmConnection_CreateDB
             // 
@@ -168,6 +169,7 @@
             this.btn_AlarmConnection_CreateDB.TabIndex = 17;
             this.btn_AlarmConnection_CreateDB.Text = "Создать БД";
             this.btn_AlarmConnection_CreateDB.UseVisualStyleBackColor = true;
+            this.btn_AlarmConnection_CreateDB.Click += new System.EventHandler(this.btn_AlarmConnection_CreateDB_Click);
             // 
             // btn_AlarmConnection_CheckCon
             // 
@@ -221,6 +223,7 @@
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
+            this.BackColor = System.Drawing.SystemColors.Window;
             this.ClientSize = new System.Drawing.Size(604, 233);
             this.Controls.Add(this.btn_ProjectName_Cancel);
             this.Controls.Add(this.btn_AlarmConnection_CreateDB);

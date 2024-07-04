@@ -127,6 +127,12 @@
     </None>
     <None Include="Tresh.cs" />
     <Compile Include="ExportHTML.cs" />
+    <Compile Include="formCreateDB.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="formCreateDB.Designer.cs">
+      <DependentUpon>formCreateDB.cs</DependentUpon>
+    </Compile>
     <Compile Include="formSetting.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -193,6 +199,9 @@
     </Compile>
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <EmbeddedResource Include="formCreateDB.resx">
+      <DependentUpon>formCreateDB.cs</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="formReport.resx">
       <DependentUpon>formReport.cs</DependentUpon>
     </EmbeddedResource>

@@ -362,14 +362,14 @@ namespace MBS
             // 
             this.tsmi_2_Orders.Image = global::MBS.Properties.Resources._1439314741_application_spec;
             this.tsmi_2_Orders.Name = "tsmi_2_Orders";
-            this.tsmi_2_Orders.Size = new System.Drawing.Size(117, 22);
+            this.tsmi_2_Orders.Size = new System.Drawing.Size(184, 26);
             this.tsmi_2_Orders.Text = "Заказы";
             // 
             // tsmi_2_Batchs
             // 
             this.tsmi_2_Batchs.Image = global::MBS.Properties.Resources._1439314706_script;
             this.tsmi_2_Batchs.Name = "tsmi_2_Batchs";
-            this.tsmi_2_Batchs.Size = new System.Drawing.Size(117, 22);
+            this.tsmi_2_Batchs.Size = new System.Drawing.Size(184, 26);
             this.tsmi_2_Batchs.Text = "Замесы";
             // 
             // tsmi_1_Service
