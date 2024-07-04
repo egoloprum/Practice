@@ -33,9 +33,20 @@ namespace MBS.Properties {
             }
         }
         
+        [global::System.Configuration.ApplicationScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.SpecialSettingAttribute(global::System.Configuration.SpecialSetting.ConnectionString)]
+        [global::System.Configuration.DefaultSettingValueAttribute("Data Source=172.23.1.84\\WINCC;Initial Catalog=MBS2_Alarm;User ID=a;Password=11111" +
+            "111")]
+        public string AlarmConnectionString {
+            get {
+                return ((string)(this["AlarmConnectionString"]));
+            }
+        }
+        
         [global::System.Configuration.UserScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.DefaultSettingValueAttribute("D:\\Projects\\MBS\\Report\\отчеты")]
+        [global::System.Configuration.DefaultSettingValueAttribute("C:\\Users\\www.DESKTOP-NGC89DL\\Desktop\\practice\\packages")]
         public string ReportPatch {
             get {
                 return ((string)(this["ReportPatch"]));
@@ -47,24 +58,13 @@ namespace MBS.Properties {
         
         [global::System.Configuration.UserScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.DefaultSettingValueAttribute("MBS. Линия 2")]
+        [global::System.Configuration.DefaultSettingValueAttribute("MBS. Линия 2qwer")]
         public string ProjectName {
             get {
                 return ((string)(this["ProjectName"]));
             }
             set {
                 this["ProjectName"] = value;
-            }
-        }
-        
-        [global::System.Configuration.ApplicationScopedSettingAttribute()]
-        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.SpecialSettingAttribute(global::System.Configuration.SpecialSetting.ConnectionString)]
-        [global::System.Configuration.DefaultSettingValueAttribute("Data Source=172.23.1.84\\WINCC;Initial Catalog=MBS2_Alarm;User ID=a;Password=11111" +
-            "111")]
-        public string AlarmConnectionString {
-            get {
-                return ((string)(this["AlarmConnectionString"]));
             }
         }
     }

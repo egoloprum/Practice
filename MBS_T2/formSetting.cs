@@ -12,6 +12,9 @@ using System.Threading.Tasks;
 using System.Web.Configuration;
 using System.Windows.Forms;
 using System.Windows.Input;
+using System.Xml;
+using System.IO;
+using System.Xml.Linq;
 
 namespace MBS
 {
@@ -51,29 +54,7 @@ namespace MBS
             btn_ProjectName_Change.Visible = true;
             btn_ProjectName_Save.Enabled = false;
 
-            var config = ConfigurationManager.OpenExeConfiguration(ConfigurationUserLevel.None);
-            var settings = config.GetSectionGroup("userSettings").Sections["MBS.Properties.Settings"] as ClientSettingsSection;
-
-            if (settings != null)
-            {
-                var setting = settings.Settings.Get("ProjectName");
-                if (setting != null)
-                {
-                    Console.WriteLine(setting.Value.ValueXml.InnerXml);
-                    setting.Value.ValueXml.InnerXml = textBox_ProjectName.Text;
-                    Console.WriteLine("changed");
-                    Console.WriteLine(setting.Value.ValueXml.InnerXml);
-                }
-                else
-                    Console.WriteLine("failed");
-
-                config.Save(ConfigurationSaveMode.Full);
-                config.Save(ConfigurationSaveMode.Minimal);
-                config.Save(ConfigurationSaveMode.Modified);
-                Console.WriteLine(setting.Value.ValueXml.InnerXml);
-                ConfigurationManager.RefreshSection(settings.SectionInformation.Name);
-            }
-
+            UpdateUser_AppConfig("ProjectName", textBox_ProjectName.Text);
         }
 
         private void btn_ProjectName_Cancel_Click(object sender, EventArgs e)
@@ -99,6 +80,8 @@ namespace MBS
                 Properties.Settings.Default.ReportPatch = textBox_ReportPatch.Text;
                 Properties.Settings.Default.Save();
                 textBox_ReportPatch.ReadOnly = true;
+
+                UpdateUser_AppConfig("ReportPatch", textBox_ReportPatch.Text);
             }
             else
             {
@@ -119,10 +102,13 @@ namespace MBS
             if (ErrCode == 0)
             {
                 textBox_ReportConnection.Text = connectString;
+                UpdateApp_AppConfig("MBS.Properties.Settings.ReportConnectionString", connectString);
+            }
+            else
+            {
+                Console.WriteLine("failed report connection change.");
             }
         }
-
-
 
         private void btn_ReportConnection_CheckCon_Click(object sender, EventArgs e)
         {
@@ -158,6 +144,11 @@ namespace MBS
             if (ErrCode == 0)
             {
                 textBox_AlarmConnection.Text = connectString;
+                UpdateApp_AppConfig("MBS.Properties.Settings.AlarmConnectionString", connectString);
+            }
+            else
+            {
+                Console.WriteLine("failed report connection change.");
             }
         }
 
@@ -178,6 +169,83 @@ namespace MBS
             {
                 DialogResult res = MessageBox.Show("Выбранная БД недоступна. Все равно сохранить подключение?", "БД недоступна", MessageBoxButtons.YesNo, MessageBoxIcon.Information);
             }
+        }
+
+        // update config file
+
+        public void UpdateUser_AppConfig(string key, string value)
+        {
+            string baseDirectory = AppDomain.CurrentDomain.BaseDirectory;
+
+            string configFilePath = Path.Combine(baseDirectory, @"..\..\App.config");
+            configFilePath = Path.GetFullPath(configFilePath);
+
+            XmlDocument xmlDoc = new XmlDocument();
+            xmlDoc.Load(configFilePath);
+
+            XmlNode node = xmlDoc.SelectSingleNode($"//setting[@name='{key}']/value");
+            if (node != null)
+            {
+                node.InnerText = value;
+            }
+            else
+            {
+                // if does not exist, create new one
+                XmlNode settingsNode = xmlDoc.SelectSingleNode("//MBS.Properties.Settings");
+                if (settingsNode != null)
+                {
+                    XmlElement settingElement = xmlDoc.CreateElement("setting");
+                    settingElement.SetAttribute("name", key);
+                    settingElement.SetAttribute("serializeAs", "String");
+
+                    XmlElement valueElement = xmlDoc.CreateElement("value");
+                    valueElement.InnerText = value;
+
+                    settingElement.AppendChild(valueElement);
+                    settingsNode.AppendChild(settingElement);
+                }
+            }
+
+            xmlDoc.Save(configFilePath);
+            // ConfigurationManager.RefreshSection(node.InnerXml);
+        }
+       
+        public void UpdateApp_AppConfig(string name, string newConnectionString)
+        {
+            string baseDirectory = AppDomain.CurrentDomain.BaseDirectory;
+
+            string configFilePath = Path.Combine(baseDirectory, @"..\..\App.config");
+            configFilePath = Path.GetFullPath(configFilePath);
+
+            XmlDocument xmlDoc = new XmlDocument();
+            xmlDoc.Load(configFilePath);
+
+            XmlNode node = xmlDoc.SelectSingleNode($"//connectionStrings/add[@name='{name}']");
+            if (node != null)
+            {
+                XmlAttribute connectionStringAttribute = node.Attributes["connectionString"];
+                if (connectionStringAttribute != null)
+                {
+                    connectionStringAttribute.Value = newConnectionString;
+                }
+            }
+            else
+            {
+                // if does not exist, create new one
+                XmlNode connectionStringNode = xmlDoc.SelectSingleNode("//connectionStrings");
+                if (connectionStringNode != null)
+                {
+                    XmlElement addElement = xmlDoc.CreateElement("add");
+                    addElement.SetAttribute("name", name);
+                    addElement.SetAttribute("connectionString", newConnectionString);
+                    addElement.SetAttribute("providerName", "System.Data.SqlClient");
+
+                    connectionStringNode.AppendChild(addElement);
+                }
+            }
+
+            xmlDoc.Save(configFilePath);
+            // ConfigurationManager.RefreshSection(node.InnerXml);
         }
     }
 }
