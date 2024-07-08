@@ -75,7 +75,7 @@
             this.textBox_Username.Enabled = false;
             this.textBox_Username.Location = new System.Drawing.Point(117, 199);
             this.textBox_Username.Name = "textBox_Username";
-            this.textBox_Username.Size = new System.Drawing.Size(171, 20);
+            this.textBox_Username.Size = new System.Drawing.Size(232, 20);
             this.textBox_Username.TabIndex = 3;
             this.textBox_Username.TextChanged += new System.EventHandler(this.textBox_Username_TextChanged);
             // 
@@ -96,7 +96,7 @@
             "MS Server"});
             this.comboBox_TypeDBMS.Location = new System.Drawing.Point(17, 28);
             this.comboBox_TypeDBMS.Name = "comboBox_TypeDBMS";
-            this.comboBox_TypeDBMS.Size = new System.Drawing.Size(222, 21);
+            this.comboBox_TypeDBMS.Size = new System.Drawing.Size(332, 21);
             this.comboBox_TypeDBMS.TabIndex = 8;
             this.comboBox_TypeDBMS.DropDown += new System.EventHandler(this.comboBox_TypeDBMS_DropDown);
             this.comboBox_TypeDBMS.TextChanged += new System.EventHandler(this.comboBox_TypeDBMS_TextChanged);
@@ -104,16 +104,17 @@
             // btn_CreateDB
             // 
             this.btn_CreateDB.Enabled = false;
-            this.btn_CreateDB.Location = new System.Drawing.Point(160, 322);
+            this.btn_CreateDB.Location = new System.Drawing.Point(206, 322);
             this.btn_CreateDB.Name = "btn_CreateDB";
-            this.btn_CreateDB.Size = new System.Drawing.Size(61, 23);
+            this.btn_CreateDB.Size = new System.Drawing.Size(76, 23);
             this.btn_CreateDB.TabIndex = 12;
             this.btn_CreateDB.Text = "Создать";
             this.btn_CreateDB.UseVisualStyleBackColor = true;
+            this.btn_CreateDB.Click += new System.EventHandler(this.btn_CreateDB_Click);
             // 
             // btn_Cancel
             // 
-            this.btn_Cancel.Location = new System.Drawing.Point(227, 322);
+            this.btn_Cancel.Location = new System.Drawing.Point(288, 322);
             this.btn_Cancel.Name = "btn_Cancel";
             this.btn_Cancel.Size = new System.Drawing.Size(61, 23);
             this.btn_Cancel.TabIndex = 13;
@@ -126,7 +127,7 @@
             this.textBox_Password.Enabled = false;
             this.textBox_Password.Location = new System.Drawing.Point(117, 225);
             this.textBox_Password.Name = "textBox_Password";
-            this.textBox_Password.Size = new System.Drawing.Size(171, 20);
+            this.textBox_Password.Size = new System.Drawing.Size(232, 20);
             this.textBox_Password.TabIndex = 15;
             this.textBox_Password.UseSystemPasswordChar = true;
             this.textBox_Password.TextChanged += new System.EventHandler(this.textBox_Password_TextChanged);
@@ -146,7 +147,7 @@
             this.comboBox_NameServer.FormattingEnabled = true;
             this.comboBox_NameServer.Location = new System.Drawing.Point(17, 69);
             this.comboBox_NameServer.Name = "comboBox_NameServer";
-            this.comboBox_NameServer.Size = new System.Drawing.Size(222, 21);
+            this.comboBox_NameServer.Size = new System.Drawing.Size(332, 21);
             this.comboBox_NameServer.TabIndex = 17;
             this.comboBox_NameServer.DropDown += new System.EventHandler(this.comboBox_NameServer_DropDown);
             this.comboBox_NameServer.TextChanged += new System.EventHandler(this.comboBox_NameServer_TextChanged);
@@ -220,8 +221,9 @@
             this.comboBox_NameDB.FormattingEnabled = true;
             this.comboBox_NameDB.Location = new System.Drawing.Point(117, 287);
             this.comboBox_NameDB.Name = "comboBox_NameDB";
-            this.comboBox_NameDB.Size = new System.Drawing.Size(171, 21);
+            this.comboBox_NameDB.Size = new System.Drawing.Size(232, 21);
             this.comboBox_NameDB.TabIndex = 23;
+            this.comboBox_NameDB.DropDown += new System.EventHandler(this.comboBox_NameDB_DropDown);
             this.comboBox_NameDB.TextChanged += new System.EventHandler(this.comboBox_NameDB_TextChanged);
             // 
             // comboBox_TypeDB
@@ -234,7 +236,7 @@
             "Отчеты"});
             this.comboBox_TypeDB.Location = new System.Drawing.Point(17, 109);
             this.comboBox_TypeDB.Name = "comboBox_TypeDB";
-            this.comboBox_TypeDB.Size = new System.Drawing.Size(222, 21);
+            this.comboBox_TypeDB.Size = new System.Drawing.Size(332, 21);
             this.comboBox_TypeDB.TabIndex = 25;
             this.comboBox_TypeDB.Tag = "";
             // 
@@ -251,7 +253,7 @@
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(305, 363);
+            this.ClientSize = new System.Drawing.Size(364, 361);
             this.Controls.Add(this.comboBox_TypeDB);
             this.Controls.Add(this.label1);
             this.Controls.Add(this.comboBox_NameDB);
@@ -272,6 +274,7 @@
             this.Controls.Add(this.label_User);
             this.Controls.Add(this.label_NameDB);
             this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
+            this.MinimumSize = new System.Drawing.Size(380, 400);
             this.Name = "formCreateDB";
             this.Text = "Создание нового проекта";
             this.Load += new System.EventHandler(this.formCreateDB_Load);

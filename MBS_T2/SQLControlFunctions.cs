@@ -62,112 +62,183 @@ namespace MBS
           {
           } 
       }
-       public static int  AddNewDB(string ID, string ShortName, string FullName, string Password, string Path, short Mode) //создание новой БД
-       {
-           int ErrorCode=0;
-           //создаем БД и возвращаем строку подклчюения к ней
-           ErrorCode = CreateDB(ID, Password, Path, Mode);
-           if (ErrorCode == 0)// если БД создана успешно 
-           {                            
-               //добавляем в нее таблицы
-               ErrorCode = AddTablesToNewBD(SQLControls.ConnectionString);
-               if (ErrorCode == 0) //если таблицы добавлены успешно
-               {
-                   //добавляем информацию о проекте в таблицу
-                   ErrorCode = AddInfoToNewProject(ID, ShortName, FullName, SQLControls.ConnectionString);
-                   if (ErrorCode == 0)//информация добавлена успешно
-                   {
-                       //копируем инфомарци. о проекте в эталонную таблицу (она жде перечень запомненных проектов)
-                       ErrorCode = AddInfoToModelProject(SQLControls.ConnectionString);
-                       if (ErrorCode == 0)//информация добавлена успешно
-                       {
-                           MessageBox.Show("Проект успешно создан", "Создание нового проекта", MessageBoxButtons.OK, MessageBoxIcon.Information);
-                           ErrorCode = ConnectDB(SQLControls.ConnectionString);
-                           if (ErrorCode == 0)//информация добавлена успешно
-                           { 
-                           }
-                       }
+        public static int  AddNewDB(string DB_Name, string ShortName, string FullName, string Username, string Password, string Source, short Mode) //создание новой БД
+        {
+            int ErrorCode=0;
+            //создаем БД и возвращаем строку подклчюения к ней
+            ErrorCode = CreateDB(DB_Name, Username, Password, Source, Mode);
+            if (ErrorCode == 0)// если БД создана успешно 
+            {                            
+                //добавляем в нее таблицы
+                ErrorCode = AddTablesToNewBD(SQLControls.ConnectionString);
+                if (ErrorCode == 0) //если таблицы добавлены успешно
+                {
+                    //добавляем информацию о проекте в таблицу
+                    ErrorCode = AddInfoToNewProject(DB_Name, ShortName, FullName, SQLControls.ConnectionString);
+                    if (ErrorCode == 0)//информация добавлена успешно
+                    {
+                        //копируем инфомарци. о проекте в эталонную таблицу (она жде перечень запомненных проектов)
+                        ErrorCode = AddInfoToModelProject(SQLControls.ConnectionString);
+                        if (ErrorCode == 0)//информация добавлена успешно
+                        {
+                            MessageBox.Show("Проект успешно создан", "Создание нового проекта", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                            ErrorCode = ConnectDB(SQLControls.ConnectionString);
+                            if (ErrorCode == 0)//информация добавлена успешно
+                            { 
+                            }
+                        }
 
-                   }
+                    }
 
-               }
-           }
-           else { ErrorCode = 1; }
-           return ErrorCode;
-       }
+                }
+            }
+            else { ErrorCode = 1; }
+            return ErrorCode;
+        }
 
+        public static int CreateDB(string DB_Name, string Username, string Password, string Source, short Mode)
+        {
+            string DefaultConnectionString = "Data Source=172.23.1.84\\WINCC;Initial Catalog=master;User ID=a;Password=11111111";
+            string newProjectConnectionString;
+            string sqlQuery;
 
-      
-          public static int CreateDB(string ID, string Password, string Path, short Mode) //создание новой БД
-      {
-          string myConnectionString = "Data Source=.\\SQLEXPRESS;Initial Catalog=master;User ID=sa;Password=sa123456";
-          string NewProjectConnectionString = "Data Source=.\\SQLEXPRESS;Initial Catalog=master;User ID=sa;Password=sa123456";
-          string str = "";
-          if (String.IsNullOrWhiteSpace(Path))
-          {
-              if (Mode == 0) { Path = ".\\SQLEXPRESS"; }
-              else { Path = Application.StartupPath; }
-          };
-          switch (Mode)
-          {
-              case 0:
-                  //БД SQLServer
-                  myConnectionString = "Data Source=" + Path + ";Initial Catalog=master;User ID=sa;Password=sa123456";
-                  NewProjectConnectionString = "Data Source=" + Path + ";Initial Catalog=" + ID + ";User ID=sa;Password=sa123456; Persist Security Info=True";
-                  str = "CREATE DATABASE " + ID;
-                  break;
-              case 1:
-                  //локальная БД *.mdf
-                  myConnectionString = "Data Source=(LocalDB)\\v11.0; Integrated Security=True;";
-                  NewProjectConnectionString = "Data Source=(LocalDB)\\v11.0;AttachDbFilename=" + Path + ID + ".mdf;Integrated Security=True";
-                  str = "CREATE DATABASE " + ID + " ON PRIMARY " +
-                              "(NAME = " + ID + "_Data, " +
-                              "FILENAME = '" + Path + ID + ".mdf', " +
-                              "SIZE = 4MB, MAXSIZE = 10MB, FILEGROWTH = 10%) " +
-                              "LOG ON (NAME = " + ID + "_Log, " +
-                              "FILENAME = '" + Path + ID + "_log.ldf', " +
-                              "SIZE = 1MB, " +
-                              "MAXSIZE = 5MB, " +
-                              "FILEGROWTH = 10%)";
-                  break;
-              default:
-                  //БД SQLServer
-                  myConnectionString = "Data Source=" + Path + ";Initial Catalog=master;User ID=sa;Password=sa123456";
-                  NewProjectConnectionString = "Data Source=" + Path + ";Initial Catalog=" + ID + ";User ID=sa;Password=sa123456;Persist Security Info=True";
-                  str = "CREATE DATABASE " + ID;
-                  break;
-          }
+            switch (Mode)
+            {
+                case 0:
+                    // Local DB *.mdf
+                    DefaultConnectionString = "Data Source=(LocalDB)\\v11.0; Integrated Security=True;";
+                    newProjectConnectionString = $"Data Source=(LocalDB)\\v11.0;AttachDbFilename={Source}{DB_Name}.mdf;Integrated Security=True";
+                    sqlQuery = $"CREATE DATABASE {DB_Name} ON PRIMARY " +
+                                    $"(NAME = {DB_Name}_Data, " +
+                                    $"FILENAME = '{Source}{DB_Name}.mdf', " +
+                                    $"SIZE = 4MB, MAXSIZE = 10MB, FILEGROWTH = 10%) " +
+                                    $"LOG ON (NAME = {DB_Name}_Log, " +
+                                    $"FILENAME = '{Source}{DB_Name}_log.ldf', " +
+                                    $"SIZE = 1MB, MAXSIZE = 5MB, FILEGROWTH = 10%)";
+                    break;
+
+                case 1:
+                        // SQLServer DB
+                    newProjectConnectionString = $"Data Source={Source};Initial Catalog={DB_Name};User ID={Username};Password={Password};Persist Security Info=True";
+                    sqlQuery = $"CREATE DATABASE {DB_Name}";
+                    break;
+
+                default:
+                    // SQLServer DB
+                    newProjectConnectionString = $"Data Source={Source};Initial Catalog={DB_Name};User ID={Username};Password={Password};Persist Security Info=True";
+                    sqlQuery = $"CREATE DATABASE {DB_Name}";
+                    break;
+            }
+
+            using (SqlConnection connection = new SqlConnection(DefaultConnectionString))
+            {
+                try
+                {
+                    connection.Open();
+
+                    // Create the database
+                    using (SqlCommand command = new SqlCommand(sqlQuery, connection))
+                    {
+                        command.ExecuteNonQuery();
+                    }
+
+                    // Set Cyrillic collation
+                    using (SqlCommand command = new SqlCommand($"ALTER DATABASE [{DB_Name}] COLLATE Cyrillic_General_CI_AS", connection))
+                    {
+                        command.ExecuteNonQuery();
+                    }
+
+                    MessageBox.Show("Database is created successfully", "MyProgram", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                }
+                catch (Exception ex)
+                {
+                    General.ErrorMessage(ex);
+                    return ex.HResult;
+                }
+                finally
+                {
+                    if (connection.State == ConnectionState.Open)
+                    {
+                        connection.Close();
+                    }
+                }
+            }
+
+            SQLControls.ConnectionString = newProjectConnectionString;
+            return 0;
+        }
+
+      /*     public static int CreateDB(string ID, string Password, string Path, short Mode) //создание новой БД
+           {
+              string myConnectionString = "Data Source=.\\SQLEXPRESS;Initial Catalog=master;User ID=sa;Password=sa123456";
+              string NewProjectConnectionString = "Data Source=.\\SQLEXPRESS;Initial Catalog=master;User ID=sa;Password=sa123456";
+              string str = "";
+              if (String.IsNullOrWhiteSpace(Path))
+              {
+                 if (Mode == 0) { Path = ".\\SQLEXPRESS"; }
+                 else { Path = Application.StartupPath; }
+              };
+              switch (Mode)
+              {
+                 case 0:
+                    //БД SQLServer
+                    myConnectionString = "Data Source=" + Path + ";Initial Catalog=master;User ID=sa;Password=sa123456";
+                    NewProjectConnectionString = "Data Source=" + Path + ";Initial Catalog=" + ID + ";User ID=sa;Password=sa123456; Persist Security Info=True";
+                    str = "CREATE DATABASE " + ID;
+                    break;
+                 case 1:
+                    //локальная БД *.mdf
+                    myConnectionString = "Data Source=(LocalDB)\\v11.0; Integrated Security=True;";
+                    NewProjectConnectionString = "Data Source=(LocalDB)\\v11.0;AttachDbFilename=" + Path + ID + ".mdf;Integrated Security=True";
+                    str = "CREATE DATABASE " + ID + " ON PRIMARY " +
+                                "(NAME = " + ID + "_Data, " +
+                                "FILENAME = '" + Path + ID + ".mdf', " +
+                                "SIZE = 4MB, MAXSIZE = 10MB, FILEGROWTH = 10%) " +
+                                "LOG ON (NAME = " + ID + "_Log, " +
+                                "FILENAME = '" + Path + ID + "_log.ldf', " +
+                                "SIZE = 1MB, " +
+                                "MAXSIZE = 5MB, " +
+                                "FILEGROWTH = 10%)";
+                    break;
+                 default:
+                    //БД SQLServer
+                    myConnectionString = "Data Source=" + Path + ";Initial Catalog=master;User ID=sa;Password=sa123456";
+                    NewProjectConnectionString = "Data Source=" + Path + ";Initial Catalog=" + ID + ";User ID=sa;Password=sa123456;Persist Security Info=True";
+                    str = "CREATE DATABASE " + ID;
+                    break;
+              }
 
               SqlConnection myConn = new SqlConnection(myConnectionString);
               SqlCommand myCommand = new SqlCommand(str, myConn);
               try
               {
-                  myConn.Open();
-                  //Создаем новую БД запросом
-                  myCommand.ExecuteNonQuery();
-                  //Указываем для нее русскую кодировку (чтобы была поддержка русских букв)
-                  str = "ALTER DATABASE [" + ID + "] COLLATE Cyrillic_General_CI_AS";
-                  myCommand = new SqlCommand(str, myConn);
-                  myCommand.ExecuteNonQuery();       
-                  //MessageBox.Show("DataBase is Created Successfully", "MyProgram", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                    myConn.Open();
+                    //Создаем новую БД запросом
+                    myCommand.ExecuteNonQuery();
+                    //Указываем для нее русскую кодировку (чтобы была поддержка русских букв)
+                    str = "ALTER DATABASE [" + ID + "] COLLATE Cyrillic_General_CI_AS";
+                    myCommand = new SqlCommand(str, myConn);
+                    myCommand.ExecuteNonQuery();       
+                    MessageBox.Show("DataBase is Created Successfully", "MyProgram", MessageBoxButtons.OK, MessageBoxIcon.Information);
               }
               catch (System.Exception ex)//catch (SqlException ex )          
               {
-                  General.ErrorMessage(ex);                
-                  return ex.HResult;
+                    General.ErrorMessage(ex);                
+                    return ex.HResult;
               }
               finally
               {
-                  if (myConn.State == ConnectionState.Open)
-                  {
-                      myConn.Close();
-                  }
+                    if (myConn.State == ConnectionState.Open)
+                    {
+                       myConn.Close();
+                    }
               }
 
               SQLControls.ConnectionString = NewProjectConnectionString;
               return 0;
-      }
-          public static int CyrillicDB() //Изменение кодировки таблиц (скрипт не отлажен)
+           }*/
+
+      public static int CyrillicDB() //Изменение кодировки таблиц (скрипт не отлажен)
           { //http://www.sql.ru/forum/147286/izmenit-collation-u-sushhestvuushhey-bd
               //пока все зафиксируем
               string DB = "E:\\VSPROJECTS\\ASUPR\\WFA_СS\\WFA_СS\\PROJECTS.MDF";
@@ -312,7 +383,7 @@ namespace MBS
       public static int AddTablesToNewBD(string NewProjectConnectionString)//добавление таблиц в БД
       {
           SqlConnection NewProjectConnection = new SqlConnection(NewProjectConnectionString); //подключение к создаваемой БД
-          //SqlConnection ModelConnection = new SqlConnection("Data Source=(LocalDB)\\v11.0;AttachDbFilename=" + Application.StartupPath + "\\Projects.mdf;Integrated Security=True");//подключение к эталонной БД
+          SqlConnection ModelConnection = new SqlConnection("Data Source=(LocalDB)\\v11.0;AttachDbFilename=" + Application.StartupPath + "\\Projects.mdf;Integrated Security=True");//подключение к эталонной БД
           try
           {
               //открываем подключения

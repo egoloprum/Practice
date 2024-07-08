@@ -115,7 +115,6 @@ namespace MBS
 
         private void btn_ReportConnection_CheckCon_Click(object sender, EventArgs e)
         {
-
             var config = ConfigurationManager.OpenExeConfiguration(ConfigurationUserLevel.None);
             var connectionStringsSection = (ConnectionStringsSection)config.GetSection("connectionStrings");
 
@@ -254,6 +253,7 @@ namespace MBS
         private void btn_ReportConnection_CreateDB_Click(object sender, EventArgs e)
         {
             fCreateDB = new formCreateDB("Report");
+            fCreateDB.StartPosition = FormStartPosition.CenterScreen;
             fCreateDB.ShowDialog();
         }
 

@@ -142,6 +142,7 @@ namespace MBS
         private void tsmi_1_Setting_Click(object sender, EventArgs e)
         {
             fSetting = new formSetting();
+            fSetting.StartPosition = FormStartPosition.CenterScreen;
             fSetting.ShowDialog();
         }
 

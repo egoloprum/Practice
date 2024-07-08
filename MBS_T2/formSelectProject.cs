@@ -44,7 +44,7 @@ namespace MBS
   
         private void buttonCreateProject_Click(object sender, EventArgs e)
         {
-            string
+/*            string
                 ID = this.textBoxProjectID.Text,            
                 Password = this.textBoxProjectPassword.Text,
                 Path,
@@ -75,7 +75,7 @@ namespace MBS
                 Project.Save();
                 UpdateProjects();
                 this.Close();
-            }
+            }*/
         }
 
         private void comboBoxProjectBDMode_SelectedIndexChanged(object sender, EventArgs e)
@@ -247,7 +247,8 @@ namespace MBS
             //Предварительно очищаем все элементы управления в которые будут выводиться данные
             //comboBoxSQLServers.Items.Clear();
             //Получение доступных SQL серверов.
-            string[] theAvailableSqlServers = SqlLocator.GetServers();
+            //string[] theAvailableSqlServers = SqlLocator.GetServers();
+            string theAvailableSqlServers = "";
             if (theAvailableSqlServers != null)
             {
                 comboBoxSQLServers.DataSource = theAvailableSqlServers;
