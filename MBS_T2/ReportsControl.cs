@@ -235,17 +235,17 @@ namespace MBS
             if (TableName == "Batch")
             {
                 
-                SelectCommand = SQLControls.GetReguest("ReportBatchByOrderID").Replace("@BD", "MBS2").Replace("@OrderID", sOrderID);
+                SelectCommand = SQLControls.GetRequest("ReportBatchByOrderID").Replace("@BD", "MBS2").Replace("@OrderID", sOrderID);
                 BS = this.bsBatch;
             }
             if (TableName == "Dosing")
             {
-                SelectCommand = SQLControls.GetReguest("ReportDosingByBatchID").Replace("@BD", "MBS2").Replace("@BatchID", sBatchID);
+                SelectCommand = SQLControls.GetRequest("ReportDosingByBatchID").Replace("@BD", "MBS2").Replace("@BatchID", sBatchID);
                 BS = this.bsDosing;
             }
             if (TableName == "DosingByOrder")
             {
-                SelectCommand = SQLControls.GetReguest("ReportDosingByOrderID").Replace("@BD", "MBS2").Replace("@OrderID", sOrderID);
+                SelectCommand = SQLControls.GetRequest("ReportDosingByOrderID").Replace("@BD", "MBS2").Replace("@OrderID", sOrderID);
             }
             //MessageBox.Show(Properties.Settings.Default.AlarmConnectionString.ToString());
 
@@ -284,7 +284,7 @@ namespace MBS
 
         public int FillDTfromBD(string TableName)
         {
-            string SelectCommand = SQLControls.GetReguest(TableName);
+            string SelectCommand = SQLControls.GetRequest(TableName);
             SqlConnection SqlConn = new SqlConnection(SqlConnStr);//new SqlConnection(Properties.Settings.Default.ReportConnectionString);
                                                                   //List<BindingSource> lBS = new List<BindingSource> { bsOrder, bsBatch };
             if (TableName.Contains("Batch") == true)
@@ -315,10 +315,10 @@ namespace MBS
                             DS.Tables["Report" + TableName].Rows.Add(newRow3);
                         }
 
-                        SelectCommand = SQLControls.GetReguest(TableName) +
+                        SelectCommand = SQLControls.GetRequest(TableName) +
                          " WHERE ([BatchID]=" + sBatchID + " AND [SilosType]='" + s + "')";
 
-                        //SelectCommand = GetReguest(TableName);// +
+                        //SelectCommand = GetRequest(TableName);// +
                         //" WHERE ([BatchID]=" + sBatchID + " AND [SilosType]='" + s + "')";// +
                         //" ORDER BY [BacthRank]";
                         //"SELECT " +
@@ -354,7 +354,7 @@ namespace MBS
 
 
                         //Добавляем строку Всего
-                        //SelectCommand = GetReguest(TableName) +
+                        //SelectCommand = GetRequest(TableName) +
                         //" WHERE ([BatchID]=" + sBatchID + " AND [SilosType]='" + s + "')";
 
                         SelectCommand = "SELECT " +

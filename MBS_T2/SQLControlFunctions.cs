@@ -17,84 +17,129 @@ using System.Xml;
 
 namespace MBS
 {
-   class  SQLControls
+    class SQLControls
     {
-       //текущее подключение
-      public static string CurrentConnectionString;
-      public static string ConnectionString;
-      public static SqlConnection CurrentConnection = new SqlConnection(CurrentConnectionString);
-      
+        // текущее подключение
+        public static string CurrentConnectionString;
+        public static string ConnectionString;
+        public static SqlConnection CurrentConnection = new SqlConnection(CurrentConnectionString);
 
+        //подключение к эталонной БД
+        public static string ModelConnectionString = $"Data Source=(LocalDB)\\v11.0;AttachDbFilename={Application.StartupPath }\\Projects.mdf;Integrated " +
+            $"Security=True;MultipleActiveResultSets=True";
 
-      //подключение к эталонной БД
-      public static string ModelConnectionString = "Data Source=(LocalDB)\\v11.0;AttachDbFilename=" + Application.StartupPath + "\\Projects.mdf;Integrated Security=True;MultipleActiveResultSets=True";
-      //public static string ModelConnectionString = "Data Source=(LocalDB)\\v11.0;AttachDbFilename=" + Application.StartupPath.Replace("\\bin\\Debug","") + "\\Projects.mdf;Integrated Security=True;MultipleActiveResultSets=True";
-      public static SqlConnection ModelConnection = new SqlConnection(ModelConnectionString);
+        //public static string ModelConnectionString = "Data Source=(LocalDB)\\v11.0;AttachDbFilename=" + Application.StartupPath.Replace("\\bin\\Debug","") + "\\Projects.mdf;Integrated Security=True;MultipleActiveResultSets=True";
+        public static SqlConnection ModelConnection = new SqlConnection(ModelConnectionString);
 
-
-
-      public static bool ObjExists(string ConnectionString, string strObjType, string strObjName)//проверка существования таблицы/запроса
-      {
-          string str = null;
+        public static bool ObjExists(string ConnectionString, string strObjType, string strObjName)//проверка существования таблицы/запроса
+        {
+            string str = null;
             switch (strObjType)
             {
             case "Table":
-                    str = "SELECT TABLE_NAME FROM information_schema.TABLES WHERE TABLE_NAME='" + strObjName + "'";
+                    str = $"SELECT TABLE_NAME FROM information_schema.TABLES WHERE TABLE_NAME='{strObjName}'";
                 break;
             case "Query":             
                 break;  
             default:      
                 break;
             }
-          try {
-              SqlConnection myConn = new SqlConnection(ConnectionString);
-              myConn.Open();
-              SqlCommand myCommand = new SqlCommand(str, myConn);
-              if (myCommand.ExecuteScalar().ToString() == strObjName) { return true; }
-              else { return false; }
-          }
-          catch (System.Exception ex)
-          {
-              MessageBox.Show(ex.Message, "MyProgram", MessageBoxButtons.OK, MessageBoxIcon.Information);
-              return false;
-          }
-          finally
-          {
-          } 
-      }
-        public static int  AddNewDB(string DB_Name, string ShortName, string FullName, string Username, string Password, string Source, short Mode) //создание новой БД
+            try {
+                SqlConnection myConn = new SqlConnection(ConnectionString);
+                myConn.Open();
+                SqlCommand myCommand = new SqlCommand(str, myConn);
+                if (myCommand.ExecuteScalar().ToString() == strObjName) { return true; }
+                else { return false; }
+            }
+            catch (System.Exception ex)
+            {
+                MessageBox.Show(ex.Message, "MyProgram", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                return false;
+            }
+            finally
+            {
+            } 
+        }
+
+        public static int AddNewDB(string DB_Name, string ShortName, string FullName, string Username, string Password, string Source, short Mode) //создание новой БД
         {
-            int ErrorCode=0;
+            int ErrorCode = 0;
             //создаем БД и возвращаем строку подклчюения к ней
             ErrorCode = CreateDB(DB_Name, Username, Password, Source, Mode);
-            if (ErrorCode == 0)// если БД создана успешно 
-            {                            
-                //добавляем в нее таблицы
-                ErrorCode = AddTablesToNewBD(SQLControls.ConnectionString);
-                if (ErrorCode == 0) //если таблицы добавлены успешно
-                {
-                    //добавляем информацию о проекте в таблицу
-                    ErrorCode = AddInfoToNewProject(DB_Name, ShortName, FullName, SQLControls.ConnectionString);
-                    if (ErrorCode == 0)//информация добавлена успешно
-                    {
-                        //копируем инфомарци. о проекте в эталонную таблицу (она жде перечень запомненных проектов)
-                        ErrorCode = AddInfoToModelProject(SQLControls.ConnectionString);
-                        if (ErrorCode == 0)//информация добавлена успешно
-                        {
-                            MessageBox.Show("Проект успешно создан", "Создание нового проекта", MessageBoxButtons.OK, MessageBoxIcon.Information);
-                            ErrorCode = ConnectDB(SQLControls.ConnectionString);
-                            if (ErrorCode == 0)//информация добавлена успешно
-                            { 
-                            }
-                        }
-
-                    }
-
-                }
+            if (ErrorCode != 0)// если БД не создана 
+            {
+                MessageBox.Show("Failed at CreateDB", "AddNewDB", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                return ErrorCode;
             }
-            else { ErrorCode = 1; }
+
+            // добавляем в нее таблицы
+            ErrorCode = AddTablesToNewDB(SQLControls.ConnectionString);
+            if (ErrorCode != 0) //если таблицы не добавлены 
+            {
+                MessageBox.Show("Failed at AddTablesToNewDB", "AddNewDB", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                return ErrorCode;
+            }
+
+            // добавляем информацию о проекте в таблицу
+            ErrorCode = AddInfoToNewProject(DB_Name, ShortName, FullName, SQLControls.ConnectionString);
+            if (ErrorCode != 0) // информация не добавлена
+            {
+                MessageBox.Show("Failed at AddInfoToNewProject", "AddNewDB", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                return ErrorCode;
+            }
+
+            //копируем инфомарци. о проекте в эталонную таблицу (она жде перечень запомненных проектов)
+            ErrorCode = AddInfoToModelProject(SQLControls.ConnectionString);
+            if (ErrorCode != 0) // информация не добавлена
+            {
+                MessageBox.Show("Failed at AddInfoToModelProject", "AddNewDB", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                return ErrorCode;
+            }
+
+            MessageBox.Show("Проект успешно создан", "Создание нового проекта", MessageBoxButtons.OK, MessageBoxIcon.Information);
+            ErrorCode = ConnectDB(SQLControls.ConnectionString);
+            if (ErrorCode != 0) // информация добавлена успешно
+            {
+                MessageBox.Show("Failed at ConnectDB", "AddNewDB", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                return ErrorCode;
+            }
+            
             return ErrorCode;
         }
+
+        /*      public static int  AddNewDB(string DB_Name, string ShortName, string FullName, string Username, string Password, string Source, short Mode) //создание новой БД
+              {
+                  int ErrorCode=0;
+                  //создаем БД и возвращаем строку подклчюения к ней
+                  ErrorCode = CreateDB(DB_Name, Username, Password, Source, Mode);
+                  if (ErrorCode == 0)// если БД создана успешно 
+                  {                            
+                      //добавляем в нее таблицы
+                      ErrorCode = AddTablesToNewBD(SQLControls.ConnectionString);
+                      if (ErrorCode == 0) //если таблицы добавлены успешно
+                      {
+                          //добавляем информацию о проекте в таблицу
+                          ErrorCode = AddInfoToNewProject(DB_Name, ShortName, FullName, SQLControls.ConnectionString);
+                          if (ErrorCode == 0)//информация добавлена успешно
+                          {
+                              //копируем инфомарци. о проекте в эталонную таблицу (она жде перечень запомненных проектов)
+                              ErrorCode = AddInfoToModelProject(SQLControls.ConnectionString);
+                              if (ErrorCode == 0)//информация добавлена успешно
+                              {
+                                  MessageBox.Show("Проект успешно создан", "Создание нового проекта", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                                  ErrorCode = ConnectDB(SQLControls.ConnectionString);
+                                  if (ErrorCode == 0)//информация добавлена успешно
+                                  { 
+                                  }
+                              }
+
+                          }
+
+                      }
+                  }
+                  else { ErrorCode = 1; }
+                  return ErrorCode;
+              }*/
 
         public static int CreateDB(string DB_Name, string Username, string Password, string Source, short Mode)
         {
@@ -238,35 +283,35 @@ namespace MBS
               return 0;
            }*/
 
-      public static int CyrillicDB() //Изменение кодировки таблиц (скрипт не отлажен)
-          { //http://www.sql.ru/forum/147286/izmenit-collation-u-sushhestvuushhey-bd
-              //пока все зафиксируем
-              string DB = "E:\\VSPROJECTS\\ASUPR\\WFA_СS\\WFA_СS\\PROJECTS.MDF";
-              string MasterConnectionString = "Data Source=(LocalDB)\\v11.0; Integrated Security=True;";
-              string DBConnectionString = "Data Source=(LocalDB)\\v11.0;AttachDbFilename=" + DB + ".mdf;Integrated Security=True"; ;
-              SqlConnection MyConnection = new SqlConnection(MasterConnectionString);
-              try
-              {                  
-                  //Сначала меняем collation у самой базы
-                  MyConnection.Open();
-                  string str = "ALTER DATABASE [" + DB + "] COLLATE Cyrillic_General_CI_AS";
-                  SqlCommand myCommand = new SqlCommand(str, MyConnection);
-                  myCommand.ExecuteNonQuery();
-                  MyConnection.Close();
-                  //подклюбчаемся к базе
-                  MyConnection.ConnectionString = DBConnectionString;
-                  MyConnection.Open();
+        public static int CyrillicDB() //Изменение кодировки таблиц (скрипт не отлажен)
+            { //http://www.sql.ru/forum/147286/izmenit-collation-u-sushhestvuushhey-bd
+                //пока все зафиксируем
+                string DB = "E:\\VSPROJECTS\\ASUPR\\WFA_СS\\WFA_СS\\PROJECTS.MDF";
+                string MasterConnectionString = "Data Source=(LocalDB)\\v11.0; Integrated Security=True;";
+                string DBConnectionString = "Data Source=(LocalDB)\\v11.0;AttachDbFilename=" + DB + ".mdf;Integrated Security=True"; ;
+                SqlConnection MyConnection = new SqlConnection(MasterConnectionString);
+                try
+                {                  
+                    //Сначала меняем collation у самой базы
+                    MyConnection.Open();
+                    string str = "ALTER DATABASE [" + DB + "] COLLATE Cyrillic_General_CI_AS";
+                    SqlCommand myCommand = new SqlCommand(str, MyConnection);
+                    myCommand.ExecuteNonQuery();
+                    MyConnection.Close();
+                    //подклюбчаемся к базе
+                    MyConnection.ConnectionString = DBConnectionString;
+                    MyConnection.Open();
                                   
-                  string[] arrstr = new string[5];
-                  //строим в EM скрипт создания индексов и сохраняем его на долгую память до п.6 ???
-                  arrstr[0] = @"";
-                  //убиваем PK и FK скриптом полученным после   
-                  arrstr[1]=@"select 'ALTER TABLE ' + TABLE_NAME + ' DROP CONSTRAINT ' + CONSTRAINT_NAME 
+                    string[] arrstr = new string[5];
+                    //строим в EM скрипт создания индексов и сохраняем его на долгую память до п.6 ???
+                    arrstr[0] = @"";
+                    //убиваем PK и FK скриптом полученным после   
+                    arrstr[1]=@"select 'ALTER TABLE ' + TABLE_NAME + ' DROP CONSTRAINT ' + CONSTRAINT_NAME 
                         from INFORMATION_SCHEMA.TABLE_CONSTRAINTS
                         where constraint_type='PRIMARY KEY' or constraint_type='FOREIGN KEY'
                         ORDER BY constraint_type ";
-                  //убиваем остатки индексов
-                  arrstr[2] = @"SELECT 'drop index ' + o.name + '.' + i.name AS Индекс
+                    //убиваем остатки индексов
+                    arrstr[2] = @"SELECT 'drop index ' + o.name + '.' + i.name AS Индекс
                         FROM sysobjects o INNER JOIN sysindexes i ON o.id = i.id
                         WHERE (o.xtype = 'U') AND 
 	                        (i.indid > 0) AND 
@@ -274,8 +319,8 @@ namespace MBS
 	                        (INDEXPROPERTY(i.id, i.name, 'isStatistics') = 0)
                         and o.name <> 'dtproperties'
                         ORDER BY o.name, i.indid";
-                  //Меняем collation
-                  arrstr[3] = @"SELECT	'ALTER TABLE ['+ 
+                    //Меняем collation
+                    arrstr[3] = @"SELECT	'ALTER TABLE ['+ 
 		                    rtrim(TABLE_NAME)+
 		                    '] ALTER COLUMN ['+
 		                    rtrim(COLUMN_NAME)+
@@ -293,9 +338,9 @@ namespace MBS
 		                    TABLE_NAME in (SELECT o.name 
 					                    FROM sysobjects o 
 					                    WHERE     (o.xtype = 'U'))";
-                  //пересоздаем индексы скриптом из п.1
-                  arrstr[4] = @"";
-                  for (int i = 0; i < 4; i++) {
+                    //пересоздаем индексы скриптом из п.1
+                    arrstr[4] = @"";
+                    for (int i = 0; i < 4; i++) {
                         myCommand = new SqlCommand(str, MyConnection);
                         SqlDataReader SqlReader = myCommand.ExecuteReader();
                         while (SqlReader.Read())
@@ -311,202 +356,214 @@ namespace MBS
                             }
                         }
                         SqlReader.Close();
-                  }                
-                  MyConnection.Close();
-                  MessageBox.Show("DataBase isCyrillic", "MyProgram", MessageBoxButtons.OK, MessageBoxIcon.Information);
-              }
-              catch (System.Exception ex)
-              {
-                  General.ErrorMessage(ex);
-                  return ex.HResult;
-              }
-              finally
-              {
-              }
-              return 0;
-          }
-          public static int DeleteDateBase(string ConnectionString) //создание новой БД
-          {                      
-              //CloseDB();            
-              SqlConnection myConn = new SqlConnection(ConnectionString);
-              myConn.Open();
-              string sDataBase = myConn.Database;
-              myConn.Close();
-              string sDataSource = myConn.DataSource;
-              string ControlConnectionString = ModelConnectionString;
-              string str;
-              SqlCommand myCommand;
-              if (sDataSource != "(LocalDB)\\v11.0")
-              {
-                  ControlConnectionString = "Data Source=" + sDataSource + ";Initial Catalog=master;User ID=sa;Password=sa123456";
+                    }                
+                    MyConnection.Close();
+                    MessageBox.Show("DataBase isCyrillic", "MyProgram", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                }
+                catch (System.Exception ex)
+                {
+                    General.ErrorMessage(ex);
+                    return ex.HResult;
+                }
+                finally
+                {
+                }
+                return 0;
+            }
 
-              }
-              try
-              {
-                  //закрываем текущее подключение, если удаляем его
-                  if (sDataSource == CurrentConnection.DataSource && sDataBase == CurrentConnection.Database)
-                  {
-                      CloseDB();
+        public static int DeleteDateBase(string ConnectionString) //создание новой БД
+        {                      
+            //CloseDB();            
+            SqlConnection myConn = new SqlConnection(ConnectionString);
+            myConn.Open();
+            string sDataBase = myConn.Database;
+            myConn.Close();
+            string sDataSource = myConn.DataSource;
+            string ControlConnectionString = ModelConnectionString;
+            string str;
+            SqlCommand myCommand;
 
-                  }   
-                  myConn = new SqlConnection(ControlConnectionString);
-                  myConn.Open();
+            if (sDataSource != "(LocalDB)\\v11.0")
+            {
+                ControlConnectionString = "Data Source=" + sDataSource + ";Initial Catalog=master;User ID=a;Password=11111111";
+
+            }
+            try
+            {
+                //закрываем текущее подключение, если удаляем его
+                if (sDataSource == CurrentConnection.DataSource && sDataBase == CurrentConnection.Database)
+                {
+                    CloseDB();
+
+                }   
+                myConn = new SqlConnection(ControlConnectionString);
+                myConn.Open();
                   
-                  //if (sDataSource != "(LocalDB)\\v11.0")
-                  //{
-                      str = @"ALTER DATABASE [" + sDataBase + @"] SET SINGLE_USER WITH ROLLBACK IMMEDIATE";
-                      myCommand = new SqlCommand(str, myConn);
-                      myCommand.ExecuteNonQuery();
-                  //}
-                  str = @"DROP DATABASE [" + sDataBase + "]";
-                  myCommand = new SqlCommand(str, myConn);
-                  myCommand.ExecuteNonQuery();
-                  myConn.Close();
-                  MessageBox.Show("БД проекта успешно удалена", "Удаление проекта", MessageBoxButtons.OK, MessageBoxIcon.Information);
-              }
-              catch (System.Exception ex)//catch (SqlException ex )          
-              {
-                  myConn.Close();
-                  General.ErrorMessage(ex);
-                  return ex.HResult;
-              }
-              finally
-              {
-                  if (myConn.State == ConnectionState.Open)
-                  {
-                      myConn.Close();
-                  }
-              }
-              return 0;
-          }
+                //if (sDataSource != "(LocalDB)\\v11.0")
+                //{
+                    str = $@"ALTER DATABASE [{sDataBase}] SET SINGLE_USER WITH ROLLBACK IMMEDIATE";
+                    myCommand = new SqlCommand(str, myConn);
+                    myCommand.ExecuteNonQuery();
+                //}
+                str = $@"DROP DATABASE [{sDataBase}'";
+                myCommand = new SqlCommand(str, myConn);
+                myCommand.ExecuteNonQuery();
+                myConn.Close();
+                MessageBox.Show("БД проекта успешно удалена", "Удаление проекта", MessageBoxButtons.OK, MessageBoxIcon.Information);
+            }
+            catch (System.Exception ex)//catch (SqlException ex )          
+            {
+                myConn.Close();
+                General.ErrorMessage(ex);
+                return ex.HResult;
+            }
+            finally
+            {
+                if (myConn.State == ConnectionState.Open)
+                {
+                    myConn.Close();
+                }
+            }
+            return 0;
+        }
 
-      public static int AddTablesToNewBD(string NewProjectConnectionString)//добавление таблиц в БД
-      {
-          SqlConnection NewProjectConnection = new SqlConnection(NewProjectConnectionString); //подключение к создаваемой БД
-          SqlConnection ModelConnection = new SqlConnection("Data Source=(LocalDB)\\v11.0;AttachDbFilename=" + Application.StartupPath + "\\Projects.mdf;Integrated Security=True");//подключение к эталонной БД
-          try
-          {
-              //открываем подключения
-              NewProjectConnection.Open();
-              ModelConnection.Open();
-              //запрашиваем названия таблиц из эталонной БД
-              SqlCommand ReadTablesCommand = new SqlCommand("SELECT TABLE_NAME FROM information_schema.TABLES", ModelConnection);
-              SqlDataReader SqlReader = ReadTablesCommand.ExecuteReader();
-              ProgressControl.Progress = 0;
-              ProgressControl.Operation = "Добавление таблиц в проект";
-              while (SqlReader.Read())
-              {
-                    //get rows
-                  ProgressControl.Count++;
-              }
-              SqlReader.Close();
-              SqlReader = ReadTablesCommand.ExecuteReader();
-              while (SqlReader.Read())
-              {
-                  if (!SqlReader.IsDBNull(0))
-                  {                     
-                      //запрашиваем текст скрипта создания таблицы по образцу
-                      string SQLCommandText = SQLScript_CreateTable(SqlReader.GetString(0));
-                      //передаем текст в команду и выполняем ее
-                      SqlCommand mySQLCommand = new SqlCommand(SQLCommandText, NewProjectConnection);
-                      mySQLCommand.ExecuteNonQuery();
+        public static int AddTablesToNewDB(string NewProjectConnectionString) // добавление таблиц в БД
+        {
+            SqlConnection NewProjectConnection = new SqlConnection(NewProjectConnectionString); // подключение к создаваемой БД
+
+            // SqlConnection ModelConnection = new SqlConnection("Data Source=(LocalDB)\\v11.0;AttachDbFilename=" 
+            //                                                    + Application.StartupPath 
+            //                                                    + "\\Projects.mdf;Integrated Security=True"); // подключение к эталонной БД
+
+            try
+            {
+                // открываем подключения
+                NewProjectConnection.Open();
+                // ModelConnection.Open();
+
+                // запрашиваем названия таблиц из эталонной БД
+                SqlCommand ReadTablesCommand = new SqlCommand("SELECT TABLE_NAME FROM information_schema.TABLES", NewProjectConnection);
+                SqlDataReader SqlReader = ReadTablesCommand.ExecuteReader();
+                ProgressControl.Progress = 0;
+                ProgressControl.Operation = "Добавление таблиц в проект";
+
+                while (SqlReader.Read())
+                {
+                    // get rows
+                    ProgressControl.Count++;
+                }
+
+                SqlReader.Close();
+                SqlReader = ReadTablesCommand.ExecuteReader();
+
+                while (SqlReader.Read())
+                {
+                    if (!SqlReader.IsDBNull(0))
+                    {
+                        // запрашиваем текст скрипта создания таблицы по образцу
+                        Console.WriteLine("SQLReader.getstring", SqlReader.GetString(0));
+                        string SQLCommandText = SQLScript_CreateTable(SqlReader.GetString(0));
+                        // передаем текст в команду и выполняем ее
+                        SqlCommand mySQLCommand = new SqlCommand(SQLCommandText, NewProjectConnection);
+                        mySQLCommand.ExecuteNonQuery();
                       
-                      //fMain.ProgressBar("Добавление таблиц в проект", count, i);
-                  }
-              }              
-              //закрываем все после использования
-              ProgressControl.Clear();
-              SqlReader.Close();
-              ModelConnection.Close();
-              NewProjectConnection.Close();
-              //MessageBox.Show("ОК", "MyProgram", MessageBoxButtons.OK, MessageBoxIcon.Information);
-              return 0;
-          }
-          catch (System.Exception ex)
-          {
-              General.ErrorMessage(ex);     
-              return ex.HResult;
-          }
-          finally
-          {
-              if (ModelConnection.State == ConnectionState.Open)
-              {
-                  ModelConnection.Close();
-              }
-              if (NewProjectConnection.State == ConnectionState.Open)
-              {
-                  NewProjectConnection.Close();
-              }
-          }
-         
-      } 
+                        //fMain.ProgressBar("Добавление таблиц в проект", count, i);
+                    }
+                }
+                // закрываем все после использования
+                ProgressControl.Clear();
+                SqlReader.Close();
+                // ModelConnection.Close();
+                NewProjectConnection.Close();
+                MessageBox.Show("Successfully finished the function", "AddTablesToNewDB", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                return 0;
+            }
+            catch (Exception ex)
+            {
+                General.ErrorMessage(ex);     
+                return ex.HResult;
+            }
+            finally
+            {
+                /*if (ModelConnection.State == ConnectionState.Open)
+                {
+                    ModelConnection.Close();
+                }*/
+                if (NewProjectConnection.State == ConnectionState.Open)
+                {
+                    NewProjectConnection.Close();
+                }
+            }
+        } 
 
-      public static string SQLScript_CreateTable(string TableName)//создание скриптов для добавления таблиц в БД на основе эталанной БД Projects (сделано для облегчения разработки)
-      { 
-          string SQLScript= "CREATE TABLE [" + TableName + "] (\n";
-          string str = @"SELECT COLUMN_NAME, 
+        public static string SQLScript_CreateTable(string TableName)//создание скриптов для добавления таблиц в БД на основе эталанной БД Projects (сделано для облегчения разработки)
+        {
+            string SQLScript= $"CREATE TABLE [{ TableName }] (\n";
+            string str = $@"SELECT COLUMN_NAME, 
                         DATA_TYPE,
                         iif(CHARACTER_MAXIMUM_LENGTH<>0,CHARACTER_MAXIMUM_LENGTH,0) AS [LENGTH],
                         iif(IS_NULLABLE='NO','NOT NULL', 'NULL') AS NULLABLE, 
-                        iif(COLUMN_NAME=(SELECT COLUMN_NAME  FROM INFORMATION_SCHEMA.KEY_COLUMN_USAGE WHERE TABLE_NAME='" + TableName + @"'),' PRIMARY KEY','') AS [PRIMARY_KEY],
+                        iif(COLUMN_NAME=(SELECT COLUMN_NAME  FROM INFORMATION_SCHEMA.KEY_COLUMN_USAGE WHERE TABLE_NAME='{ TableName }'),' PRIMARY KEY','') AS [PRIMARY_KEY],
                         iif  (COLUMN_DEFAULT<>NULL,' DEFAULT ' + COLUMN_DEFAULT,'') AS [DEFAULT] 
                         FROM INFORMATION_SCHEMA.COLUMNS
-                        WHERE table_name = '" + TableName +"'";
-          try
-          {
-              SqlCommand myCommand = new SqlCommand(str, ModelConnection);
-              SqlDataReader sqlreader = myCommand.ExecuteReader();
-              while (sqlreader.Read())
-              {
-                  if (!sqlreader.IsDBNull(0))
-                  {
-                      string COLUMN_NAME = "[" + sqlreader.GetString(0) + "] ";
-                      string DATA_TYPE=sqlreader.GetString(1);
-                      string CHARACTER_MAXIMUM_LENGTH = " ";
-                      if (sqlreader.GetInt32(2) != 0 & !(DATA_TYPE == "TEXT" || DATA_TYPE == "text"))
-                      {
-                          CHARACTER_MAXIMUM_LENGTH = "(" +sqlreader.GetInt32(2).ToString()+ ") ";
-                      }
-                      string NULLABLE = sqlreader.GetString(3);
-                      string PRIMARY_KEY=sqlreader.GetString(4);
-                      string DEFAULT = sqlreader.GetString(5);
+                        WHERE table_name = '{ TableName }'";
 
-                      if (SQLScript == "CREATE TABLE [" + TableName + "] (\n")
-                      {
-                          SQLScript = SQLScript +  COLUMN_NAME  + DATA_TYPE +  CHARACTER_MAXIMUM_LENGTH +  NULLABLE + PRIMARY_KEY + DEFAULT;
-                      }
-                      else
-                      {
-                          SQLScript = SQLScript + ",\n" +  COLUMN_NAME  + DATA_TYPE +  CHARACTER_MAXIMUM_LENGTH + NULLABLE + PRIMARY_KEY + DEFAULT;
-                      }                     
-                  }
-              }
-              SQLScript = SQLScript + "\n)";
-              //MessageBox.Show(SQLScript, "Message", MessageBoxButtons.OK, MessageBoxIcon.Information);
-              sqlreader.Close();
-          }
-          catch (System.Exception ex)
-          {
-              General.ErrorMessage(ex);    
+            Console.WriteLine("SQLScript_CreateTable modelconn", ModelConnection);
+            try
+            {
+                SqlCommand myCommand = new SqlCommand(str, ModelConnection);
+                SqlDataReader sqlreader = myCommand.ExecuteReader();
+                while (sqlreader.Read())
+                {
+                    if (!sqlreader.IsDBNull(0))
+                    {
+                        string COLUMN_NAME = $"[{sqlreader.GetString(0)}] ";
+                        string DATA_TYPE=sqlreader.GetString(1);
+                        string CHARACTER_MAXIMUM_LENGTH = " ";
+                        if (sqlreader.GetInt32(2) != 0 & !(DATA_TYPE == "TEXT" || DATA_TYPE == "text"))
+                        {
+                            CHARACTER_MAXIMUM_LENGTH = $"({sqlreader.GetInt32(2).ToString()}) ";
+                        }
+                        string NULLABLE = sqlreader.GetString(3);
+                        string PRIMARY_KEY=sqlreader.GetString(4);
+                        string DEFAULT = sqlreader.GetString(5);
+
+                        if (SQLScript == $"CREATE TABLE [{TableName}] (\n")
+                        {
+                            SQLScript = SQLScript +  COLUMN_NAME  + DATA_TYPE +  CHARACTER_MAXIMUM_LENGTH +  NULLABLE + PRIMARY_KEY + DEFAULT;
+                        }
+                        else
+                        {
+                            SQLScript = SQLScript + ",\n" +  COLUMN_NAME  + DATA_TYPE +  CHARACTER_MAXIMUM_LENGTH + NULLABLE + PRIMARY_KEY + DEFAULT;
+                        }                     
+                    }
+                }
+                SQLScript = SQLScript + "\n)";
+                //MessageBox.Show(SQLScript, "Message", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                sqlreader.Close();
+            }
+            catch (System.Exception ex)
+            {
+                General.ErrorMessage(ex);    
 
               
-          }
-          finally
-          {
-          } 
-          return SQLScript;
-      } 
+            }
+            finally
+            {
+            } 
+            return SQLScript;
+        } 
 
-      public static int GetConnectionString(string sPropertyConnStr)//получение строки подключения  с помощью диалога от VS
-      {
-          try
-          {
-              DataConnectionDialog dcd = new DataConnectionDialog();
-              DataSource.AddStandardDataSources(dcd);
-              //dcd.DataSources.Add(DataSource.SqlDataSource);
-              //dcd.DataSources.Add(DataSource.SqlFileDataSource);
-              if (DataConnectionDialog.Show(dcd) == DialogResult.OK)
-              {
+        public static int GetConnectionString(string sPropertyConnStr)//получение строки подключения  с помощью диалога от VS
+        {
+            try
+            {
+                DataConnectionDialog dcd = new DataConnectionDialog();
+                DataSource.AddStandardDataSources(dcd);
+                //dcd.DataSources.Add(DataSource.SqlDataSource);
+                //dcd.DataSources.Add(DataSource.SqlFileDataSource);
+                if (DataConnectionDialog.Show(dcd) == DialogResult.OK)
+                {
                     //проверка добавленного подключения
                     bool bCheckDB = CheckDB(dcd.ConnectionString);
                     if (bCheckDB)
@@ -536,203 +593,207 @@ namespace MBS
                         return 1;
                     }
 
-              }
-              else return 1;
-          }
-          catch (System.Exception ex)
-          {
-              General.ErrorMessage(ex);
-              return ex.HResult;
-          }
-          finally
-          {
-          }
-      } 
+                }
+                else return 1;
+            }
+            catch (System.Exception ex)
+            {
+                General.ErrorMessage(ex);
+                return ex.HResult;
+            }
+            finally
+            {
+            }
+        } 
 
-      public static string myConnectionString(string ID, string Password, string Path, short Mode)//формирование строки подключения (мусор?)
-      {
-          string ConnectionString = "Data Source=.\\SQLEXPRESS;Initial Catalog=" + ID + ";User ID=sa;Password=sa123456";//по умолчанию локальная БД
+        public static string myConnectionString(string ID, string Password, string Path, short Mode)//формирование строки подключения (мусор?)
+        {
+            string ConnectionString = $"Data Source=.\\SQLEXPRESS;Initial Catalog={ID};User ID=sa;Password=sa123456"; // по умолчанию локальная БД
 
-          switch (Mode)
-          {
-              case 0:
-                  //БД SQLServer
+            switch (Mode)
+            {
+                case 0:
+                    // БД SQLServer
+                    ConnectionString = $"Data Source={Path};Initial Catalog={ID};User ID=sa;Password=sa123456";
+                    break;
+                case 1:
+                    // локальная БД *.mdf
+                    ConnectionString = "Data Source=(LocalDB)\\v11.0; AttachDbFilename{Path}\\{ID}.mdf;Integrated Security=True;";
+                    break;
+                case 2:
+                    // БД MS Access *.accdb
+                    ConnectionString = "Provider=Microsoft.ACE.OLEDB.12.0;Data Source={Path}\\{ID}.accdb ";
+                    break;
+                case 3:
+                    ;
+                    break;
+                case 4:
+                    ;
+                    break;
+                case 5:
+                    ;
+                    break;
+            }
 
-                  ConnectionString = "Data Source=" + Path + ";Initial Catalog=" + ID + ";User ID=sa;Password=sa123456";
-                  break;
-              case 1:
-                  //локальная БД *.mdf
-                  ConnectionString = "Data Source=(LocalDB)\\v11.0; AttachDbFilename" + Path + "\\" + ID + ".mdf;Integrated Security=True;";
-                  break;
-              case 2:
-                  //БД MS Access *.accdb
-                  ConnectionString = "Provider=Microsoft.ACE.OLEDB.12.0;Data Source=" + Path + "\\" + ID + ".accdb ";
-                  break;
-              case 3:
-                  ;
-                  break;
-              case 4:
-                  ;
-                  break;
-              case 5:
-                  ;
-                  break;
-          }
 
+            return ConnectionString;
+        } 
 
-          return ConnectionString;
-      } 
-
-      public static int ConnectDB(string ConnectionString)//подключение к БД
-      {
-          try
-          {
-              if (SQLControls.CurrentConnection.State != ConnectionState.Closed)
-              {
-                  CloseDB();
-              }
-              SQLControls.CurrentConnectionString = ConnectionString;
-              SQLControls.CurrentConnection.ConnectionString = SQLControls.CurrentConnectionString;
-              SQLControls.CurrentConnection.Open();
-              return 0;
-          }
-          catch (System.Exception ex)
-          {
-              General.ErrorMessage(ex);
-              return ex.HResult;
-          }
+        public static int ConnectDB(string ConnectionString) // подключение к БД
+        {
+            try
+            {
+                if (SQLControls.CurrentConnection.State != ConnectionState.Closed)
+                {
+                    CloseDB();
+                }
+                SQLControls.CurrentConnectionString = ConnectionString;
+                SQLControls.CurrentConnection.ConnectionString = SQLControls.CurrentConnectionString;
+                SQLControls.CurrentConnection.Open();
+                return 0;
+            }
+            catch (System.Exception ex)
+            {
+                General.ErrorMessage(ex);
+                return ex.HResult;
+            }
          
-      }
-      public static int CloseDB()//отключение от БД
-      {
-          try
-          {
-              SQLControls.CurrentConnection.Close();
-              SQLControls.CurrentConnection.ConnectionString = "";
-              SQLControls.CurrentConnectionString = "";              
-              return 0;
-          }
-          catch (System.Exception ex)
-          {
-              General.ErrorMessage(ex);
-              return ex.HResult;
-          }
+        }
 
-      }
-      public static int AddInfoToNewProject(string ID, string ShortName, string FullName, string ConnectionString)//добавление информации о проекте в эталанноу БД Projects
-      {
-          string str = "INSERT INTO [ProjectInfo] ([Id], [ShortName], [FullName], [Path]) VALUES (N'" + ID + "', N'" + ShortName + "', N'" + FullName + "', N'" + ConnectionString + "')";
-          try
-          {
-              //Информация в таблице проекта
-              SqlConnection myConnecton = new SqlConnection(ConnectionString);
-              myConnecton.Open();
-              SqlCommand myCommand = new SqlCommand(str, myConnecton);
-              myCommand.ExecuteNonQuery();
-              myConnecton.Close(); 
-          }
-          catch (System.Exception ex)
-          {
-              General.ErrorMessage(ex);    
-              return ex.HResult;
-          }
-          return 0;
-      }
-      public static int AddInfoToModelProject(string ConnectionString)//добавление информации о проекте в эталанноу БД Projects
-      {
-          const int i_max = 4;
-          string[] ColumnName = new string[i_max]{
+        public static int CloseDB() // отключение от БД
+        {
+            try
+            {
+                SQLControls.CurrentConnection.Close();
+                SQLControls.CurrentConnection.ConnectionString = "";
+                SQLControls.CurrentConnectionString = "";              
+                return 0;
+            }
+            catch (System.Exception ex)
+            {
+                General.ErrorMessage(ex);
+                return ex.HResult;
+            }
+
+        }
+
+        public static int AddInfoToNewProject(string ID, string ShortName, string FullName, string ConnectionString) // добавление информации о проекте в эталанноу БД Projects
+        {
+            string str = $"INSERT INTO [ProjectInfo] ([Id], [ShortName], [FullName], [Path]) VALUES (N'{ID}', N'{ShortName}', N'{FullName}', N'{ConnectionString}')";
+            try
+            {
+                // Информация в таблице проекта
+                SqlConnection myConnecton = new SqlConnection(ConnectionString);
+                myConnecton.Open();
+                SqlCommand myCommand = new SqlCommand(str, myConnecton);
+                myCommand.ExecuteNonQuery();
+                myConnecton.Close(); 
+            }
+            catch (Exception ex)
+            {
+                General.ErrorMessage(ex);    
+                return ex.HResult;
+            }
+            return 0;
+        }
+
+        public static int AddInfoToModelProject(string ConnectionString) // добавление информации о проекте в эталанноу БД Projects
+        {
+            const int i_max = 4;
+            string[] ColumnName = new string[i_max]{
             "ID",
             "ShortName",
             "FullName",
             "Path"
-          };
-          string[] ColumnValue = new string[i_max];
-          string TableName = "ProjectInfo",
-              ConnectionStringColumnName = "Path",
-              str_Insert = "",
-              str_Insert1 = "INSERT INTO [" + TableName + "] (",
-              str_Insert2 = ") VALUES (",
-              str_Update = "UPDATE [" + TableName + "] SET  ";
-          SqlConnection SourceConnecton = new SqlConnection(ConnectionString);
-          SqlConnection DestConnecton = new SqlConnection(ModelConnectionString);
-          try
-          {
-              //Запрашиваем информацию о проекте из БД проекта
-              SourceConnecton.Open();
-              DestConnecton.Open();
-              try
-              {
-              SqlCommand ReadDataCommand = new SqlCommand("select * from [ProjectInfo]", SourceConnecton);
-              SqlDataReader SqlReader = ReadDataCommand.ExecuteReader();
-              while (SqlReader.Read())
-              {
-                  if (!SqlReader.IsDBNull(0))
-                  {
-                      //формируем тексты запросов на добалвение/обновление данных
-                      for (int i = 0; i < i_max; i++)
-                      {
+            };
+            string[] ColumnValue = new string[i_max];
+            string ConnectionStringColumnName = "Path",
+                TableName   = "ProjectInfo",
+                str_Insert  = "",
+                str_Insert1 = $"INSERT INTO [{ TableName }] (",
+                str_Insert2 = ") VALUES (",
+                str_Update  = $"UPDATE [{ TableName }] SET  ";
+            SqlConnection SourceConnecton   = new SqlConnection(ConnectionString);
+            SqlConnection DestConnecton     = new SqlConnection(ModelConnectionString);
+            try
+            {
+                // Запрашиваем информацию о проекте из БД проекта
+                SourceConnecton.Open();
+                DestConnecton.Open();
+                try
+                {
+                SqlCommand ReadDataCommand = new SqlCommand("select * from [ProjectInfo]", SourceConnecton);
+                SqlDataReader SqlReader = ReadDataCommand.ExecuteReader();
+                while (SqlReader.Read())
+                {
+                    if (!SqlReader.IsDBNull(0))
+                    {
+                        // формируем тексты запросов на добалвение/обновление данных
+                        for (int i = 0; i < i_max; i++)
+                        {
                           
-                          ColumnValue[i] = (string)SqlReader[ColumnName[i]];
-                          ColumnValue[i] = General.Convertall(ColumnValue[i], Encoding.GetEncoding(1251), Encoding.Default);
-                          if (i > 0)
-                          {
-                              str_Insert1 = str_Insert1 + ", ";
-                              str_Insert2 = str_Insert2 + ", ";
-                              str_Update = str_Update + ", ";
+                            ColumnValue[i] = (string)SqlReader[ColumnName[i]];
+                            ColumnValue[i] = General.Convertall(ColumnValue[i], Encoding.GetEncoding(1251), Encoding.Default);
+                            if (i > 0)
+                            {
+                                str_Insert1 = str_Insert1 + ", ";
+                                str_Insert2 = str_Insert2 + ", ";
+                                str_Update  = str_Update + ", ";
 
-                          }
-                          str_Insert1 = str_Insert1 + "[" + ColumnName[i] + "]";
-                          str_Insert2 = str_Insert2 + "N'" + ColumnValue[i] + "'";
+                            }
+                            str_Insert1 = str_Insert1 + $"[{ ColumnName[i] }]";
+                            str_Insert2 = str_Insert2 + $"N'{ ColumnValue[i] }'";
 
-                          str_Update = str_Update + "[" + ColumnName[i] + "] = N'" + ColumnValue[i] + "'";
-                      }
-                      str_Insert = str_Insert1 + str_Insert2 + ")";
-                      //Запрашиваем значение строки подключения
-                     // ConnectionString = (string)SqlReader[ConnectionStringColumnName];
-                  }
-              }
-              SqlReader.Close();
-              SourceConnecton.Close();
+                            str_Update = str_Update + $"[{ ColumnName[i] }] = N'{ ColumnValue[i] }'";
+                        }
+                        str_Insert = str_Insert1 + str_Insert2 + ")";
+                        //Запрашиваем значение строки подключения
+                        // ConnectionString = (string)SqlReader[ConnectionStringColumnName];
+                    }
+                }
+                SqlReader.Close();
+                SourceConnecton.Close();
 
-              }
-              catch
-              {
-                  str_Insert = "INSERT INTO [" + TableName + "] (ID, ShortName, FullName,Path) VALUES ('"+SourceConnecton.Database+"', '', '','" + SourceConnecton.ConnectionString + "')";
-                  str_Update = "UPDATE [" + TableName + "] SET  [ID]= N'" + SourceConnecton.Database + "', [ShortName]= N'', [FullName]= N'', [Path] = N'" + SourceConnecton.ConnectionString + "'" ;
-              }
+                }
+                catch
+                {
+                    str_Insert = $"INSERT INTO [{ TableName }] (ID, ShortName, FullName,Path) VALUES " +
+                                 $"('{ SourceConnecton.Database }', '', '','{ SourceConnecton.ConnectionString }')";
+                    str_Update = $"UPDATE [{TableName }] SET  [ID]= N'{ SourceConnecton.Database }', [ShortName]= N'', " +
+                                 $"[FullName]= N'', [Path] = N'{ SourceConnecton.ConnectionString }'" ;
+                }
 
-              //Проверяем, есть ли такая запись в эталонной таблице
-              SqlCommand DataCommand = new SqlCommand("select count(*) from [ProjectInfo] where [" + ConnectionStringColumnName + "] like '" + ConnectionString + "'", DestConnecton);
-              if (DataCommand.ExecuteScalar().ToString() != "0")
-              {
-                  //Обновляем запись
-                  DataCommand = new SqlCommand(str_Update, DestConnecton);
-              }
-              else
-              {
-                  //Добавляем запись
-                  DataCommand = new SqlCommand(str_Insert, DestConnecton);
-              }
-              DataCommand.ExecuteNonQuery();
-              DestConnecton.Close();
-              return 0;
-          }
-          catch (System.Exception ex)
-          {
-              General.ErrorMessage(ex);
-              return ex.HResult;
-          }
+                // Проверяем, есть ли такая запись в эталонной таблице
+                SqlCommand DataCommand = new SqlCommand($"select count(*) from [ProjectInfo] where [{ ConnectionStringColumnName }] like '{ ConnectionString }'", DestConnecton);
+                if (DataCommand.ExecuteScalar().ToString() != "0")
+                {
+                    // Обновляем запись
+                    DataCommand = new SqlCommand(str_Update, DestConnecton);
+                }
+                else
+                {
+                    // Добавляем запись
+                    DataCommand = new SqlCommand(str_Insert, DestConnecton);
+                }
+                DataCommand.ExecuteNonQuery();
+                DestConnecton.Close();
+                return 0;
+            }
+            catch (System.Exception ex)
+            {
+                General.ErrorMessage(ex);
+                return ex.HResult;
+            }
 
-      }
-      public static string GetProjectInfo(string ConnectionString, string InfoColumn)//Запрашиваем информацию о проекте из БД проекта
-      {
-          string InfoValue = "";
-          SqlConnection SourceConnecton = new SqlConnection(ConnectionString);
-          try
-          {              
+        }
+        public static string GetProjectInfo(string ConnectionString, string InfoColumn) // Запрашиваем информацию о проекте из БД проекта
+        {
+            string InfoValue = "";
+            SqlConnection SourceConnecton = new SqlConnection(ConnectionString);
+            try
+            {              
             SourceConnecton.Open();
-            SqlCommand ReadDataCommand = new SqlCommand("select ["+ InfoColumn+"] from [ProjectInfo]", SourceConnecton);
+            SqlCommand ReadDataCommand = new SqlCommand($"select [{ InfoColumn }] from [ProjectInfo]", SourceConnecton);
             SqlDataReader SqlReader = ReadDataCommand.ExecuteReader();
             while (SqlReader.Read())
             {
@@ -745,14 +806,13 @@ namespace MBS
             SqlReader.Close();
             SourceConnecton.Close();
             return InfoValue;
-          }
-          catch (System.Exception ex)
-          {
-              General.ErrorMessage(ex);
-              return InfoValue;
-          }
-
-      }
+            }
+            catch (System.Exception ex)
+            {
+                General.ErrorMessage(ex);
+                return InfoValue;
+            }
+        }
 
         public static bool CheckDB(string connectString)
         {
@@ -770,18 +830,16 @@ namespace MBS
             }
         }
 
-
         public static bool CheckPropertyConnStr(string sPropertyConnStr)
         {
             var config = ConfigurationManager.OpenExeConfiguration(ConfigurationUserLevel.None);
             var connectionStringsSection = (ConnectionStringsSection)config.GetSection("connectionStrings");
 
-
-            string connectString = connectionStringsSection.ConnectionStrings["MBS.Properties.Settings." + sPropertyConnStr + "ConnectionString"].ConnectionString; //.ReportConnectionString;
+            string connectString = connectionStringsSection.ConnectionStrings[$"MBS.Properties.Settings.{ sPropertyConnStr }ConnectionString"].ConnectionString; //.ReportConnectionString;
 
             try
             {
-                //проверка добавленного подключения
+                // проверка добавленного подключения
                 bool bCheckDB = CheckDB(connectString);
                 if (bCheckDB)
                 {
@@ -789,8 +847,9 @@ namespace MBS
                 }
                 else
                 {
-                    //выводим окно подключения
-                    DialogResult res = MessageBox.Show("БД " + sPropertyConnStr + " недоступна. Указать новое подключение?", "БД недоступна", MessageBoxButtons.YesNo, MessageBoxIcon.Information);
+                    // выводим окно подключения
+                    DialogResult res = MessageBox.Show($"БД { sPropertyConnStr} недоступна. Указать новое подключение?", "БД недоступна", 
+                                        MessageBoxButtons.YesNo, MessageBoxIcon.Information);
                     if (res == DialogResult.Yes)
                     {
                         int ErrCode = SQLControls.GetConnectionString(sPropertyConnStr + "ConnectionString");
@@ -803,7 +862,8 @@ namespace MBS
                     }
                     else
                     {
-                        MessageBox.Show("БД " + sPropertyConnStr + " отключена. Для воостановления доступа настройте подключение", "БД недоступна", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                        MessageBox.Show($"БД { sPropertyConnStr } отключена. Для воостановления доступа настройте подключение", "БД недоступна", 
+                            MessageBoxButtons.OK, MessageBoxIcon.Information);
                         return false;
                     }
                 }
@@ -815,8 +875,7 @@ namespace MBS
             }
         }
 
-
-        public static string GetReguest(string sRequestName)
+        public static string GetRequest(string sRequestName)
         {
             XmlNode RequestNode = null;
             XmlDocument SQLRequestXML = new XmlDocument();
@@ -824,7 +883,7 @@ namespace MBS
             string sReguest = "";
             try
             {
-                RequestNode = SQLRequestXML.DocumentElement.SelectSingleNode("//Request[@ID='" + sRequestName + "']");
+                RequestNode = SQLRequestXML.DocumentElement.SelectSingleNode($"//Request[@ID='{ sRequestName }']");
                 if (RequestNode != null)
                 {
                     //if (RequestNode.ChildNodes[0].InnerText != null)                      

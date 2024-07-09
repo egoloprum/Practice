@@ -260,6 +260,7 @@ namespace MBS
         private void btn_AlarmConnection_CreateDB_Click(object sender, EventArgs e)
         {
             fCreateDB = new formCreateDB("Alarm");
+            fCreateDB.StartPosition = FormStartPosition.CenterScreen;
             fCreateDB.ShowDialog();
         }
     }

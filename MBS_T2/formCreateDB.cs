@@ -21,6 +21,7 @@ namespace MBS
 
         // name of DBs to check if it exists
         List<string> _name_Databases = new List<string>();
+        List<string> _theAvailableSqlServers = new List<string>();
 
         // window = 0; sql server = 1
         short _modeOfDb = 0;
@@ -161,8 +162,6 @@ namespace MBS
         private void textBox_Username_TextChanged(object sender, EventArgs e)
         {
             check_nameDB();
-
-            Console.WriteLine(Application.StartupPath);
         }
 
         private void textBox_Password_TextChanged(object sender, EventArgs e)
@@ -173,12 +172,18 @@ namespace MBS
         private void comboBox_NameServer_DropDown(object sender, EventArgs e)
         {
             List<string> theAvailableSqlServers = new List<string>();
-            string[] Servers = SqlLocator.GetServers();
-
-            foreach (string Server in Servers)
+            
+            if (!_theAvailableSqlServers.Any())
             {
-                theAvailableSqlServers.Add(Server);
+                string[] Servers = SqlLocator.GetServers();
+
+                foreach (string Server in Servers)
+                {
+                    _theAvailableSqlServers.Add(Server);
+                }
             }
+
+            theAvailableSqlServers = _theAvailableSqlServers;
 
             if (theAvailableSqlServers != null)
             {
@@ -219,13 +224,12 @@ namespace MBS
             string Source   = comboBox_NameServer.Text;
             // window = 0; sql server = 1;
             short Mode      = _modeOfDb;
-
             // int createdDB = SQLControls.CreateDB(DB_Name, Username, Password, Source, Mode);
             int AddDB = SQLControls.AddNewDB(DB_Name, "", "", Username, Password, Source, Mode);
 
             if (AddDB == 0)
             {
-                Console.WriteLine("Database created successfully");
+                MessageBox.Show("Проект успешно создан", "Создание нового проекта", MessageBoxButtons.OK, MessageBoxIcon.Information);
                 ProjectInfo Project = new ProjectInfo(SQLControls.CurrentConnection.Database, SQLControls.CurrentConnection.ConnectionString);
                 Project.Name = "";
                 Project.Description = "";
@@ -235,7 +239,7 @@ namespace MBS
             }
             else
             {
-                Console.WriteLine("Database was not created");
+                MessageBox.Show("Проект не создан", "Создание нового проекта", MessageBoxButtons.OK, MessageBoxIcon.Information);
             }
         }
 

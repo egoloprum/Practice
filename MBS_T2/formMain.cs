@@ -373,7 +373,7 @@ namespace MBS
                 {
                     case "Order":
                         //Request = "EXECUTE [MBS2].[dbo].[Order_Select] '" + sDAT_filt_start + "', '" + sDAT_filt_end + "'";
-                        Request = SQLControls.GetReguest("Order").Replace("@BD","MBS2").Replace("@DAT_Start", sDAT_filt_start).Replace("@DAT_End", sDAT_filt_end);//
+                        Request = SQLControls.GetRequest("Order").Replace("@BD","MBS2").Replace("@DAT_Start", sDAT_filt_start).Replace("@DAT_End", sDAT_filt_end);//
                         //  Request = "SELECT[ID]" +
                         //",[Sts] As  'Состояние'" +
                         //",[DAT_Create] As  'Заказ создан'" +
@@ -412,7 +412,7 @@ namespace MBS
                         //  ",[Operator] As  'Оператор'" +
                         //  " FROM [MBS2].[dbo].[View_Batch]" +
                         //  Condition;
-                            Request = SQLControls.GetReguest("Batch").Replace("@BD", "MBS2").Replace("@DAT_Start", sDAT_filt_start).Replace("@DAT_End", sDAT_filt_end);
+                            Request = SQLControls.GetRequest("Batch").Replace("@BD", "MBS2").Replace("@DAT_Start", sDAT_filt_start).Replace("@DAT_End", sDAT_filt_end);
                         break;
                     case "Dosing":
                         //Request = "SELECT[ID]" +
@@ -434,7 +434,7 @@ namespace MBS
                         //    ",[Operator] As 'Оператор'" +
                         //    "FROM [MBS2].[dbo].[View_Dosing] " +
                         //    Condition;
-                            Request = SQLControls.GetReguest("Dosing").Replace("@BD", "MBS2").Replace("@DAT_Start", sDAT_filt_start).Replace("@DAT_End", sDAT_filt_end);
+                            Request = SQLControls.GetRequest("Dosing").Replace("@BD", "MBS2").Replace("@DAT_Start", sDAT_filt_start).Replace("@DAT_End", sDAT_filt_end);
                         break;
                     case "View_Alarm":
                         Request = "SELECT  " +//[MsgNumber] AS ID,
