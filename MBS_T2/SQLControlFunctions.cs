@@ -14,6 +14,7 @@ using System.Configuration;
 using static System.Runtime.CompilerServices.RuntimeHelpers;
 using MBS.Properties;
 using System.Xml;
+using System.IO;
 
 namespace MBS
 {
@@ -151,15 +152,38 @@ namespace MBS
             {
                 case 0:
                     // Local DB *.mdf
-                    DefaultConnectionString = "Data Source=(LocalDB)\\v11.0; Integrated Security=True;";
-                    newProjectConnectionString = $"Data Source=(LocalDB)\\v11.0;AttachDbFilename={Source}{DB_Name}.mdf;Integrated Security=True";
-                    sqlQuery = $"CREATE DATABASE {DB_Name} ON PRIMARY " +
-                                    $"(NAME = {DB_Name}_Data, " +
-                                    $"FILENAME = '{Source}{DB_Name}.mdf', " +
-                                    $"SIZE = 4MB, MAXSIZE = 10MB, FILEGROWTH = 10%) " +
-                                    $"LOG ON (NAME = {DB_Name}_Log, " +
-                                    $"FILENAME = '{Source}{DB_Name}_log.ldf', " +
-                                    $"SIZE = 1MB, MAXSIZE = 5MB, FILEGROWTH = 10%)";
+                    DefaultConnectionString     = $"Data Source=DESKTOP-NGC89DL{Source};Integrated Security=True;";
+                    // newProjectConnectionString  = $@"Data Source=DESKTOP-NGC89DL{Source};AttachDbFilename={Source}\{DB_Name}.mdf;Integrated Security=True";
+                    newProjectConnectionString = $@"Data Source=DESKTOP-NGC89DL{Source};Integrated Security=True";
+                    /*sqlQuery =  $"CREATE DATABASE {DB_Name} ON PRIMARY " +
+                                $"(NAME = {DB_Name}_Data, " +
+                                $@"FILENAME = '{Source}\{DB_Name}.mdf', " +
+                                $"SIZE = 4MB, MAXSIZE = 10MB, FILEGROWTH = 10%) " +
+                                $"LOG ON (NAME = {DB_Name}_Log, " +
+                                $@"FILENAME = '{Source}\{DB_Name}_log.ldf', " +
+                                $"SIZE = 1MB, MAXSIZE = 5MB, FILEGROWTH = 10%)";*/
+
+                    string sourcePath = Application.StartupPath;
+
+                    if (!sourcePath.EndsWith("\\"))
+                    {
+                        sourcePath += "\\";
+                    }
+
+                    sqlQuery = $@"CREATE DATABASE [{DB_Name}]";
+
+/*                    sqlQuery = string.Format($@"CREATE DATABASE [{DB_Name}]
+                                                ON PRIMARY (
+                                                    NAME={DB_Name}_Data,
+                                                    FILENAME='{sourcePath}{Source}\{DB_Name}_Data.mdf'
+                                                )
+                                                LOG ON (
+                                                    NAME={DB_Name}_Log,
+                                                    FILENAME='{sourcePath}{Source}\{DB_Name}_Log.mdf',
+                                                    SIZE=1MB, MAXSIZE=5MB, FILEGROWTH=10%
+                                                )
+                    ");*/
+
                     break;
 
                 case 1:
@@ -442,7 +466,9 @@ namespace MBS
                 // ModelConnection.Open();
 
                 // запрашиваем названия таблиц из эталонной БД
-                SqlCommand ReadTablesCommand = new SqlCommand("SELECT TABLE_NAME FROM information_schema.TABLES", NewProjectConnection);
+
+                // SqlCommand ReadTablesCommand = new SqlCommand("SELECT TABLE_NAME FROM information_schema.TABLES", NewProjectConnection);
+                SqlCommand ReadTablesCommand = new SqlCommand("SELECT * FROM sysobjects", NewProjectConnection);
                 SqlDataReader SqlReader = ReadTablesCommand.ExecuteReader();
                 ProgressControl.Progress = 0;
                 ProgressControl.Operation = "Добавление таблиц в проект";
@@ -467,7 +493,7 @@ namespace MBS
                         SqlCommand mySQLCommand = new SqlCommand(SQLCommandText, NewProjectConnection);
                         mySQLCommand.ExecuteNonQuery();
                       
-                        //fMain.ProgressBar("Добавление таблиц в проект", count, i);
+                        // fMain.ProgressBar("Добавление таблиц в проект", count, i);
                     }
                 }
                 // закрываем все после использования
@@ -496,7 +522,7 @@ namespace MBS
             }
         } 
 
-        public static string SQLScript_CreateTable(string TableName)//создание скриптов для добавления таблиц в БД на основе эталанной БД Projects (сделано для облегчения разработки)
+        public static string SQLScript_CreateTable(string TableName) // создание скриптов для добавления таблиц в БД на основе эталанной БД Projects (сделано для облегчения разработки)
         {
             string SQLScript= $"CREATE TABLE [{ TableName }] (\n";
             string str = $@"SELECT COLUMN_NAME, 
@@ -508,7 +534,7 @@ namespace MBS
                         FROM INFORMATION_SCHEMA.COLUMNS
                         WHERE table_name = '{ TableName }'";
 
-            Console.WriteLine("SQLScript_CreateTable modelconn", ModelConnection);
+            Console.WriteLine($"SQLScript_CreateTable modelconn {SQLScript}");
             try
             {
                 SqlCommand myCommand = new SqlCommand(str, ModelConnection);
@@ -539,7 +565,7 @@ namespace MBS
                     }
                 }
                 SQLScript = SQLScript + "\n)";
-                //MessageBox.Show(SQLScript, "Message", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                // MessageBox.Show(SQLScript, "Message", MessageBoxButtons.OK, MessageBoxIcon.Information);
                 sqlreader.Close();
             }
             catch (System.Exception ex)
@@ -554,7 +580,7 @@ namespace MBS
             return SQLScript;
         } 
 
-        public static int GetConnectionString(string sPropertyConnStr)//получение строки подключения  с помощью диалога от VS
+        public static int GetConnectionString(string sPropertyConnStr) // получение строки подключения  с помощью диалога от VS
         {
             try
             {
@@ -564,11 +590,11 @@ namespace MBS
                 //dcd.DataSources.Add(DataSource.SqlFileDataSource);
                 if (DataConnectionDialog.Show(dcd) == DialogResult.OK)
                 {
-                    //проверка добавленного подключения
+                    // проверка добавленного подключения
                     bool bCheckDB = CheckDB(dcd.ConnectionString);
                     if (bCheckDB)
                     {
-                        //сохраняем
+                        // сохраняем
                         var config = ConfigurationManager.OpenExeConfiguration(ConfigurationUserLevel.None);
                         var connectionStringsSection = (ConnectionStringsSection)config.GetSection("connectionStrings");
                         connectionStringsSection.ConnectionStrings["MBS.Properties.Settings." + sPropertyConnStr].ConnectionString = dcd.ConnectionString;
@@ -579,8 +605,9 @@ namespace MBS
                     }
                     else
                     {
-                        //выводим окно подключения
-                        DialogResult res = MessageBox.Show("Выбранная БД недоступна. Все равно сохранить подключение?", "БД недоступна", MessageBoxButtons.YesNo, MessageBoxIcon.Information);
+                        // выводим окно подключения
+                        DialogResult res = MessageBox.Show("Выбранная БД недоступна. Все равно сохранить подключение?", "БД недоступна", 
+                                           MessageBoxButtons.YesNo, MessageBoxIcon.Information);
                         if (res == DialogResult.Yes)
                         {
                             var config = ConfigurationManager.OpenExeConfiguration(ConfigurationUserLevel.None);
@@ -596,7 +623,7 @@ namespace MBS
                 }
                 else return 1;
             }
-            catch (System.Exception ex)
+            catch (Exception ex)
             {
                 General.ErrorMessage(ex);
                 return ex.HResult;
@@ -606,7 +633,7 @@ namespace MBS
             }
         } 
 
-        public static string myConnectionString(string ID, string Password, string Path, short Mode)//формирование строки подключения (мусор?)
+        public static string myConnectionString(string ID, string Password, string Path, short Mode) // формирование строки подключения (мусор?)
         {
             string ConnectionString = $"Data Source=.\\SQLEXPRESS;Initial Catalog={ID};User ID=sa;Password=sa123456"; // по умолчанию локальная БД
 

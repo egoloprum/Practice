@@ -185,6 +185,12 @@ namespace MBS
 
             theAvailableSqlServers = _theAvailableSqlServers;
 
+            foreach (string server in theAvailableSqlServers)
+            {
+                server.Replace("(local)", "");
+                Console.WriteLine(server);
+            }
+
             if (theAvailableSqlServers != null)
             {
                 comboBox_NameServer.DataSource = theAvailableSqlServers;
@@ -202,7 +208,7 @@ namespace MBS
 
         private void comboBox_TypeDBMS_TextChanged(object sender, EventArgs e)
         {
-            short Mode = (short)this.comboBox_TypeDBMS.SelectedIndex;
+            short Mode = (short)comboBox_TypeDBMS.SelectedIndex;
 
             this.comboBox_TypeDBMS.ForeColor = System.Drawing.Color.Black;
             {
@@ -210,7 +216,16 @@ namespace MBS
                 {
                     case 0:
                         //БД SQLServer
-                        this.comboBox_NameServer.Text = ProjectSettings.DefaultSQLServer;
+                        string servers = ProjectSettings.DefaultSQLServer;
+
+                        string startOfString = servers.Substring(0, servers.IndexOf("(local)"));
+                        string endOfString = servers.Substring(servers.IndexOf("(local)") + "(local)".Length);
+                        servers = startOfString + endOfString;
+
+                        comboBox_NameServer.Text = servers;
+                        break;
+                    case 1:
+                        comboBox_NameServer.DataSource = System.Data.Sql.SqlDataSourceEnumerator.Instance.GetDataSources();
                         break;
                 }
             }
@@ -239,7 +254,7 @@ namespace MBS
             }
             else
             {
-                MessageBox.Show("Проект не создан", "Создание нового проекта", MessageBoxButtons.OK, MessageBoxIcon.Information);
+               
             }
         }
 
@@ -249,6 +264,22 @@ namespace MBS
             string connectionString = $"Data Source={comboBox_NameServer.Text};Initial Catalog=master;" +
                 $"User ID={textBox_Username.Text};Password={textBox_Password.Text}";
             string strQuery = "SELECT name FROM sys.databases";
+
+            if (_modeOfDb == 0)
+            {
+                // windows
+                connectionString = $@"Data Source=DESKTOP-NGC89DL{comboBox_NameServer.Text};Integrated Security=True";
+                strQuery = "SELECT name FROM sys.databases";
+            }
+            else
+            {
+                // sql server
+                connectionString = $"Data Source={comboBox_NameServer.Text};Initial Catalog=master;" +
+                                          $"User ID={textBox_Username.Text};Password={textBox_Password.Text}";
+                strQuery = "SELECT name FROM sys.databases";
+            }
+
+
 
             List<string> name_Databases = new List<string>();
             try
