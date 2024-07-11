@@ -176,7 +176,16 @@ namespace MBS
             //fCreateProject.ShowDialog();
 
             //Проверка состояний подключения к БД отчетов
-            bReportConnOK = SQLControls.CheckPropertyConnStr("Report");
+            try
+            {
+                bReportConnOK = SQLControls.CheckPropertyConnStr("Report");
+
+            }
+            catch (System.Exception ex)
+            {
+                General.ErrorMessage(ex);
+            }
+
             if (bReportConnOK)
             {
                 DAT_filt_end = DateTime.Today;
@@ -212,7 +221,16 @@ namespace MBS
             }
 
             //Проверка состояний подключения к БД событий
-            bAlarmConnOK = SQLControls.CheckPropertyConnStr("Alarm");
+      
+            try
+            {
+                bAlarmConnOK = SQLControls.CheckPropertyConnStr("Alarm");
+
+            }
+            catch (System.Exception ex)
+            {
+                General.ErrorMessage(ex);
+            }
             if (bAlarmConnOK)
             {
                 //считываем данные и формируем таблицу

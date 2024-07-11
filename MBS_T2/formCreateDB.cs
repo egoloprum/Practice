@@ -32,7 +32,7 @@ namespace MBS
             _typeOfDb = TypeOfDB;
         }
 
-        private async void formCreateDB_Load(object sender, EventArgs e)
+        private void formCreateDB_Load(object sender, EventArgs e)
         {
             if (_typeOfDb == "Alarm")
             {
@@ -46,6 +46,7 @@ namespace MBS
             }
 
             comboBox_TypeDBMS.SelectedIndex = 0;
+            comboBox_NameDB.Enabled = true;
         }
 
         private void btn_Cancel_Click(object sender, EventArgs e)
@@ -143,7 +144,9 @@ namespace MBS
         }
         private void comboBox_NameServer_TextChanged(object sender, EventArgs e)
         {
-            check_nameDB();
+            _name_Databases = new List<string>();
+            comboBox_NameDB.Text = "";
+            comboBox_NameDB.DataSource = _name_Databases;
         }
         private void comboBox_NameDB_TextChanged(object sender, EventArgs e)
         {
@@ -279,8 +282,6 @@ namespace MBS
                 strQuery = "SELECT name FROM sys.databases";
             }
 
-
-
             List<string> name_Databases = new List<string>();
             try
             {
@@ -295,16 +296,20 @@ namespace MBS
                     name_Databases.Add(myDataReader["name"].ToString());
                 }
 
-                comboBox_NameDB.DataSource = name_Databases;
                 _name_Databases = name_Databases;
+                comboBox_NameDB.DataSource = _name_Databases;
                 myConnecton.Close();
             }
             catch (System.Exception ex)
             {
+                _name_Databases = new List<string>();
+                comboBox_NameDB.Text = "";
+                comboBox_NameDB.DataSource = _name_Databases;
                 General.ErrorMessage(ex);
-                MessageBox.Show(ex.ToString(), "Ошибка", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                MessageBox.Show(ex.ToString(), "Ошибка hereeeeeeee", MessageBoxButtons.OK, MessageBoxIcon.Error);
                 // ex.HResult;
             }
         }
     }
 }
+

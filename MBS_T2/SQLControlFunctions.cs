@@ -27,7 +27,7 @@ namespace MBS
 
         //подключение к эталонной БД
         public static string ModelConnectionString = $"Data Source=(LocalDB)\\v11.0;AttachDbFilename={Application.StartupPath }\\Projects.mdf;Integrated " +
-            $"Security=True;MultipleActiveResultSets=True";
+                                                       "Security=True;MultipleActiveResultSets=True";
 
         //public static string ModelConnectionString = "Data Source=(LocalDB)\\v11.0;AttachDbFilename=" + Application.StartupPath.Replace("\\bin\\Debug","") + "\\Projects.mdf;Integrated Security=True;MultipleActiveResultSets=True";
         public static SqlConnection ModelConnection = new SqlConnection(ModelConnectionString);
@@ -89,7 +89,7 @@ namespace MBS
                 return ErrorCode;
             }
 
-            //копируем инфомарци. о проекте в эталонную таблицу (она жде перечень запомненных проектов)
+            // копируем инфомарци. о проекте в эталонную таблицу (она жде перечень запомненных проектов)
             ErrorCode = AddInfoToModelProject(SQLControls.ConnectionString);
             if (ErrorCode != 0) // информация не добавлена
             {
@@ -144,7 +144,7 @@ namespace MBS
 
         public static int CreateDB(string DB_Name, string Username, string Password, string Source, short Mode)
         {
-            string DefaultConnectionString = "Data Source=172.23.1.84\\WINCC;Initial Catalog=master;User ID=a;Password=11111111";
+            string DefaultConnectionString = "Data Source=172.23.1.84\\WINCC;Initial Catalog=master;User ID=a;Password=11111111;MultipleActiveResultSets=True";
             string newProjectConnectionString;
             string sqlQuery;
 
@@ -152,9 +152,9 @@ namespace MBS
             {
                 case 0:
                     // Local DB *.mdf
-                    DefaultConnectionString     = $"Data Source=DESKTOP-NGC89DL{Source};Integrated Security=True;";
+                    DefaultConnectionString     = $"Data Source=DESKTOP-NGC89DL{Source};Integrated Security=True;MultipleActiveResultSets=True";
                     // newProjectConnectionString  = $@"Data Source=DESKTOP-NGC89DL{Source};AttachDbFilename={Source}\{DB_Name}.mdf;Integrated Security=True";
-                    newProjectConnectionString = $@"Data Source=DESKTOP-NGC89DL{Source};Integrated Security=True";
+                    newProjectConnectionString  = $@"Data Source=DESKTOP-NGC89DL{Source};Integrated Security=True;MultipleActiveResultSets=True";
                     /*sqlQuery =  $"CREATE DATABASE {DB_Name} ON PRIMARY " +
                                 $"(NAME = {DB_Name}_Data, " +
                                 $@"FILENAME = '{Source}\{DB_Name}.mdf', " +
@@ -172,29 +172,35 @@ namespace MBS
 
                     sqlQuery = $@"CREATE DATABASE [{DB_Name}]";
 
-/*                    sqlQuery = string.Format($@"CREATE DATABASE [{DB_Name}]
-                                                ON PRIMARY (
-                                                    NAME={DB_Name}_Data,
-                                                    FILENAME='{sourcePath}{Source}\{DB_Name}_Data.mdf'
-                                                )
-                                                LOG ON (
-                                                    NAME={DB_Name}_Log,
-                                                    FILENAME='{sourcePath}{Source}\{DB_Name}_Log.mdf',
-                                                    SIZE=1MB, MAXSIZE=5MB, FILEGROWTH=10%
-                                                )
-                    ");*/
+/*                    sqlQuery = $@"CREATE DATABASE [{DB_Name}]
+                                        ON PRIMARY (
+                                            NAME={DB_Name}_Data,
+                                            FILENAME='{sourcePath}{Source}\{DB_Name}_Data.mdf'
+                                        )
+                                        LOG ON (
+                                            NAME={DB_Name}_Log,
+                                            FILENAME='{sourcePath}{Source}\{DB_Name}_Log.mdf',
+                                            SIZE=1MB, MAXSIZE=5MB, FILEGROWTH=10%
+                                        )
+                    ";*/
 
                     break;
 
                 case 1:
-                        // SQLServer DB
-                    newProjectConnectionString = $"Data Source={Source};Initial Catalog={DB_Name};User ID={Username};Password={Password};Persist Security Info=True";
+                    // SQLServer DB
+                    newProjectConnectionString = $@"Data Source={Source};Initial Catalog={DB_Name};
+                                                    User ID={Username};Password={Password};Persist Security Info=True;
+                                                    MultipleActiveResultSets=True"; 
+                        
                     sqlQuery = $"CREATE DATABASE {DB_Name}";
                     break;
 
                 default:
                     // SQLServer DB
-                    newProjectConnectionString = $"Data Source={Source};Initial Catalog={DB_Name};User ID={Username};Password={Password};Persist Security Info=True";
+                    newProjectConnectionString = $@"Data Source={Source};Initial Catalog={DB_Name};
+                                                    User ID={Username};Password={Password};Persist Security Info=True;
+                                                    MultipleActiveResultSets=True";
+
                     sqlQuery = $"CREATE DATABASE {DB_Name}";
                     break;
             }
@@ -307,62 +313,62 @@ namespace MBS
               return 0;
            }*/
 
-        public static int CyrillicDB() //Изменение кодировки таблиц (скрипт не отлажен)
+        public static int CyrillicDB() // Изменение кодировки таблиц (скрипт не отлажен)
             { //http://www.sql.ru/forum/147286/izmenit-collation-u-sushhestvuushhey-bd
-                //пока все зафиксируем
+                // пока все зафиксируем
                 string DB = "E:\\VSPROJECTS\\ASUPR\\WFA_СS\\WFA_СS\\PROJECTS.MDF";
                 string MasterConnectionString = "Data Source=(LocalDB)\\v11.0; Integrated Security=True;";
-                string DBConnectionString = "Data Source=(LocalDB)\\v11.0;AttachDbFilename=" + DB + ".mdf;Integrated Security=True"; ;
+                string DBConnectionString = $"Data Source=(LocalDB)\\v11.0;AttachDbFilename={ DB }.mdf;Integrated Security=True"; ;
                 SqlConnection MyConnection = new SqlConnection(MasterConnectionString);
                 try
                 {                  
-                    //Сначала меняем collation у самой базы
+                    // Сначала меняем collation у самой базы
                     MyConnection.Open();
-                    string str = "ALTER DATABASE [" + DB + "] COLLATE Cyrillic_General_CI_AS";
+                    string str = $"ALTER DATABASE [{ DB }] COLLATE Cyrillic_General_CI_AS";
                     SqlCommand myCommand = new SqlCommand(str, MyConnection);
                     myCommand.ExecuteNonQuery();
                     MyConnection.Close();
-                    //подклюбчаемся к базе
+                    // подклюбчаемся к базе
                     MyConnection.ConnectionString = DBConnectionString;
                     MyConnection.Open();
                                   
                     string[] arrstr = new string[5];
-                    //строим в EM скрипт создания индексов и сохраняем его на долгую память до п.6 ???
+                    // строим в EM скрипт создания индексов и сохраняем его на долгую память до п.6 ???
                     arrstr[0] = @"";
-                    //убиваем PK и FK скриптом полученным после   
-                    arrstr[1]=@"select 'ALTER TABLE ' + TABLE_NAME + ' DROP CONSTRAINT ' + CONSTRAINT_NAME 
-                        from INFORMATION_SCHEMA.TABLE_CONSTRAINTS
-                        where constraint_type='PRIMARY KEY' or constraint_type='FOREIGN KEY'
-                        ORDER BY constraint_type ";
-                    //убиваем остатки индексов
+                    // убиваем PK и FK скриптом полученным после   
+                    arrstr[1] = @"select 'ALTER TABLE ' + TABLE_NAME + ' DROP CONSTRAINT ' + CONSTRAINT_NAME 
+                                from INFORMATION_SCHEMA.TABLE_CONSTRAINTS
+                                where constraint_type='PRIMARY KEY' or constraint_type='FOREIGN KEY'
+                                ORDER BY constraint_type ";
+                    // убиваем остатки индексов
                     arrstr[2] = @"SELECT 'drop index ' + o.name + '.' + i.name AS Индекс
-                        FROM sysobjects o INNER JOIN sysindexes i ON o.id = i.id
-                        WHERE (o.xtype = 'U') AND 
-	                        (i.indid > 0) AND 
-	                        (i.indid < 255) AND 
-	                        (INDEXPROPERTY(i.id, i.name, 'isStatistics') = 0)
-                        and o.name <> 'dtproperties'
-                        ORDER BY o.name, i.indid";
-                    //Меняем collation
-                    arrstr[3] = @"SELECT	'ALTER TABLE ['+ 
-		                    rtrim(TABLE_NAME)+
-		                    '] ALTER COLUMN ['+
-		                    rtrim(COLUMN_NAME)+
-		                    '] '+
-		                    rtrim(DATA_TYPE)+
-	                    CASE WHEN NOT(CHARACTER_MAXIMUM_LENGTH IS NULL) OR (CHARACTER_MAXIMUM_LENGTH=0)
-		                    THEN '('+convert(varchar(10),CHARACTER_MAXIMUM_LENGTH)+')'
-	                    END+
-	                    ' COLLATE Latin1_General_CI_AS' COLLATE Latin1_General_CI_AS 
-	                    FROM INFORMATION_SCHEMA.COLUMNS 
-	                    WHERE	(TABLE_CATALOG=DB_NAME() COLLATE Latin1_General_CI_AS) AND 
-		                    ((DATA_TYPE LIKE '%char%' COLLATE Latin1_General_CI_AS) OR (DATA_TYPE LIKE '%text%' COLLATE Latin1_General_CI_AS)) AND
-		                    (COLLATION_NAME IS NOT NULL) AND
-		                    (COLLATION_NAME <> 'Latin1_General_CI_AS' COLLATE Latin1_General_CI_AS) AND 
-		                    TABLE_NAME in (SELECT o.name 
-					                    FROM sysobjects o 
-					                    WHERE     (o.xtype = 'U'))";
-                    //пересоздаем индексы скриптом из п.1
+                                FROM sysobjects o INNER JOIN sysindexes i ON o.id = i.id
+                                WHERE (o.xtype = 'U') AND 
+	                                (i.indid > 0) AND 
+	                                (i.indid < 255) AND 
+	                                (INDEXPROPERTY(i.id, i.name, 'isStatistics') = 0)
+                                and o.name <> 'dtproperties'
+                                ORDER BY o.name, i.indid";
+                    // Меняем collation
+                    arrstr[3] = @"SELECT 'ALTER TABLE ['+ 
+		                        rtrim(TABLE_NAME)+
+		                        '] ALTER COLUMN ['+
+		                        rtrim(COLUMN_NAME)+
+		                        '] '+
+		                        rtrim(DATA_TYPE)+
+	                        CASE WHEN NOT(CHARACTER_MAXIMUM_LENGTH IS NULL) OR (CHARACTER_MAXIMUM_LENGTH=0)
+		                        THEN '('+convert(varchar(10),CHARACTER_MAXIMUM_LENGTH)+')'
+	                        END+
+	                        ' COLLATE Latin1_General_CI_AS' COLLATE Latin1_General_CI_AS 
+	                        FROM INFORMATION_SCHEMA.COLUMNS 
+	                        WHERE	(TABLE_CATALOG=DB_NAME() COLLATE Latin1_General_CI_AS) AND 
+		                        ((DATA_TYPE LIKE '%char%' COLLATE Latin1_General_CI_AS) OR (DATA_TYPE LIKE '%text%' COLLATE Latin1_General_CI_AS)) AND
+		                        (COLLATION_NAME IS NOT NULL) AND
+		                        (COLLATION_NAME <> 'Latin1_General_CI_AS' COLLATE Latin1_General_CI_AS) AND 
+		                        TABLE_NAME in (SELECT o.name 
+					                        FROM sysobjects o 
+					                        WHERE (o.xtype = 'U'))";
+                    // пересоздаем индексы скриптом из п.1
                     arrstr[4] = @"";
                     for (int i = 0; i < 4; i++) {
                         myCommand = new SqlCommand(str, MyConnection);
@@ -371,9 +377,9 @@ namespace MBS
                         {
                             if (!SqlReader.IsDBNull(0))
                             {
-                                //запрашиваем текст скрипта создания таблицы по образцу
+                                // запрашиваем текст скрипта создания таблицы по образцу
                                 string SQLCommandText = SqlReader.GetString(0);
-                                //передаем текст в команду и выполняем ее
+                                // передаем текст в команду и выполняем ее
                                 SqlCommand mySQLCommand = new SqlCommand(SQLCommandText, MyConnection);
                                 mySQLCommand.ExecuteNonQuery();
 
@@ -395,7 +401,7 @@ namespace MBS
                 return 0;
             }
 
-        public static int DeleteDateBase(string ConnectionString) //создание новой БД
+        public static int DeleteDateBase(string ConnectionString) // создание новой БД
         {                      
             //CloseDB();            
             SqlConnection myConn = new SqlConnection(ConnectionString);
@@ -414,7 +420,7 @@ namespace MBS
             }
             try
             {
-                //закрываем текущее подключение, если удаляем его
+                // закрываем текущее подключение, если удаляем его
                 if (sDataSource == CurrentConnection.DataSource && sDataBase == CurrentConnection.Database)
                 {
                     CloseDB();
@@ -467,8 +473,8 @@ namespace MBS
 
                 // запрашиваем названия таблиц из эталонной БД
 
-                // SqlCommand ReadTablesCommand = new SqlCommand("SELECT TABLE_NAME FROM information_schema.TABLES", NewProjectConnection);
-                SqlCommand ReadTablesCommand = new SqlCommand("SELECT * FROM sysobjects", NewProjectConnection);
+                SqlCommand ReadTablesCommand = new SqlCommand("SELECT TABLE_NAME FROM information_schema.TABLES", NewProjectConnection);
+                // SqlCommand ReadTablesCommand = new SqlCommand("SELECT * FROM sysobjects WHERE xtype = 'U';", NewProjectConnection);
                 SqlDataReader SqlReader = ReadTablesCommand.ExecuteReader();
                 ProgressControl.Progress = 0;
                 ProgressControl.Operation = "Добавление таблиц в проект";
@@ -479,6 +485,8 @@ namespace MBS
                     ProgressControl.Count++;
                 }
 
+                List<string> readerStrings = new List<string>();
+
                 SqlReader.Close();
                 SqlReader = ReadTablesCommand.ExecuteReader();
 
@@ -487,11 +495,12 @@ namespace MBS
                     if (!SqlReader.IsDBNull(0))
                     {
                         // запрашиваем текст скрипта создания таблицы по образцу
-                        Console.WriteLine("SQLReader.getstring", SqlReader.GetString(0));
-                        string SQLCommandText = SQLScript_CreateTable(SqlReader.GetString(0));
+                        readerStrings.Add(SqlReader.GetString(0));
+
+                        //string SQLCommandText = SQLScript_CreateTable(SqlReader.GetString(0));
                         // передаем текст в команду и выполняем ее
-                        SqlCommand mySQLCommand = new SqlCommand(SQLCommandText, NewProjectConnection);
-                        mySQLCommand.ExecuteNonQuery();
+                        //SqlCommand mySQLCommand = new SqlCommand(SQLCommandText, NewProjectConnection);
+                        //mySQLCommand.ExecuteNonQuery();
                       
                         // fMain.ProgressBar("Добавление таблиц в проект", count, i);
                     }
@@ -499,6 +508,16 @@ namespace MBS
                 // закрываем все после использования
                 ProgressControl.Clear();
                 SqlReader.Close();
+
+                foreach (string str in readerStrings)
+                {
+                    string SQLCommandText = SQLScript_CreateTable(str, NewProjectConnection);
+                    Console.WriteLine($"Those strs: {SQLCommandText}");
+                    SqlCommand mySQLCommand = new SqlCommand(SQLCommandText, NewProjectConnection);
+                    mySQLCommand.ExecuteNonQuery();
+                }
+
+
                 // ModelConnection.Close();
                 NewProjectConnection.Close();
                 MessageBox.Show("Successfully finished the function", "AddTablesToNewDB", MessageBoxButtons.OK, MessageBoxIcon.Information);
@@ -522,11 +541,10 @@ namespace MBS
             }
         } 
 
-        public static string SQLScript_CreateTable(string TableName) // создание скриптов для добавления таблиц в БД на основе эталанной БД Projects (сделано для облегчения разработки)
+        public static string SQLScript_CreateTable(string TableName, SqlConnection connectionString) // создание скриптов для добавления таблиц в БД на основе эталанной БД Projects (сделано для облегчения разработки)
         {
-            string SQLScript= $"CREATE TABLE [{ TableName }] (\n";
-            string str = $@"SELECT COLUMN_NAME, 
-                        DATA_TYPE,
+            string SQLScript= $"CREATE TABLE [{ TableName }]";
+            string str = $@"SELECT COLUMN_NAME, DATA_TYPE,
                         iif(CHARACTER_MAXIMUM_LENGTH<>0,CHARACTER_MAXIMUM_LENGTH,0) AS [LENGTH],
                         iif(IS_NULLABLE='NO','NOT NULL', 'NULL') AS NULLABLE, 
                         iif(COLUMN_NAME=(SELECT COLUMN_NAME  FROM INFORMATION_SCHEMA.KEY_COLUMN_USAGE WHERE TABLE_NAME='{ TableName }'),' PRIMARY KEY','') AS [PRIMARY_KEY],
@@ -534,10 +552,9 @@ namespace MBS
                         FROM INFORMATION_SCHEMA.COLUMNS
                         WHERE table_name = '{ TableName }'";
 
-            Console.WriteLine($"SQLScript_CreateTable modelconn {SQLScript}");
             try
             {
-                SqlCommand myCommand = new SqlCommand(str, ModelConnection);
+                SqlCommand myCommand = new SqlCommand(str, connectionString);
                 SqlDataReader sqlreader = myCommand.ExecuteReader();
                 while (sqlreader.Read())
                 {
@@ -546,6 +563,7 @@ namespace MBS
                         string COLUMN_NAME = $"[{sqlreader.GetString(0)}] ";
                         string DATA_TYPE=sqlreader.GetString(1);
                         string CHARACTER_MAXIMUM_LENGTH = " ";
+
                         if (sqlreader.GetInt32(2) != 0 & !(DATA_TYPE == "TEXT" || DATA_TYPE == "text"))
                         {
                             CHARACTER_MAXIMUM_LENGTH = $"({sqlreader.GetInt32(2).ToString()}) ";
@@ -561,18 +579,17 @@ namespace MBS
                         else
                         {
                             SQLScript = SQLScript + ",\n" +  COLUMN_NAME  + DATA_TYPE +  CHARACTER_MAXIMUM_LENGTH + NULLABLE + PRIMARY_KEY + DEFAULT;
-                        }                     
+                        }
+                        SQLScript += "\n)";
                     }
                 }
-                SQLScript = SQLScript + "\n)";
+               
                 // MessageBox.Show(SQLScript, "Message", MessageBoxButtons.OK, MessageBoxIcon.Information);
                 sqlreader.Close();
             }
             catch (System.Exception ex)
             {
                 General.ErrorMessage(ex);    
-
-              
             }
             finally
             {
@@ -862,7 +879,7 @@ namespace MBS
             var config = ConfigurationManager.OpenExeConfiguration(ConfigurationUserLevel.None);
             var connectionStringsSection = (ConnectionStringsSection)config.GetSection("connectionStrings");
 
-            string connectString = connectionStringsSection.ConnectionStrings[$"MBS.Properties.Settings.{ sPropertyConnStr }ConnectionString"].ConnectionString; //.ReportConnectionString;
+            string connectString = connectionStringsSection.ConnectionStrings["MBS.Properties.Settings." + sPropertyConnStr + "ConnectionString"].ConnectionString; //.ReportConnectionString;
 
             try
             {
@@ -907,18 +924,18 @@ namespace MBS
             XmlNode RequestNode = null;
             XmlDocument SQLRequestXML = new XmlDocument();
             SQLRequestXML.Load("SettingsXML/SQLRequest.xml");
-            string sReguest = "";
+            string sRequest = "";
             try
             {
                 RequestNode = SQLRequestXML.DocumentElement.SelectSingleNode($"//Request[@ID='{ sRequestName }']");
                 if (RequestNode != null)
                 {
                     //if (RequestNode.ChildNodes[0].InnerText != null)                      
-                    //    sReguest = RequestNode.ChildNodes[0].InnerText.ToString().Replace("\r\n", "").Replace("\t", "");
+                    //    sRequest = RequestNode.ChildNodes[0].InnerText.ToString().Replace("\r\n", "").Replace("\t", "");
                     if (RequestNode.Attributes["RequestString"].Value != null)
-                        sReguest = RequestNode.Attributes["RequestString"].Value.ToString().Replace("\r\n", "").Replace("\t", "");
+                        sRequest = RequestNode.Attributes["RequestString"].Value.ToString().Replace("\r\n", "").Replace("\t", "");
                 }
-                return sReguest;
+                return sRequest;
             }
             catch (System.Exception ex)
             {
