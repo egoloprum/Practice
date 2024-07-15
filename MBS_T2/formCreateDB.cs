@@ -19,6 +19,8 @@ namespace MBS
         // alarm or report
         string _typeOfDb = "";
 
+        formKeepConnection fKeepConn;
+
         // name of DBs to check if it exists
         List<string> _name_Databases = new List<string>();
         List<string> _theAvailableSqlServers = new List<string>();
@@ -47,6 +49,8 @@ namespace MBS
 
             comboBox_TypeDBMS.SelectedIndex = 0;
             comboBox_NameDB.Enabled = true;
+
+            Console.WriteLine($"path =  {Application.StartupPath}");
         }
 
         private void btn_Cancel_Click(object sender, EventArgs e)
@@ -56,7 +60,20 @@ namespace MBS
 
         private void btn_TestConn_Click(object sender, EventArgs e)
         {
-            string connectionString = $"Data Source={comboBox_NameServer.Text};Initial Catalog={comboBox_NameDB.Text};User ID={textBox_Username.Text};Password={textBox_Password.Text}";
+            short Mode = (short)comboBox_TypeDBMS.SelectedIndex;
+            string connectionString = "";
+
+            if (Mode == 0)
+            {
+                connectionString = $"Data Source={Environment.MachineName}{comboBox_NameServer.Text};Integrated Security=True;" +
+                    $"MultipleActiveResultSets=True";
+            }
+            else
+            {
+                connectionString = $"Data Source={comboBox_NameServer.Text};Initial Catalog={comboBox_NameDB.Text};" +
+                                   $"User ID={textBox_Username.Text};Password={textBox_Password.Text}";
+            }
+
             bool chDB = SQLControls.CheckDB(connectionString);
 
             if (chDB)
@@ -175,14 +192,21 @@ namespace MBS
         private void comboBox_NameServer_DropDown(object sender, EventArgs e)
         {
             List<string> theAvailableSqlServers = new List<string>();
-            
+
             if (!_theAvailableSqlServers.Any())
             {
-                string[] Servers = SqlLocator.GetServers();
-
-                foreach (string Server in Servers)
+                try
                 {
-                    _theAvailableSqlServers.Add(Server);
+                    string[] Servers = SqlLocator.GetServers();
+
+                    foreach (string Server in Servers)
+                    {
+                        _theAvailableSqlServers.Add(Server);
+                    }
+                }
+                catch (Exception ex)
+                {
+                    General.ErrorMessage(ex);
                 }
             }
 
@@ -220,7 +244,7 @@ namespace MBS
                     case 0:
                         //БД SQLServer
                         string servers = ProjectSettings.DefaultSQLServer;
-
+                        
                         string startOfString = servers.Substring(0, servers.IndexOf("(local)"));
                         string endOfString = servers.Substring(servers.IndexOf("(local)") + "(local)".Length);
                         servers = startOfString + endOfString;
@@ -240,20 +264,18 @@ namespace MBS
             string Username = textBox_Username.Text;
             string Password = textBox_Password.Text;
             string Source   = comboBox_NameServer.Text;
+            Console.WriteLine(Source);
             // window = 0; sql server = 1;
             short Mode      = _modeOfDb;
             // int createdDB = SQLControls.CreateDB(DB_Name, Username, Password, Source, Mode);
-            int AddDB = SQLControls.AddNewDB(DB_Name, "", "", Username, Password, Source, Mode);
+            int CreatedDB = SQLControls.CreateDB(DB_Name, Username, Password, Source, Mode);
+            // int AddDB = SQLControls.AddNewDB(DB_Name, "", "", Username, Password, Source, Mode);
 
-            if (AddDB == 0)
+            if (CreatedDB == 0)
             {
-                MessageBox.Show("Проект успешно создан", "Создание нового проекта", MessageBoxButtons.OK, MessageBoxIcon.Information);
-                ProjectInfo Project = new ProjectInfo(SQLControls.CurrentConnection.Database, SQLControls.CurrentConnection.ConnectionString);
-                Project.Name = "";
-                Project.Description = "";
-                Project.Save();
-                // UpdateProjects();
-                this.Close();
+                fKeepConn = new formKeepConnection(_typeOfDb);
+                fKeepConn.StartPosition = FormStartPosition.CenterScreen;
+                fKeepConn.ShowDialog();
             }
             else
             {
@@ -265,13 +287,13 @@ namespace MBS
         {
             // Data Source=172.23.1.84\\WINCC;
             string connectionString = $"Data Source={comboBox_NameServer.Text};Initial Catalog=master;" +
-                $"User ID={textBox_Username.Text};Password={textBox_Password.Text}";
+                                      $"User ID={textBox_Username.Text};Password={textBox_Password.Text}";
             string strQuery = "SELECT name FROM sys.databases";
 
             if (_modeOfDb == 0)
             {
                 // windows
-                connectionString = $@"Data Source=DESKTOP-NGC89DL{comboBox_NameServer.Text};Integrated Security=True";
+                connectionString = $@"Data Source={Environment.MachineName}{comboBox_NameServer.Text};Integrated Security=True";
                 strQuery = "SELECT name FROM sys.databases";
             }
             else
@@ -306,7 +328,7 @@ namespace MBS
                 comboBox_NameDB.Text = "";
                 comboBox_NameDB.DataSource = _name_Databases;
                 General.ErrorMessage(ex);
-                MessageBox.Show(ex.ToString(), "Ошибка hereeeeeeee", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                MessageBox.Show(ex.ToString(), "Ошибка combobox_nameDB_dropdown", MessageBoxButtons.OK, MessageBoxIcon.Error);
                 // ex.HResult;
             }
         }

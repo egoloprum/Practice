@@ -23,6 +23,7 @@ namespace MBS
     {
         formSetting fSetting;
         formCreateDB fCreateDB;
+
         public formSetting()
         {
             InitializeComponent();
@@ -35,7 +36,18 @@ namespace MBS
             textBox_ReportPatch.Text = Settings.Default.ReportPatch;
             textBox_ReportConnection.Text = Settings.Default.ReportConnectionString;
             textBox_AlarmConnection.Text = Settings.Default.AlarmConnectionString;
-            
+        }
+
+        public string textBox_ReportConnection_Value
+        {
+            get { return textBox_ReportConnection.Text; }
+            set { textBox_ReportConnection.Text = value; }
+        }
+
+        public string textBox_AlarmConnection_Value
+        {
+            get { return textBox_AlarmConnection.Text; }
+            set { textBox_AlarmConnection.Text = value; }
         }
 
         // ProjectName

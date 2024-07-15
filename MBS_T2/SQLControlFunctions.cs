@@ -144,17 +144,17 @@ namespace MBS
 
         public static int CreateDB(string DB_Name, string Username, string Password, string Source, short Mode)
         {
-            string DefaultConnectionString = "Data Source=172.23.1.84\\WINCC;Initial Catalog=master;User ID=a;Password=11111111;MultipleActiveResultSets=True";
-            string newProjectConnectionString;
+            string DefaultConnectionString = "Data Source=172.23.1.84\\WINCC;Initial Catalog=master;User ID=a;Password=11111111";
+            string newProjectConnectionString = "";
             string sqlQuery;
 
             switch (Mode)
             {
                 case 0:
                     // Local DB *.mdf
-                    DefaultConnectionString     = $"Data Source=DESKTOP-NGC89DL{Source};Integrated Security=True;MultipleActiveResultSets=True";
+                    DefaultConnectionString     = $"Data Source={Environment.MachineName}{Source};Integrated Security=True;";
                     // newProjectConnectionString  = $@"Data Source=DESKTOP-NGC89DL{Source};AttachDbFilename={Source}\{DB_Name}.mdf;Integrated Security=True";
-                    newProjectConnectionString  = $@"Data Source=DESKTOP-NGC89DL{Source};Integrated Security=True;MultipleActiveResultSets=True";
+                    newProjectConnectionString  = $@"Data Source={Environment.MachineName}{Source};Initial Catalog={DB_Name};Integrated Security=True;";
                     /*sqlQuery =  $"CREATE DATABASE {DB_Name} ON PRIMARY " +
                                 $"(NAME = {DB_Name}_Data, " +
                                 $@"FILENAME = '{Source}\{DB_Name}.mdf', " +
@@ -189,8 +189,7 @@ namespace MBS
                 case 1:
                     // SQLServer DB
                     newProjectConnectionString = $@"Data Source={Source};Initial Catalog={DB_Name};
-                                                    User ID={Username};Password={Password};Persist Security Info=True;
-                                                    MultipleActiveResultSets=True"; 
+                                                    User ID={Username};Password={Password};Persist Security Info=True;"; 
                         
                     sqlQuery = $"CREATE DATABASE {DB_Name}";
                     break;
@@ -198,8 +197,7 @@ namespace MBS
                 default:
                     // SQLServer DB
                     newProjectConnectionString = $@"Data Source={Source};Initial Catalog={DB_Name};
-                                                    User ID={Username};Password={Password};Persist Security Info=True;
-                                                    MultipleActiveResultSets=True";
+                                                    User ID={Username};Password={Password};Persist Security Info=True;";
 
                     sqlQuery = $"CREATE DATABASE {DB_Name}";
                     break;
@@ -210,6 +208,24 @@ namespace MBS
                 try
                 {
                     connection.Open();
+
+                    string queryKill = "DECLARE @session_id INT; " +
+                        "SELECT @session_id = request_session_id " +
+                        "FROM sys.dm_tran_locks " +
+                        "WHERE resource_database_id = DB_ID('model'); " +
+                        "IF @session_id IS NOT NULL " +
+                        "BEGIN " +
+                            "DECLARE @sql NVARCHAR(100); " +
+                            "SET @sql = 'KILL ' + CAST(@session_id AS NVARCHAR(10)); " +
+                            "EXEC sp_executesql @sql; " +
+                        "END";
+
+                    // deletes the lock
+                    using (SqlCommand command = new SqlCommand(queryKill, connection))
+                    {
+                        command.ExecuteNonQuery();
+                    }
+
 
                     // Create the database
                     using (SqlCommand command = new SqlCommand(sqlQuery, connection))

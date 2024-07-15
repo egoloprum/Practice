@@ -20,7 +20,7 @@ using static System.Net.Mime.MediaTypeNames;
 using System.IO;
 using System.CodeDom.Compiler;
 using System.Data.Common;
-using Microsoft.Office.Core;
+//using Microsoft.Office.Core;
 using Microsoft.Reporting.WinForms;
 using System.Runtime.InteropServices.WindowsRuntime;
 using static System.Windows.Forms.VisualStyles.VisualStyleElement.StartPanel;
