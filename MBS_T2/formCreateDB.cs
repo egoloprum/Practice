@@ -50,7 +50,6 @@ namespace MBS
             comboBox_TypeDBMS.SelectedIndex = 0;
             comboBox_NameDB.Enabled = true;
 
-            Console.WriteLine($"path =  {Application.StartupPath}");
         }
 
         private void btn_Cancel_Click(object sender, EventArgs e)
@@ -65,8 +64,7 @@ namespace MBS
 
             if (Mode == 0)
             {
-                connectionString = $"Data Source={Environment.MachineName}{comboBox_NameServer.Text};Integrated Security=True;" +
-                    $"MultipleActiveResultSets=True";
+                connectionString = $"Data Source={Environment.MachineName}{comboBox_NameServer.Text};Integrated Security=True;";
             }
             else
             {
@@ -215,7 +213,6 @@ namespace MBS
             foreach (string server in theAvailableSqlServers)
             {
                 server.Replace("(local)", "");
-                Console.WriteLine(server);
             }
 
             if (theAvailableSqlServers != null)
@@ -264,7 +261,6 @@ namespace MBS
             string Username = textBox_Username.Text;
             string Password = textBox_Password.Text;
             string Source   = comboBox_NameServer.Text;
-            Console.WriteLine(Source);
             // window = 0; sql server = 1;
             short Mode      = _modeOfDb;
             // int createdDB = SQLControls.CreateDB(DB_Name, Username, Password, Source, Mode);
@@ -293,7 +289,7 @@ namespace MBS
             if (_modeOfDb == 0)
             {
                 // windows
-                connectionString = $@"Data Source={Environment.MachineName}{comboBox_NameServer.Text};Integrated Security=True";
+                connectionString = $"Data Source={Environment.MachineName}{comboBox_NameServer.Text};Integrated Security=True";
                 strQuery = "SELECT name FROM sys.databases";
             }
             else

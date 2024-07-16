@@ -31,6 +31,10 @@ namespace MBS.Properties {
             get {
                 return ((string)(this["ReportConnectionString"]));
             }
+            set
+            {
+                this["ReportConnectionString"] = value;
+            }
         }
         
         [global::System.Configuration.ApplicationScopedSettingAttribute()]
@@ -41,6 +45,10 @@ namespace MBS.Properties {
         public string AlarmConnectionString {
             get {
                 return ((string)(this["AlarmConnectionString"]));
+            }
+            set
+            {
+                this["AlarmConnectionString"] = value;
             }
         }
         

@@ -38,18 +38,6 @@ namespace MBS
             textBox_AlarmConnection.Text = Settings.Default.AlarmConnectionString;
         }
 
-        public string textBox_ReportConnection_Value
-        {
-            get { return textBox_ReportConnection.Text; }
-            set { textBox_ReportConnection.Text = value; }
-        }
-
-        public string textBox_AlarmConnection_Value
-        {
-            get { return textBox_AlarmConnection.Text; }
-            set { textBox_AlarmConnection.Text = value; }
-        }
-
         // ProjectName
 
         private void btn_ProjectName_Change_Click(object sender, EventArgs e)
