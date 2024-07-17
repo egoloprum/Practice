@@ -62,7 +62,6 @@ namespace MBS
             timer.AutoReset = false;
             timer.Enabled = true;
 
-
             void OnTimedEvent(object source, ElapsedEventArgs elaps)
             {
                 timer.Stop();
