@@ -65,3 +65,22 @@ IF EXISTS ( SELECT *
 BEGIN
     DROP PROCEDURE [dbo].[MyProc]
 END
+
+
+
+use "databaseName"
+go 
+
+CREATE OR ALTER PROCEDURE GetCurrentDatabaseSize
+AS
+BEGIN
+    SET NOCOUNT ON;
+
+    DECLARE @DatabaseSizeInBytes BIGINT;
+
+    SELECT @DatabaseSizeInBytes = SUM(size) * 8 * 1024
+    FROM sys.master_files
+    WHERE type = 0 AND database_id = DB_ID(DB_NAME());
+
+    SELECT @DatabaseSizeInBytes AS DatabaseSizeInBytes;
+END;
