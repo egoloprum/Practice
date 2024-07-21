@@ -9,25 +9,27 @@ using System.Data.SqlClient;
 using Microsoft.Reporting.WinForms;
 using static System.Windows.Forms.VisualStyles.VisualStyleElement;
 using System.Threading;
+using MBS.Properties;
 
 
 namespace MBS
 {
     public class ProjectSettings
     {
-        public static string DefaultSQLServer = "(local)\\SQLEXPRESS",
-                             DefaultPath = "E:\\Projects\\",
-                             DefaultProjectID = "ASUTP_U1",
-                             DefaultProjectShortName = "АСУТП У1",
-                             DefaultProjectFullName = "Разработка автоматизированной системы управления технологическим процессом участка 1",
-                             DefaultProjectDeveloper = "ООО \"Исполнитель\"",
-                             DefaultProjectCustomer = "ООО \"Заказчик\"",
-                             DefaultProjectPassword = "sa123456";
-        public static string Desinger = "Каменева Е.Ю.",
-                     Verifying = "Квасников А.В.",
-                     Auditor = "Квасникова О.И.",
-                     Approver = "Сабельфельд К.К.",
-                     ProjectCod = "ЛКЖТ.123456.789";
+        public static string DefaultSQLServer           = "(local)\\SQLEXPRESS",
+                             DefaultPath                = "E:\\Projects\\",
+                             DefaultProjectID           = "ASUTP_U1",
+                             DefaultProjectShortName    = "АСУТП У1",
+                             DefaultProjectFullName     = "Разработка автоматизированной системы управления технологическим процессом участка 1",
+                             DefaultProjectDeveloper    = "ООО \"Исполнитель\"",
+                             DefaultProjectCustomer     = "ООО \"Заказчик\"",
+                             DefaultProjectPassword     = "sa123456";
+
+        public static string Desinger   = "Каменева Е.Ю.",
+                            Verifying   = "Квасников А.В.",
+                            Auditor     = "Квасникова О.И.",
+                            Approver    = "Сабельфельд К.К.",
+                            ProjectCod  = "ЛКЖТ.123456.789";
     }
 
     public static class TimeFiltr
@@ -79,6 +81,7 @@ namespace MBS
             Application.EnableVisualStyles();
             Application.SetCompatibleTextRenderingDefault(false);
             Application.Run(new formMain());
+
             //Application.Run(new formSelectProject());
             //Form fMain = new formMain();
             //fMain.Show();

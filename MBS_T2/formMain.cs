@@ -24,6 +24,7 @@ using MBS.Properties;
 using Microsoft.Reporting.WinForms;
 using static System.Windows.Forms.VisualStyles.VisualStyleElement.StartPanel;
 using System.CodeDom.Compiler;
+using System.Threading;
 
 namespace MBS
 {
@@ -33,14 +34,14 @@ namespace MBS
         formSetting fSetting;
         formAbout fAbout;
         
-        private Timer timer = new Timer();
+        private System.Windows.Forms.Timer timer = new System.Windows.Forms.Timer();
 
         DateTime DAT_filt_start = DateTime.Now.AddDays(-10);
-        DateTime DAT_filt_end = DateTime.Now;
-        public string sDAT_filt_start = "";
-        public string sDAT_filt_end = "";
-        bool bReportConnOK=false;
-        bool bAlarmConnOK = false;
+        DateTime DAT_filt_end   = DateTime.Now;
+        public string sDAT_filt_start   = "";
+        public string sDAT_filt_end     = "";
+        bool bReportConnOK  = false;
+        bool bAlarmConnOK   = false;
 
 
         public formMain()
@@ -54,9 +55,7 @@ namespace MBS
             //fCreateProject.Show();
             //this.Hide();
             InitializeComponent();
-
         }
-
 
         private void timer_Tick(object sender, EventArgs e)
         {
@@ -103,13 +102,13 @@ namespace MBS
 
            
             //дата и время
-            DateTime DAT = DateTime.Now;
-            string sDate = DAT.ToLongDateString() + "   " + DAT.ToLongTimeString();
-            this.DateAndTime.Text = sDate;
-            TimeFiltr.sDAT_start = sDAT_filt_start;
-            TimeFiltr.sDAT_end = sDAT_filt_end;
-            TimeFiltr.lDAT_start = this.lDAT_Filtr_Start.Text;
-            TimeFiltr.lDAT_end = this.lDAT_Filtr_End.Text;
+            DateTime DAT            = DateTime.Now;
+            string sDate            = DAT.ToLongDateString() + "   " + DAT.ToLongTimeString();
+            this.DateAndTime.Text   = sDate;
+            TimeFiltr.sDAT_start    = sDAT_filt_start;
+            TimeFiltr.sDAT_end      = sDAT_filt_end;
+            TimeFiltr.lDAT_start    = this.lDAT_Filtr_Start.Text;
+            TimeFiltr.lDAT_end      = this.lDAT_Filtr_End.Text;
 
         }
 
@@ -150,7 +149,7 @@ namespace MBS
         {
             #if DEBUG
                 General.Login("Adm", "Adm");
-#else
+            #else
                 mySecurity.LoginDialog fLoginDialog = new mySecurity.LoginDialog();
                 fLoginDialog.Owner = this;
 
@@ -166,22 +165,25 @@ namespace MBS
                     ProgramSettings.User = "Не авторизован";
                     ProgramSettings.Role = 0;
                 }
-#endif
+            #endif
 
 
-            
+
 
             //fCreateProject = new formSelectProject();
             //fCreateProject.Owner = this;
             //fCreateProject.ShowDialog();
 
-            //Проверка состояний подключения к БД отчетов
+            // Проверка превышения БД 8 ГБ
+            SQLControls.GetSizeOfDB(Settings.Default.ReportConnectionString);
+
+            // Проверка состояний подключения к БД отчетов
             try
             {
                 bReportConnOK = SQLControls.CheckPropertyConnStr("Report");
 
             }
-            catch (System.Exception ex)
+            catch (Exception ex)
             {
                 General.ErrorMessage(ex);
             }
@@ -220,8 +222,10 @@ namespace MBS
                 Report.LoadTables();
             }
 
-            //Проверка состояний подключения к БД событий
-      
+            // Проверка превышения БД 8 ГБ
+            SQLControls.GetSizeOfDB(Settings.Default.AlarmConnectionString);
+            
+            // Проверка состояний подключения к БД событий
             try
             {
                 bAlarmConnOK = SQLControls.CheckPropertyConnStr("Alarm");
@@ -245,8 +249,33 @@ namespace MBS
         private void formMain_Load(object sender, EventArgs e)
         {
            // this.zerolbl.Padding = new Padding((int)(this.Size.Width - 1210), 0, 0, 0);
-           this.Progress.Maximum=10;
-           this.Progress.Minimum = 0;
+            this.Progress.Maximum = 10;
+            this.Progress.Minimum = 0;
+
+            GetSize_OnceInDay();
+        }
+
+        private async void GetSize_OnceInDay()
+        {
+            await System.Threading.Tasks.Task.Run(() =>
+            {
+                while (true)
+                {
+                    DateTime now = DateTime.Now;
+
+                    if (now.Hour == 12 && now.Minute == 00 && now.Second == 00)
+                    {
+                        SQLControls.GetSizeOfDB(Settings.Default.ReportConnectionString);
+                        SQLControls.GetSizeOfDB(Settings.Default.AlarmConnectionString);
+
+                        Console.WriteLine("runs here the function GetSizeOfDB");
+                        System.Threading.Tasks.Task.Delay(1000).Wait();
+                    }
+
+                    // Sleep for 1 second
+                    System.Threading.Tasks.Task.Delay(1000).Wait();
+                }
+            });
         }
 
         private void formMain_Resize(object sender, EventArgs e)

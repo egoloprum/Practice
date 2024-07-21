@@ -151,14 +151,14 @@ namespace MBS
             this.DateAndTime});
             this.Main_StatusStrip.Location = new System.Drawing.Point(0, 0);
             this.Main_StatusStrip.Name = "Main_StatusStrip";
-            this.Main_StatusStrip.Size = new System.Drawing.Size(1272, 31);
+            this.Main_StatusStrip.Size = new System.Drawing.Size(1696, 33);
             this.Main_StatusStrip.TabIndex = 8;
             this.Main_StatusStrip.Text = "MainState";
             // 
             // tsslReportDB
             // 
             this.tsslReportDB.Name = "tsslReportDB";
-            this.tsslReportDB.Size = new System.Drawing.Size(68, 26);
+            this.tsslReportDB.Size = new System.Drawing.Size(86, 27);
             this.tsslReportDB.Text = "БД отчетов";
             // 
             // slReportDB_ConnSts
@@ -169,7 +169,7 @@ namespace MBS
             | System.Windows.Forms.ToolStripStatusLabelBorderSides.Bottom)));
             this.slReportDB_ConnSts.BorderStyle = System.Windows.Forms.Border3DStyle.SunkenOuter;
             this.slReportDB_ConnSts.Name = "slReportDB_ConnSts";
-            this.slReportDB_ConnSts.Size = new System.Drawing.Size(20, 26);
+            this.slReportDB_ConnSts.Size = new System.Drawing.Size(22, 27);
             this.slReportDB_ConnSts.Text = "...";
             this.slReportDB_ConnSts.ToolTipText = "Состояние подключения";
             this.slReportDB_ConnSts.Click += new System.EventHandler(this.slReportDB_ConnSts_Click);
@@ -178,13 +178,13 @@ namespace MBS
             // 
             this.Empty1.AutoSize = false;
             this.Empty1.Name = "Empty1";
-            this.Empty1.Size = new System.Drawing.Size(50, 26);
+            this.Empty1.Size = new System.Drawing.Size(50, 27);
             this.Empty1.Text = "   ";
             // 
             // tsslWinCCAlarm
             // 
             this.tsslWinCCAlarm.Name = "tsslWinCCAlarm";
-            this.tsslWinCCAlarm.Size = new System.Drawing.Size(75, 26);
+            this.tsslWinCCAlarm.Size = new System.Drawing.Size(94, 27);
             this.tsslWinCCAlarm.Text = "БД Событий";
             // 
             // slWinCCAlarm_ConnSts
@@ -194,7 +194,7 @@ namespace MBS
             | System.Windows.Forms.ToolStripStatusLabelBorderSides.Bottom)));
             this.slWinCCAlarm_ConnSts.BorderStyle = System.Windows.Forms.Border3DStyle.SunkenOuter;
             this.slWinCCAlarm_ConnSts.Name = "slWinCCAlarm_ConnSts";
-            this.slWinCCAlarm_ConnSts.Size = new System.Drawing.Size(20, 26);
+            this.slWinCCAlarm_ConnSts.Size = new System.Drawing.Size(22, 27);
             this.slWinCCAlarm_ConnSts.Text = "...";
             this.slWinCCAlarm_ConnSts.ToolTipText = "Состояние подключения";
             this.slWinCCAlarm_ConnSts.Click += new System.EventHandler(this.slWinCCAlarm_ConnSts_Click);
@@ -202,19 +202,19 @@ namespace MBS
             // Empty3
             // 
             this.Empty3.Name = "Empty3";
-            this.Empty3.Size = new System.Drawing.Size(0, 26);
+            this.Empty3.Size = new System.Drawing.Size(0, 27);
             // 
             // Empty
             // 
             this.Empty.Name = "Empty";
-            this.Empty.Size = new System.Drawing.Size(684, 26);
+            this.Empty.Size = new System.Drawing.Size(979, 27);
             this.Empty.Spring = true;
             // 
             // lOperation
             // 
             this.lOperation.ImageAlign = System.Drawing.ContentAlignment.MiddleRight;
             this.lOperation.Name = "lOperation";
-            this.lOperation.Size = new System.Drawing.Size(16, 26);
+            this.lOperation.Size = new System.Drawing.Size(18, 27);
             this.lOperation.Text = "...";
             this.lOperation.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
             this.lOperation.ToolTipText = "Текущая операция";
@@ -229,7 +229,7 @@ namespace MBS
             // 
             this.Empty2.ImageAlign = System.Drawing.ContentAlignment.MiddleRight;
             this.Empty2.Name = "Empty2";
-            this.Empty2.Size = new System.Drawing.Size(22, 26);
+            this.Empty2.Size = new System.Drawing.Size(29, 27);
             this.Empty2.Tag = "";
             this.Empty2.Text = "     ";
             // 
@@ -237,7 +237,7 @@ namespace MBS
             // 
             this.tsslUser.BorderSides = System.Windows.Forms.ToolStripStatusLabelBorderSides.Left;
             this.tsslUser.Name = "tsslUser";
-            this.tsslUser.Size = new System.Drawing.Size(91, 26);
+            this.tsslUser.Size = new System.Drawing.Size(114, 27);
             this.tsslUser.Text = "Пользователь:";
             // 
             // User
@@ -247,14 +247,14 @@ namespace MBS
             | System.Windows.Forms.ToolStripStatusLabelBorderSides.Bottom)));
             this.User.BorderStyle = System.Windows.Forms.Border3DStyle.SunkenOuter;
             this.User.Name = "User";
-            this.User.Size = new System.Drawing.Size(20, 26);
+            this.User.Size = new System.Drawing.Size(22, 27);
             this.User.Text = "...";
             this.User.ToolTipText = "Пользователь";
             // 
             // tsslMode
             // 
             this.tsslMode.Name = "tsslMode";
-            this.tsslMode.Size = new System.Drawing.Size(48, 26);
+            this.tsslMode.Size = new System.Drawing.Size(59, 27);
             this.tsslMode.Text = "Режим:";
             // 
             // Mode
@@ -264,7 +264,7 @@ namespace MBS
             | System.Windows.Forms.ToolStripStatusLabelBorderSides.Bottom)));
             this.Mode.BorderStyle = System.Windows.Forms.Border3DStyle.SunkenOuter;
             this.Mode.Name = "Mode";
-            this.Mode.Size = new System.Drawing.Size(20, 26);
+            this.Mode.Size = new System.Drawing.Size(22, 27);
             this.Mode.Text = "...";
             this.Mode.ToolTipText = "Режим";
             // 
@@ -276,7 +276,7 @@ namespace MBS
             this.DateAndTime.BorderStyle = System.Windows.Forms.Border3DStyle.SunkenOuter;
             this.DateAndTime.Margin = new System.Windows.Forms.Padding(0, 0, 1, 0);
             this.DateAndTime.Name = "DateAndTime";
-            this.DateAndTime.Size = new System.Drawing.Size(20, 31);
+            this.DateAndTime.Size = new System.Drawing.Size(22, 33);
             this.DateAndTime.Text = "...";
             this.DateAndTime.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
             // 
@@ -293,7 +293,7 @@ namespace MBS
             this.tsmi_1_Setting});
             this.Main_MenuStrip.Location = new System.Drawing.Point(0, 0);
             this.Main_MenuStrip.Name = "Main_MenuStrip";
-            this.Main_MenuStrip.Size = new System.Drawing.Size(1272, 28);
+            this.Main_MenuStrip.Size = new System.Drawing.Size(1696, 28);
             this.Main_MenuStrip.TabIndex = 4;
             this.Main_MenuStrip.Text = "menuStrip1";
             // 
@@ -307,7 +307,7 @@ namespace MBS
             this.tsmi_2_Logout});
             this.tsmi_1_Main.Image = global::MBS.Properties.Resources._1439314419_home;
             this.tsmi_1_Main.Name = "tsmi_1_Main";
-            this.tsmi_1_Main.Size = new System.Drawing.Size(73, 24);
+            this.tsmi_1_Main.Size = new System.Drawing.Size(85, 24);
             this.tsmi_1_Main.Text = "Меню";
             // 
             // tsmi_2_OpenProject
@@ -315,7 +315,7 @@ namespace MBS
             this.tsmi_2_OpenProject.Image = global::MBS.Properties.Resources._1439314019_folder_open;
             this.tsmi_2_OpenProject.Name = "tsmi_2_OpenProject";
             this.tsmi_2_OpenProject.ShortcutKeys = ((System.Windows.Forms.Keys)((System.Windows.Forms.Keys.Control | System.Windows.Forms.Keys.O)));
-            this.tsmi_2_OpenProject.Size = new System.Drawing.Size(209, 26);
+            this.tsmi_2_OpenProject.Size = new System.Drawing.Size(255, 26);
             this.tsmi_2_OpenProject.Text = "Открыть проект";
             this.tsmi_2_OpenProject.ToolTipText = "Открыть существующий проект";
             this.tsmi_2_OpenProject.Click += new System.EventHandler(this.toolStripMenuItem_OpenProject_Click);
@@ -324,7 +324,7 @@ namespace MBS
             // 
             this.tsmi_2_CloseProject.Image = global::MBS.Properties.Resources._1439314340_folder_close;
             this.tsmi_2_CloseProject.Name = "tsmi_2_CloseProject";
-            this.tsmi_2_CloseProject.Size = new System.Drawing.Size(209, 26);
+            this.tsmi_2_CloseProject.Size = new System.Drawing.Size(255, 26);
             this.tsmi_2_CloseProject.Text = "Закрыть проект";
             this.tsmi_2_CloseProject.ToolTipText = "Закрыть проект";
             this.tsmi_2_CloseProject.Click += new System.EventHandler(this.toolStripMenuItem_CloseProject_Click);
@@ -332,13 +332,13 @@ namespace MBS
             // toolStripSeparator1
             // 
             this.toolStripSeparator1.Name = "toolStripSeparator1";
-            this.toolStripSeparator1.Size = new System.Drawing.Size(206, 6);
+            this.toolStripSeparator1.Size = new System.Drawing.Size(252, 6);
             // 
             // tsmi_2_Login
             // 
             this.tsmi_2_Login.Image = global::MBS.Properties.Resources._1439314055_login;
             this.tsmi_2_Login.Name = "tsmi_2_Login";
-            this.tsmi_2_Login.Size = new System.Drawing.Size(209, 26);
+            this.tsmi_2_Login.Size = new System.Drawing.Size(255, 26);
             this.tsmi_2_Login.Text = "Сменить пользователя";
             this.tsmi_2_Login.Click += new System.EventHandler(this.сменитьПользователяToolStripMenuItem_Click);
             // 
@@ -346,7 +346,7 @@ namespace MBS
             // 
             this.tsmi_2_Logout.Image = global::MBS.Properties.Resources._1439314064_logout;
             this.tsmi_2_Logout.Name = "tsmi_2_Logout";
-            this.tsmi_2_Logout.Size = new System.Drawing.Size(209, 26);
+            this.tsmi_2_Logout.Size = new System.Drawing.Size(255, 26);
             this.tsmi_2_Logout.Text = "Выйти из системы";
             // 
             // tsmi_1_Reports
@@ -355,21 +355,21 @@ namespace MBS
             this.tsmi_2_Orders,
             this.tsmi_2_Batchs});
             this.tsmi_1_Reports.Name = "tsmi_1_Reports";
-            this.tsmi_1_Reports.Size = new System.Drawing.Size(60, 24);
+            this.tsmi_1_Reports.Size = new System.Drawing.Size(73, 24);
             this.tsmi_1_Reports.Text = "Отчеты";
             // 
             // tsmi_2_Orders
             // 
             this.tsmi_2_Orders.Image = global::MBS.Properties.Resources._1439314741_application_spec;
             this.tsmi_2_Orders.Name = "tsmi_2_Orders";
-            this.tsmi_2_Orders.Size = new System.Drawing.Size(184, 26);
+            this.tsmi_2_Orders.Size = new System.Drawing.Size(145, 26);
             this.tsmi_2_Orders.Text = "Заказы";
             // 
             // tsmi_2_Batchs
             // 
             this.tsmi_2_Batchs.Image = global::MBS.Properties.Resources._1439314706_script;
             this.tsmi_2_Batchs.Name = "tsmi_2_Batchs";
-            this.tsmi_2_Batchs.Size = new System.Drawing.Size(184, 26);
+            this.tsmi_2_Batchs.Size = new System.Drawing.Size(145, 26);
             this.tsmi_2_Batchs.Text = "Замесы";
             // 
             // tsmi_1_Service
@@ -378,7 +378,7 @@ namespace MBS
             this.tsmi_2_BD,
             this.tsmi_2_Users});
             this.tsmi_1_Service.Name = "tsmi_1_Service";
-            this.tsmi_1_Service.Size = new System.Drawing.Size(59, 24);
+            this.tsmi_1_Service.Size = new System.Drawing.Size(73, 24);
             this.tsmi_1_Service.Text = "Сервис";
             // 
             // tsmi_2_BD
@@ -389,27 +389,27 @@ namespace MBS
             this.tsmi_3_CopyBD});
             this.tsmi_2_BD.Image = global::MBS.Properties.Resources._1439314386_cog;
             this.tsmi_2_BD.Name = "tsmi_2_BD";
-            this.tsmi_2_BD.Size = new System.Drawing.Size(184, 26);
+            this.tsmi_2_BD.Size = new System.Drawing.Size(191, 26);
             this.tsmi_2_BD.Text = "Параметры";
             // 
             // tsmi_3_SetConnection
             // 
             this.tsmi_3_SetConnection.Name = "tsmi_3_SetConnection";
-            this.tsmi_3_SetConnection.Size = new System.Drawing.Size(238, 22);
+            this.tsmi_3_SetConnection.Size = new System.Drawing.Size(298, 26);
             this.tsmi_3_SetConnection.Text = "Настроить подключение к БД";
             this.tsmi_3_SetConnection.Click += new System.EventHandler(this.toolStripMenuItem_OpenProject_Click);
             // 
             // tsmi_NewBD
             // 
             this.tsmi_NewBD.Name = "tsmi_NewBD";
-            this.tsmi_NewBD.Size = new System.Drawing.Size(238, 22);
+            this.tsmi_NewBD.Size = new System.Drawing.Size(298, 26);
             this.tsmi_NewBD.Text = "Создать БД";
             this.tsmi_NewBD.Click += new System.EventHandler(this.toolStripMenuItem_NewProject_Click);
             // 
             // tsmi_3_CopyBD
             // 
             this.tsmi_3_CopyBD.Name = "tsmi_3_CopyBD";
-            this.tsmi_3_CopyBD.Size = new System.Drawing.Size(238, 22);
+            this.tsmi_3_CopyBD.Size = new System.Drawing.Size(298, 26);
             this.tsmi_3_CopyBD.Text = "Создать копию БД";
             this.tsmi_3_CopyBD.Click += new System.EventHandler(this.tsmi_3_CopyBD_Click);
             // 
@@ -421,27 +421,27 @@ namespace MBS
             this.tsmi_3_Enter});
             this.tsmi_2_Users.Image = global::MBS.Properties.Resources._1439314044_user;
             this.tsmi_2_Users.Name = "tsmi_2_Users";
-            this.tsmi_2_Users.Size = new System.Drawing.Size(184, 26);
+            this.tsmi_2_Users.Size = new System.Drawing.Size(191, 26);
             this.tsmi_2_Users.Text = "Пользователи";
             // 
             // tsmi_3_AddUser
             // 
             this.tsmi_3_AddUser.Name = "tsmi_3_AddUser";
-            this.tsmi_3_AddUser.Size = new System.Drawing.Size(154, 22);
+            this.tsmi_3_AddUser.Size = new System.Drawing.Size(194, 26);
             this.tsmi_3_AddUser.Text = "Добавить";
             this.tsmi_3_AddUser.Click += new System.EventHandler(this.tsmi_3_AddUser_Click);
             // 
             // tsmi_3_EditUser
             // 
             this.tsmi_3_EditUser.Name = "tsmi_3_EditUser";
-            this.tsmi_3_EditUser.Size = new System.Drawing.Size(154, 22);
+            this.tsmi_3_EditUser.Size = new System.Drawing.Size(194, 26);
             this.tsmi_3_EditUser.Text = "Редактировать";
             this.tsmi_3_EditUser.Click += new System.EventHandler(this.tsmi_3_EditUser_Click);
             // 
             // tsmi_3_Enter
             // 
             this.tsmi_3_Enter.Name = "tsmi_3_Enter";
-            this.tsmi_3_Enter.Size = new System.Drawing.Size(154, 22);
+            this.tsmi_3_Enter.Size = new System.Drawing.Size(194, 26);
             this.tsmi_3_Enter.Text = "Войти";
             // 
             // tsmi_1_Documentation
@@ -450,21 +450,21 @@ namespace MBS
             this.tsmi_2_UserManual,
             this.tsmi_2_AdminManual});
             this.tsmi_1_Documentation.Name = "tsmi_1_Documentation";
-            this.tsmi_1_Documentation.Size = new System.Drawing.Size(99, 24);
+            this.tsmi_1_Documentation.Size = new System.Drawing.Size(124, 24);
             this.tsmi_1_Documentation.Text = "Документация";
             // 
             // tsmi_2_UserManual
             // 
             this.tsmi_2_UserManual.Image = global::MBS.Properties.Resources._2000px_PDF_file_icon_svg__1980x2432;
             this.tsmi_2_UserManual.Name = "tsmi_2_UserManual";
-            this.tsmi_2_UserManual.Size = new System.Drawing.Size(302, 26);
+            this.tsmi_2_UserManual.Size = new System.Drawing.Size(374, 26);
             this.tsmi_2_UserManual.Text = "Руководство оператора";
             // 
             // tsmi_2_AdminManual
             // 
             this.tsmi_2_AdminManual.Image = global::MBS.Properties.Resources._2000px_PDF_file_icon_svg__1980x2432;
             this.tsmi_2_AdminManual.Name = "tsmi_2_AdminManual";
-            this.tsmi_2_AdminManual.Size = new System.Drawing.Size(302, 26);
+            this.tsmi_2_AdminManual.Size = new System.Drawing.Size(374, 26);
             this.tsmi_2_AdminManual.Text = "Руководство системного администатора";
             // 
             // tsmi_1_Help
@@ -472,20 +472,20 @@ namespace MBS
             this.tsmi_1_Help.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.tsmi_2_About});
             this.tsmi_1_Help.Name = "tsmi_1_Help";
-            this.tsmi_1_Help.Size = new System.Drawing.Size(65, 24);
+            this.tsmi_1_Help.Size = new System.Drawing.Size(81, 24);
             this.tsmi_1_Help.Text = "Справка";
             // 
             // tsmi_2_About
             // 
             this.tsmi_2_About.Name = "tsmi_2_About";
-            this.tsmi_2_About.Size = new System.Drawing.Size(180, 22);
+            this.tsmi_2_About.Size = new System.Drawing.Size(187, 26);
             this.tsmi_2_About.Text = "О программе";
             this.tsmi_2_About.Click += new System.EventHandler(this.tsmi_2_About_Click);
             // 
             // tsmi_1_Setting
             // 
             this.tsmi_1_Setting.Name = "tsmi_1_Setting";
-            this.tsmi_1_Setting.Size = new System.Drawing.Size(78, 24);
+            this.tsmi_1_Setting.Size = new System.Drawing.Size(97, 24);
             this.tsmi_1_Setting.Text = "Настройка";
             this.tsmi_1_Setting.Click += new System.EventHandler(this.tsmi_1_Setting_Click);
             // 
@@ -500,13 +500,15 @@ namespace MBS
             // 
             this.Main_tsc.ContentPanel.AutoScroll = true;
             this.Main_tsc.ContentPanel.Controls.Add(this.scReports);
-            this.Main_tsc.ContentPanel.Size = new System.Drawing.Size(1272, 634);
+            this.Main_tsc.ContentPanel.Margin = new System.Windows.Forms.Padding(4);
+            this.Main_tsc.ContentPanel.Size = new System.Drawing.Size(1696, 792);
             this.Main_tsc.Dock = System.Windows.Forms.DockStyle.Fill;
             this.Main_tsc.LeftToolStripPanelVisible = false;
             this.Main_tsc.Location = new System.Drawing.Point(0, 0);
+            this.Main_tsc.Margin = new System.Windows.Forms.Padding(4);
             this.Main_tsc.Name = "Main_tsc";
             this.Main_tsc.RightToolStripPanelVisible = false;
-            this.Main_tsc.Size = new System.Drawing.Size(1272, 693);
+            this.Main_tsc.Size = new System.Drawing.Size(1696, 853);
             this.Main_tsc.TabIndex = 13;
             this.Main_tsc.Text = "toolStripContainer1";
             // 
@@ -521,7 +523,7 @@ namespace MBS
             this.scReports.FixedPanel = System.Windows.Forms.FixedPanel.Panel1;
             this.scReports.IsSplitterFixed = true;
             this.scReports.Location = new System.Drawing.Point(0, 0);
-            this.scReports.Margin = new System.Windows.Forms.Padding(2);
+            this.scReports.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
             this.scReports.Name = "scReports";
             this.scReports.Orientation = System.Windows.Forms.Orientation.Horizontal;
             // 
@@ -548,16 +550,16 @@ namespace MBS
             // scReports.Panel2
             // 
             this.scReports.Panel2.Controls.Add(this.Main_TabControl);
-            this.scReports.Size = new System.Drawing.Size(1272, 634);
+            this.scReports.Size = new System.Drawing.Size(1696, 792);
             this.scReports.SplitterDistance = 80;
-            this.scReports.SplitterWidth = 3;
             this.scReports.TabIndex = 13;
             // 
             // bDATFiltr_BWD
             // 
-            this.bDATFiltr_BWD.Location = new System.Drawing.Point(599, 54);
+            this.bDATFiltr_BWD.Location = new System.Drawing.Point(799, 66);
+            this.bDATFiltr_BWD.Margin = new System.Windows.Forms.Padding(4);
             this.bDATFiltr_BWD.Name = "bDATFiltr_BWD";
-            this.bDATFiltr_BWD.Size = new System.Drawing.Size(75, 23);
+            this.bDATFiltr_BWD.Size = new System.Drawing.Size(100, 28);
             this.bDATFiltr_BWD.TabIndex = 24;
             this.bDATFiltr_BWD.Text = "Назад";
             this.bDATFiltr_BWD.UseVisualStyleBackColor = true;
@@ -565,9 +567,10 @@ namespace MBS
             // 
             // bDATFiltr_FWD
             // 
-            this.bDATFiltr_FWD.Location = new System.Drawing.Point(871, 54);
+            this.bDATFiltr_FWD.Location = new System.Drawing.Point(1161, 66);
+            this.bDATFiltr_FWD.Margin = new System.Windows.Forms.Padding(4);
             this.bDATFiltr_FWD.Name = "bDATFiltr_FWD";
-            this.bDATFiltr_FWD.Size = new System.Drawing.Size(75, 23);
+            this.bDATFiltr_FWD.Size = new System.Drawing.Size(100, 28);
             this.bDATFiltr_FWD.TabIndex = 23;
             this.bDATFiltr_FWD.Text = "Вперед";
             this.bDATFiltr_FWD.UseVisualStyleBackColor = true;
@@ -576,50 +579,56 @@ namespace MBS
             // label1
             // 
             this.label1.AutoSize = true;
-            this.label1.Location = new System.Drawing.Point(596, 6);
+            this.label1.Location = new System.Drawing.Point(795, 7);
+            this.label1.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
             this.label1.Name = "label1";
-            this.label1.Size = new System.Drawing.Size(108, 13);
+            this.label1.Size = new System.Drawing.Size(136, 16);
             this.label1.TabIndex = 22;
             this.label1.Text = "Выбранный период:";
             // 
             // lDAT_Filtr_End
             // 
             this.lDAT_Filtr_End.BorderStyle = System.Windows.Forms.BorderStyle.Fixed3D;
-            this.lDAT_Filtr_End.Location = new System.Drawing.Point(786, 30);
+            this.lDAT_Filtr_End.Location = new System.Drawing.Point(1048, 37);
+            this.lDAT_Filtr_End.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
             this.lDAT_Filtr_End.Name = "lDAT_Filtr_End";
-            this.lDAT_Filtr_End.Size = new System.Drawing.Size(160, 20);
+            this.lDAT_Filtr_End.Size = new System.Drawing.Size(213, 25);
             this.lDAT_Filtr_End.TabIndex = 21;
             // 
             // lDAT_Filtr_Start
             // 
             this.lDAT_Filtr_Start.BorderStyle = System.Windows.Forms.BorderStyle.Fixed3D;
-            this.lDAT_Filtr_Start.Location = new System.Drawing.Point(599, 30);
+            this.lDAT_Filtr_Start.Location = new System.Drawing.Point(799, 37);
+            this.lDAT_Filtr_Start.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
             this.lDAT_Filtr_Start.Name = "lDAT_Filtr_Start";
-            this.lDAT_Filtr_Start.Size = new System.Drawing.Size(160, 20);
+            this.lDAT_Filtr_Start.Size = new System.Drawing.Size(213, 25);
             this.lDAT_Filtr_Start.TabIndex = 20;
             // 
             // dateTimePicker_End
             // 
-            this.dateTimePicker_End.Location = new System.Drawing.Point(786, 30);
+            this.dateTimePicker_End.Location = new System.Drawing.Point(1048, 37);
+            this.dateTimePicker_End.Margin = new System.Windows.Forms.Padding(4);
             this.dateTimePicker_End.Name = "dateTimePicker_End";
-            this.dateTimePicker_End.Size = new System.Drawing.Size(160, 20);
+            this.dateTimePicker_End.Size = new System.Drawing.Size(212, 22);
             this.dateTimePicker_End.TabIndex = 19;
             this.dateTimePicker_End.ValueChanged += new System.EventHandler(this.dateTimePicker_End_ValueChanged);
             // 
             // dateTimePicker_Begin
             // 
-            this.dateTimePicker_Begin.Location = new System.Drawing.Point(599, 30);
+            this.dateTimePicker_Begin.Location = new System.Drawing.Point(799, 37);
+            this.dateTimePicker_Begin.Margin = new System.Windows.Forms.Padding(4);
             this.dateTimePicker_Begin.Name = "dateTimePicker_Begin";
-            this.dateTimePicker_Begin.Size = new System.Drawing.Size(160, 20);
+            this.dateTimePicker_Begin.Size = new System.Drawing.Size(212, 22);
             this.dateTimePicker_Begin.TabIndex = 18;
             this.dateTimePicker_Begin.ValueChanged += new System.EventHandler(this.dateTimePicker_Begin_ValueChanged);
             // 
             // rbHour
             // 
             this.rbHour.AutoSize = true;
-            this.rbHour.Location = new System.Drawing.Point(13, 33);
+            this.rbHour.Location = new System.Drawing.Point(17, 41);
+            this.rbHour.Margin = new System.Windows.Forms.Padding(4);
             this.rbHour.Name = "rbHour";
-            this.rbHour.Size = new System.Drawing.Size(45, 17);
+            this.rbHour.Size = new System.Drawing.Size(52, 20);
             this.rbHour.TabIndex = 17;
             this.rbHour.Text = "Час";
             this.rbHour.UseVisualStyleBackColor = true;
@@ -628,9 +637,10 @@ namespace MBS
             // rbShift
             // 
             this.rbShift.AutoSize = true;
-            this.rbShift.Location = new System.Drawing.Point(13, 54);
+            this.rbShift.Location = new System.Drawing.Point(17, 66);
+            this.rbShift.Margin = new System.Windows.Forms.Padding(4);
             this.rbShift.Name = "rbShift";
-            this.rbShift.Size = new System.Drawing.Size(63, 17);
+            this.rbShift.Size = new System.Drawing.Size(77, 20);
             this.rbShift.TabIndex = 16;
             this.rbShift.Text = "8 часов";
             this.rbShift.UseVisualStyleBackColor = true;
@@ -639,9 +649,10 @@ namespace MBS
             // rbPeriod
             // 
             this.rbPeriod.AutoSize = true;
-            this.rbPeriod.Location = new System.Drawing.Point(421, 33);
+            this.rbPeriod.Location = new System.Drawing.Point(561, 41);
+            this.rbPeriod.Margin = new System.Windows.Forms.Padding(4);
             this.rbPeriod.Name = "rbPeriod";
-            this.rbPeriod.Size = new System.Drawing.Size(77, 17);
+            this.rbPeriod.Size = new System.Drawing.Size(96, 20);
             this.rbPeriod.TabIndex = 13;
             this.rbPeriod.Text = "За период";
             this.rbPeriod.UseVisualStyleBackColor = true;
@@ -650,9 +661,10 @@ namespace MBS
             // rbYear
             // 
             this.rbYear.AutoSize = true;
-            this.rbYear.Location = new System.Drawing.Point(321, 54);
+            this.rbYear.Location = new System.Drawing.Point(428, 66);
+            this.rbYear.Margin = new System.Windows.Forms.Padding(4);
             this.rbYear.Name = "rbYear";
-            this.rbYear.Size = new System.Drawing.Size(43, 17);
+            this.rbYear.Size = new System.Drawing.Size(51, 20);
             this.rbYear.TabIndex = 12;
             this.rbYear.Text = "Год";
             this.rbYear.UseVisualStyleBackColor = true;
@@ -661,9 +673,10 @@ namespace MBS
             // rbHalfYear
             // 
             this.rbHalfYear.AutoSize = true;
-            this.rbHalfYear.Location = new System.Drawing.Point(321, 33);
+            this.rbHalfYear.Location = new System.Drawing.Point(428, 41);
+            this.rbHalfYear.Margin = new System.Windows.Forms.Padding(4);
             this.rbHalfYear.Name = "rbHalfYear";
-            this.rbHalfYear.Size = new System.Drawing.Size(68, 17);
+            this.rbHalfYear.Size = new System.Drawing.Size(84, 20);
             this.rbHalfYear.TabIndex = 11;
             this.rbHalfYear.Text = "Полгода";
             this.rbHalfYear.UseVisualStyleBackColor = true;
@@ -672,9 +685,10 @@ namespace MBS
             // rbQuarter
             // 
             this.rbQuarter.AutoSize = true;
-            this.rbQuarter.Location = new System.Drawing.Point(207, 54);
+            this.rbQuarter.Location = new System.Drawing.Point(276, 66);
+            this.rbQuarter.Margin = new System.Windows.Forms.Padding(4);
             this.rbQuarter.Name = "rbQuarter";
-            this.rbQuarter.Size = new System.Drawing.Size(67, 17);
+            this.rbQuarter.Size = new System.Drawing.Size(83, 20);
             this.rbQuarter.TabIndex = 10;
             this.rbQuarter.Text = "Квартал";
             this.rbQuarter.UseVisualStyleBackColor = true;
@@ -683,9 +697,10 @@ namespace MBS
             // rbMonth
             // 
             this.rbMonth.AutoSize = true;
-            this.rbMonth.Location = new System.Drawing.Point(207, 33);
+            this.rbMonth.Location = new System.Drawing.Point(276, 41);
+            this.rbMonth.Margin = new System.Windows.Forms.Padding(4);
             this.rbMonth.Name = "rbMonth";
-            this.rbMonth.Size = new System.Drawing.Size(58, 17);
+            this.rbMonth.Size = new System.Drawing.Size(69, 20);
             this.rbMonth.TabIndex = 9;
             this.rbMonth.Text = "Месяц";
             this.rbMonth.UseVisualStyleBackColor = true;
@@ -694,9 +709,10 @@ namespace MBS
             // rbDay
             // 
             this.rbDay.AutoSize = true;
-            this.rbDay.Location = new System.Drawing.Point(103, 33);
+            this.rbDay.Location = new System.Drawing.Point(137, 41);
+            this.rbDay.Margin = new System.Windows.Forms.Padding(4);
             this.rbDay.Name = "rbDay";
-            this.rbDay.Size = new System.Drawing.Size(52, 17);
+            this.rbDay.Size = new System.Drawing.Size(60, 20);
             this.rbDay.TabIndex = 8;
             this.rbDay.Text = "День";
             this.rbDay.UseVisualStyleBackColor = true;
@@ -706,9 +722,10 @@ namespace MBS
             // 
             this.rbWeek.AutoSize = true;
             this.rbWeek.Checked = true;
-            this.rbWeek.Location = new System.Drawing.Point(103, 54);
+            this.rbWeek.Location = new System.Drawing.Point(137, 66);
+            this.rbWeek.Margin = new System.Windows.Forms.Padding(4);
             this.rbWeek.Name = "rbWeek";
-            this.rbWeek.Size = new System.Drawing.Size(63, 17);
+            this.rbWeek.Size = new System.Drawing.Size(77, 20);
             this.rbWeek.TabIndex = 7;
             this.rbWeek.TabStop = true;
             this.rbWeek.Text = "Неделя";
@@ -718,9 +735,10 @@ namespace MBS
             // Technology_lUnit
             // 
             this.Technology_lUnit.AutoSize = true;
-            this.Technology_lUnit.Location = new System.Drawing.Point(10, 6);
+            this.Technology_lUnit.Location = new System.Drawing.Point(13, 7);
+            this.Technology_lUnit.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
             this.Technology_lUnit.Name = "Technology_lUnit";
-            this.Technology_lUnit.Size = new System.Drawing.Size(120, 13);
+            this.Technology_lUnit.Size = new System.Drawing.Size(147, 16);
             this.Technology_lUnit.TabIndex = 5;
             this.Technology_lUnit.Text = "Фильтры по времени:";
             // 
@@ -733,9 +751,10 @@ namespace MBS
             this.Main_TabControl.Controls.Add(this.tbReport);
             this.Main_TabControl.Dock = System.Windows.Forms.DockStyle.Fill;
             this.Main_TabControl.Location = new System.Drawing.Point(0, 0);
+            this.Main_TabControl.Margin = new System.Windows.Forms.Padding(4);
             this.Main_TabControl.Name = "Main_TabControl";
             this.Main_TabControl.SelectedIndex = 0;
-            this.Main_TabControl.Size = new System.Drawing.Size(1272, 551);
+            this.Main_TabControl.Size = new System.Drawing.Size(1696, 708);
             this.Main_TabControl.TabIndex = 12;
             this.Main_TabControl.SelectedIndexChanged += new System.EventHandler(this.Main_TabControl_SelectedIndexChanged);
             this.Main_TabControl.Click += new System.EventHandler(this.Main_TabControl_Click);
@@ -743,10 +762,11 @@ namespace MBS
             // tbOrders
             // 
             this.tbOrders.Controls.Add(this.edgvOrders);
-            this.tbOrders.Location = new System.Drawing.Point(4, 22);
+            this.tbOrders.Location = new System.Drawing.Point(4, 25);
+            this.tbOrders.Margin = new System.Windows.Forms.Padding(4);
             this.tbOrders.Name = "tbOrders";
-            this.tbOrders.Padding = new System.Windows.Forms.Padding(3);
-            this.tbOrders.Size = new System.Drawing.Size(1264, 525);
+            this.tbOrders.Padding = new System.Windows.Forms.Padding(4);
+            this.tbOrders.Size = new System.Drawing.Size(1688, 679);
             this.tbOrders.TabIndex = 0;
             this.tbOrders.Text = "Заказы";
             this.tbOrders.UseVisualStyleBackColor = true;
@@ -754,10 +774,10 @@ namespace MBS
             // edgvOrders
             // 
             this.edgvOrders.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.edgvOrders.Location = new System.Drawing.Point(3, 3);
-            this.edgvOrders.Margin = new System.Windows.Forms.Padding(4);
+            this.edgvOrders.Location = new System.Drawing.Point(4, 4);
+            this.edgvOrders.Margin = new System.Windows.Forms.Padding(5);
             this.edgvOrders.Name = "edgvOrders";
-            this.edgvOrders.Size = new System.Drawing.Size(1258, 519);
+            this.edgvOrders.Size = new System.Drawing.Size(1680, 671);
             this.edgvOrders.TabIndex = 0;
             this.edgvOrders.ExportExcell += new System.EventHandler(this.edgvOrders_ExportExcell);
             this.edgvOrders.ExportHTML += new System.EventHandler(this.edgvOrders_ExportHTML);
@@ -766,10 +786,11 @@ namespace MBS
             // tbBatchs
             // 
             this.tbBatchs.Controls.Add(this.edgvBatchs);
-            this.tbBatchs.Location = new System.Drawing.Point(4, 22);
+            this.tbBatchs.Location = new System.Drawing.Point(4, 25);
+            this.tbBatchs.Margin = new System.Windows.Forms.Padding(4);
             this.tbBatchs.Name = "tbBatchs";
-            this.tbBatchs.Padding = new System.Windows.Forms.Padding(3);
-            this.tbBatchs.Size = new System.Drawing.Size(1264, 525);
+            this.tbBatchs.Padding = new System.Windows.Forms.Padding(4);
+            this.tbBatchs.Size = new System.Drawing.Size(1688, 679);
             this.tbBatchs.TabIndex = 1;
             this.tbBatchs.Text = "Замесы";
             this.tbBatchs.UseVisualStyleBackColor = true;
@@ -777,9 +798,10 @@ namespace MBS
             // edgvBatchs
             // 
             this.edgvBatchs.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.edgvBatchs.Location = new System.Drawing.Point(3, 3);
+            this.edgvBatchs.Location = new System.Drawing.Point(4, 4);
+            this.edgvBatchs.Margin = new System.Windows.Forms.Padding(5);
             this.edgvBatchs.Name = "edgvBatchs";
-            this.edgvBatchs.Size = new System.Drawing.Size(1258, 519);
+            this.edgvBatchs.Size = new System.Drawing.Size(1680, 671);
             this.edgvBatchs.TabIndex = 0;
             this.edgvBatchs.ExportExcell += new System.EventHandler(this.edgvBatchs_ExportExcell);
             this.edgvBatchs.ExportHTML += new System.EventHandler(this.edgvBatchs_ExportHTML);
@@ -788,10 +810,11 @@ namespace MBS
             // tbDosing
             // 
             this.tbDosing.Controls.Add(this.edgvDosing);
-            this.tbDosing.Location = new System.Drawing.Point(4, 22);
+            this.tbDosing.Location = new System.Drawing.Point(4, 25);
+            this.tbDosing.Margin = new System.Windows.Forms.Padding(4);
             this.tbDosing.Name = "tbDosing";
-            this.tbDosing.Padding = new System.Windows.Forms.Padding(3);
-            this.tbDosing.Size = new System.Drawing.Size(1264, 525);
+            this.tbDosing.Padding = new System.Windows.Forms.Padding(4);
+            this.tbDosing.Size = new System.Drawing.Size(1688, 679);
             this.tbDosing.TabIndex = 3;
             this.tbDosing.Text = "Дозирования";
             this.tbDosing.UseVisualStyleBackColor = true;
@@ -799,9 +822,10 @@ namespace MBS
             // edgvDosing
             // 
             this.edgvDosing.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.edgvDosing.Location = new System.Drawing.Point(3, 3);
+            this.edgvDosing.Location = new System.Drawing.Point(4, 4);
+            this.edgvDosing.Margin = new System.Windows.Forms.Padding(5);
             this.edgvDosing.Name = "edgvDosing";
-            this.edgvDosing.Size = new System.Drawing.Size(1258, 519);
+            this.edgvDosing.Size = new System.Drawing.Size(1680, 671);
             this.edgvDosing.TabIndex = 1;
             this.edgvDosing.ExportExcell += new System.EventHandler(this.edgvDosing_ExportExcell);
             this.edgvDosing.ExportHTML += new System.EventHandler(this.edgvDosing_ExportHTML);
@@ -809,10 +833,11 @@ namespace MBS
             // tbMessages
             // 
             this.tbMessages.Controls.Add(this.dgvWinCCAlarm);
-            this.tbMessages.Location = new System.Drawing.Point(4, 22);
+            this.tbMessages.Location = new System.Drawing.Point(4, 25);
+            this.tbMessages.Margin = new System.Windows.Forms.Padding(4);
             this.tbMessages.Name = "tbMessages";
-            this.tbMessages.Padding = new System.Windows.Forms.Padding(3);
-            this.tbMessages.Size = new System.Drawing.Size(1264, 525);
+            this.tbMessages.Padding = new System.Windows.Forms.Padding(4);
+            this.tbMessages.Size = new System.Drawing.Size(1688, 679);
             this.tbMessages.TabIndex = 2;
             this.tbMessages.Text = "События";
             this.tbMessages.UseVisualStyleBackColor = true;
@@ -820,9 +845,10 @@ namespace MBS
             // dgvWinCCAlarm
             // 
             this.dgvWinCCAlarm.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.dgvWinCCAlarm.Location = new System.Drawing.Point(3, 3);
+            this.dgvWinCCAlarm.Location = new System.Drawing.Point(4, 4);
+            this.dgvWinCCAlarm.Margin = new System.Windows.Forms.Padding(5);
             this.dgvWinCCAlarm.Name = "dgvWinCCAlarm";
-            this.dgvWinCCAlarm.Size = new System.Drawing.Size(1258, 519);
+            this.dgvWinCCAlarm.Size = new System.Drawing.Size(1680, 671);
             this.dgvWinCCAlarm.TabIndex = 1;
             this.dgvWinCCAlarm.ExportExcell += new System.EventHandler(this.dgvWinCCAlarm_ExportExcell);
             this.dgvWinCCAlarm.ExportHTML += new System.EventHandler(this.dgvWinCCAlarm_ExportHTML);
@@ -830,10 +856,11 @@ namespace MBS
             // tbReport
             // 
             this.tbReport.Controls.Add(this.Report);
-            this.tbReport.Location = new System.Drawing.Point(4, 22);
+            this.tbReport.Location = new System.Drawing.Point(4, 25);
+            this.tbReport.Margin = new System.Windows.Forms.Padding(4);
             this.tbReport.Name = "tbReport";
-            this.tbReport.Padding = new System.Windows.Forms.Padding(3);
-            this.tbReport.Size = new System.Drawing.Size(1264, 525);
+            this.tbReport.Padding = new System.Windows.Forms.Padding(4);
+            this.tbReport.Size = new System.Drawing.Size(1688, 679);
             this.tbReport.TabIndex = 4;
             this.tbReport.Text = "Отчеты";
             this.tbReport.UseVisualStyleBackColor = true;
@@ -841,9 +868,10 @@ namespace MBS
             // Report
             // 
             this.Report.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.Report.Location = new System.Drawing.Point(3, 3);
+            this.Report.Location = new System.Drawing.Point(4, 4);
+            this.Report.Margin = new System.Windows.Forms.Padding(5);
             this.Report.Name = "Report";
-            this.Report.Size = new System.Drawing.Size(1258, 519);
+            this.Report.Size = new System.Drawing.Size(1680, 671);
             this.Report.TabIndex = 0;
             // 
             // DS
@@ -867,11 +895,12 @@ namespace MBS
             // 
             // formMain
             // 
-            this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
+            this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 16F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(1272, 693);
+            this.ClientSize = new System.Drawing.Size(1696, 853);
             this.Controls.Add(this.Main_tsc);
             this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
+            this.Margin = new System.Windows.Forms.Padding(4);
             this.Name = "formMain";
             this.Text = "MBS. Система отчетности о состоянии технологического процесса";
             this.WindowState = System.Windows.Forms.FormWindowState.Maximized;

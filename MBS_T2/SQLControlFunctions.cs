@@ -15,6 +15,7 @@ using static System.Runtime.CompilerServices.RuntimeHelpers;
 using MBS.Properties;
 using System.Xml;
 using System.IO;
+using System.Text.RegularExpressions;
 
 namespace MBS
 {
@@ -259,75 +260,49 @@ namespace MBS
             return 0;
         }
 
-      /*     public static int CreateDB(string ID, string Password, string Path, short Mode) //создание новой БД
-           {
-              string myConnectionString = "Data Source=.\\SQLEXPRESS;Initial Catalog=master;User ID=sa;Password=sa123456";
-              string NewProjectConnectionString = "Data Source=.\\SQLEXPRESS;Initial Catalog=master;User ID=sa;Password=sa123456";
-              string str = "";
-              if (String.IsNullOrWhiteSpace(Path))
-              {
-                 if (Mode == 0) { Path = ".\\SQLEXPRESS"; }
-                 else { Path = Application.StartupPath; }
-              };
-              switch (Mode)
-              {
-                 case 0:
-                    //БД SQLServer
-                    myConnectionString = "Data Source=" + Path + ";Initial Catalog=master;User ID=sa;Password=sa123456";
-                    NewProjectConnectionString = "Data Source=" + Path + ";Initial Catalog=" + ID + ";User ID=sa;Password=sa123456; Persist Security Info=True";
-                    str = "CREATE DATABASE " + ID;
-                    break;
-                 case 1:
-                    //локальная БД *.mdf
-                    myConnectionString = "Data Source=(LocalDB)\\v11.0; Integrated Security=True;";
-                    NewProjectConnectionString = "Data Source=(LocalDB)\\v11.0;AttachDbFilename=" + Path + ID + ".mdf;Integrated Security=True";
-                    str = "CREATE DATABASE " + ID + " ON PRIMARY " +
-                                "(NAME = " + ID + "_Data, " +
-                                "FILENAME = '" + Path + ID + ".mdf', " +
-                                "SIZE = 4MB, MAXSIZE = 10MB, FILEGROWTH = 10%) " +
-                                "LOG ON (NAME = " + ID + "_Log, " +
-                                "FILENAME = '" + Path + ID + "_log.ldf', " +
-                                "SIZE = 1MB, " +
-                                "MAXSIZE = 5MB, " +
-                                "FILEGROWTH = 10%)";
-                    break;
-                 default:
-                    //БД SQLServer
-                    myConnectionString = "Data Source=" + Path + ";Initial Catalog=master;User ID=sa;Password=sa123456";
-                    NewProjectConnectionString = "Data Source=" + Path + ";Initial Catalog=" + ID + ";User ID=sa;Password=sa123456;Persist Security Info=True";
-                    str = "CREATE DATABASE " + ID;
-                    break;
-              }
+        public static long GetSizeOfDB(string connectionString)
+        {
+            long databaseSize = 0;
+            const long BYTES_IN_8GB = 8L * 1024 * 1024 * 1024;
 
-              SqlConnection myConn = new SqlConnection(myConnectionString);
-              SqlCommand myCommand = new SqlCommand(str, myConn);
-              try
-              {
-                    myConn.Open();
-                    //Создаем новую БД запросом
-                    myCommand.ExecuteNonQuery();
-                    //Указываем для нее русскую кодировку (чтобы была поддержка русских букв)
-                    str = "ALTER DATABASE [" + ID + "] COLLATE Cyrillic_General_CI_AS";
-                    myCommand = new SqlCommand(str, myConn);
-                    myCommand.ExecuteNonQuery();       
-                    MessageBox.Show("DataBase is Created Successfully", "MyProgram", MessageBoxButtons.OK, MessageBoxIcon.Information);
-              }
-              catch (System.Exception ex)//catch (SqlException ex )          
-              {
-                    General.ErrorMessage(ex);                
-                    return ex.HResult;
-              }
-              finally
-              {
-                    if (myConn.State == ConnectionState.Open)
+            try
+            {
+                using (SqlConnection connection = new SqlConnection(connectionString))
+                {
+                    using (SqlCommand command = new SqlCommand("GetCurrentDatabaseSize", connection)) // calling procedure by name
                     {
-                       myConn.Close();
-                    }
-              }
+                        command.CommandType = CommandType.StoredProcedure;
+                        connection.Open();
 
-              SQLControls.ConnectionString = NewProjectConnectionString;
-              return 0;
-           }*/
+                        object result = command.ExecuteScalar();
+                        if (result != DBNull.Value)
+                        {
+                            databaseSize = Convert.ToInt64(result);
+                        }
+                        if (databaseSize > BYTES_IN_8GB)
+                        {
+                            MessageBox.Show("Размер этой базы данных превышает 8 ГБ. Очистить эту базу данных?", 
+                                $"Размер БД {GetInitialCatalog(connectionString)}",
+                                MessageBoxButtons.OK, MessageBoxIcon.Information);
+                        }
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine("error on GetSizeOfDB");
+                General.ErrorMessage(ex);
+                return -1;
+            }
+
+            return databaseSize;
+        }
+
+        static string GetInitialCatalog(string connectionString)
+        {
+            var match = Regex.Match(connectionString, @"Initial Catalog=(.*?);");
+            return match.Success ? match.Groups[1].Value : string.Empty;
+        }
 
         public static int CyrillicDB() // Изменение кодировки таблиц (скрипт не отлажен)
             { //http://www.sql.ru/forum/147286/izmenit-collation-u-sushhestvuushhey-bd
@@ -846,6 +821,7 @@ namespace MBS
             }
 
         }
+        
         public static string GetProjectInfo(string ConnectionString, string InfoColumn) // Запрашиваем информацию о проекте из БД проекта
         {
             string InfoValue = "";

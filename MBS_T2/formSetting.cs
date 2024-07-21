@@ -16,6 +16,8 @@ using System.Xml;
 using System.IO;
 using System.Xml.Linq;
 using Microsoft.ReportingServices.Interfaces;
+using System.Timers;
+using System.Threading;
 
 namespace MBS
 {
@@ -24,18 +26,34 @@ namespace MBS
         formSetting fSetting;
         formCreateDB fCreateDB;
 
+        private const long BYTES_IN_8GB = 8L * 1024 * 1024 * 1024;
+
         public formSetting()
         {
             InitializeComponent();
-            Load += new EventHandler(formSetting_Load);
         }
 
         private void formSetting_Load(object sender, EventArgs e)
         {
-            textBox_ProjectName.Text = Settings.Default.ProjectName;
-            textBox_ReportPatch.Text = Settings.Default.ReportPatch;
-            textBox_ReportConnection.Text = Settings.Default.ReportConnectionString;
-            textBox_AlarmConnection.Text = Settings.Default.AlarmConnectionString;
+            textBox_ProjectName.Text        = Settings.Default.ProjectName;
+            textBox_ReportPatch.Text        = Settings.Default.ReportPatch;
+            textBox_ReportConnection.Text   = Settings.Default.ReportConnectionString;
+            textBox_AlarmConnection.Text    = Settings.Default.AlarmConnectionString;
+
+            long sizeDB = SQLControls.GetSizeOfDB(Settings.Default.ReportConnectionString);
+
+            textBox_Size_Report.Text = (sizeDB / 1024 / 1024).ToString() + " MB";
+            if (sizeDB > BYTES_IN_8GB)
+            {
+                textBox_Size_Report.BackColor = Color.FromArgb(255, 128, 128);
+            }
+
+            sizeDB = SQLControls.GetSizeOfDB(Settings.Default.AlarmConnectionString);
+            textBox_Size_Alarm.Text = (sizeDB / 1024 / 1024).ToString() + " MB";
+            if (sizeDB > BYTES_IN_8GB)
+            {
+                textBox_Size_Alarm.BackColor = Color.FromArgb(255, 128, 128);
+            }
         }
 
         // ProjectName
@@ -263,5 +281,90 @@ namespace MBS
             fCreateDB.StartPosition = FormStartPosition.CenterScreen;
             fCreateDB.ShowDialog();
         }
+
+        private void btn_UpdateSize_Report_Click(object sender, EventArgs e)
+        {
+            textBox_Size_Report.Text = "calculating";
+
+            System.Timers.Timer timer = new System.Timers.Timer(500);
+            timer.Elapsed += OnTimedEvent;
+            timer.AutoReset = false;
+            timer.Enabled = true;
+
+            // Run the database query on a separate thread to avoid blocking the UI thread
+            Task.Run(() =>
+            {
+                long sizeDB = SQLControls.GetSizeOfDB(Settings.Default.ReportConnectionString);
+
+                // Wait for the timer to elapse
+                timer.WaitForElapsed();
+
+                // Update the UI on the main thread
+                this.Invoke(new Action(() =>
+                {
+                    textBox_Size_Report.Text = (sizeDB / 1024 / 1024).ToString() + " MB";
+                    if (sizeDB > BYTES_IN_8GB)
+                    {
+                        textBox_Size_Report.BackColor = Color.FromArgb(255, 128, 128);
+                    }
+                }));
+            });
+
+            void OnTimedEvent(object source, ElapsedEventArgs elaps)
+            {
+                timer.Stop();
+            }
+        }
+
+        private void btn_UpdateSize_Alarm_Click(object sender, EventArgs e)
+        {
+            textBox_Size_Alarm.Text = "calculating";
+
+            System.Timers.Timer timer = new System.Timers.Timer(500);
+            timer.Elapsed += OnTimedEvent;
+            timer.AutoReset = false;
+            timer.Enabled = true;
+
+            // Run the database query on a separate thread to avoid blocking the UI thread
+            Task.Run(() =>
+            {
+                long sizeDB = SQLControls.GetSizeOfDB(Settings.Default.AlarmConnectionString);
+
+                // Wait for the timer to elapse
+                timer.WaitForElapsed();
+
+                // Update the UI on the main thread
+                this.Invoke(new Action(() =>
+                {
+                    textBox_Size_Alarm.Text = (sizeDB / 1024 / 1024).ToString() + " MB";
+
+                    if (sizeDB > BYTES_IN_8GB)
+                    {
+                        textBox_Size_Alarm.BackColor = Color.FromArgb(255, 128, 128);
+                    }
+                }));
+            });
+
+            void OnTimedEvent(object source, ElapsedEventArgs elaps)
+            {
+                timer.Stop();
+            }
+        }
+    }
+}
+
+public static class TimerExtensions
+{
+    public static void WaitForElapsed(this System.Timers.Timer timer)
+    {
+        ManualResetEventSlim mre = new ManualResetEventSlim(false);
+        ElapsedEventHandler handler = null;
+        handler = (s, e) =>
+        {
+            timer.Elapsed -= handler;
+            mre.Set();
+        };
+        timer.Elapsed += handler;
+        mre.Wait();
     }
 }
