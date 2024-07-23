@@ -25,6 +25,7 @@ namespace MBS
     {
         formSetting fSetting;
         formCreateDB fCreateDB;
+        formClearDB fClearDB;
 
         private const long BYTES_IN_8GB = 8L * 1024 * 1024 * 1024;
 
@@ -349,6 +350,20 @@ namespace MBS
             {
                 timer.Stop();
             }
+        }
+
+        private void btn_Clear_Report_Click(object sender, EventArgs e)
+        {
+            fClearDB = new formClearDB(Settings.Default.ReportConnectionString);
+            fClearDB.StartPosition = FormStartPosition.CenterScreen;
+            fClearDB.ShowDialog();
+        }
+
+        private void btn_Clear_Alarm_Click(object sender, EventArgs e)
+        {
+            fClearDB = new formClearDB(Settings.Default.AlarmConnectionString);
+            fClearDB.StartPosition = FormStartPosition.CenterScreen;
+            fClearDB.ShowDialog();
         }
     }
 }

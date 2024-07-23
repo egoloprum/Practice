@@ -53,6 +53,8 @@
             this.btn_UpdateSize_Alarm = new System.Windows.Forms.Button();
             this.textBox_Size_Alarm = new System.Windows.Forms.TextBox();
             this.label_Size_Alarm = new System.Windows.Forms.Label();
+            this.btn_Clear_Report = new System.Windows.Forms.Button();
+            this.btn_Clear_Alarm = new System.Windows.Forms.Button();
             this.SuspendLayout();
             // 
             // btn_ProjectName_Change
@@ -148,21 +150,21 @@
             // 
             // btn_ReportConnection_Change
             // 
-            this.btn_ReportConnection_Change.Location = new System.Drawing.Point(308, 69);
+            this.btn_ReportConnection_Change.Location = new System.Drawing.Point(309, 103);
             this.btn_ReportConnection_Change.Margin = new System.Windows.Forms.Padding(4);
             this.btn_ReportConnection_Change.Name = "btn_ReportConnection_Change";
-            this.btn_ReportConnection_Change.Size = new System.Drawing.Size(140, 28);
+            this.btn_ReportConnection_Change.Size = new System.Drawing.Size(230, 28);
             this.btn_ReportConnection_Change.TabIndex = 8;
-            this.btn_ReportConnection_Change.Text = "Изменить";
+            this.btn_ReportConnection_Change.Text = "Изменить подключение";
             this.btn_ReportConnection_Change.UseVisualStyleBackColor = true;
             this.btn_ReportConnection_Change.Click += new System.EventHandler(this.btn_ReportConnection_Change_Click);
             // 
             // btn_ReportConnection_CheckCon
             // 
-            this.btn_ReportConnection_CheckCon.Location = new System.Drawing.Point(456, 69);
+            this.btn_ReportConnection_CheckCon.Location = new System.Drawing.Point(558, 103);
             this.btn_ReportConnection_CheckCon.Margin = new System.Windows.Forms.Padding(4);
             this.btn_ReportConnection_CheckCon.Name = "btn_ReportConnection_CheckCon";
-            this.btn_ReportConnection_CheckCon.Size = new System.Drawing.Size(187, 28);
+            this.btn_ReportConnection_CheckCon.Size = new System.Drawing.Size(230, 28);
             this.btn_ReportConnection_CheckCon.TabIndex = 11;
             this.btn_ReportConnection_CheckCon.Text = "Проверить подключение";
             this.btn_ReportConnection_CheckCon.UseVisualStyleBackColor = true;
@@ -170,7 +172,7 @@
             // 
             // btn_ReportConnection_CreateDB
             // 
-            this.btn_ReportConnection_CreateDB.Location = new System.Drawing.Point(649, 69);
+            this.btn_ReportConnection_CreateDB.Location = new System.Drawing.Point(309, 139);
             this.btn_ReportConnection_CreateDB.Margin = new System.Windows.Forms.Padding(4);
             this.btn_ReportConnection_CreateDB.Name = "btn_ReportConnection_CreateDB";
             this.btn_ReportConnection_CreateDB.Size = new System.Drawing.Size(140, 28);
@@ -181,10 +183,10 @@
             // 
             // btn_AlarmConnection_CreateDB
             // 
-            this.btn_AlarmConnection_CreateDB.Location = new System.Drawing.Point(651, 234);
+            this.btn_AlarmConnection_CreateDB.Location = new System.Drawing.Point(309, 358);
             this.btn_AlarmConnection_CreateDB.Margin = new System.Windows.Forms.Padding(4);
             this.btn_AlarmConnection_CreateDB.Name = "btn_AlarmConnection_CreateDB";
-            this.btn_AlarmConnection_CreateDB.Size = new System.Drawing.Size(137, 28);
+            this.btn_AlarmConnection_CreateDB.Size = new System.Drawing.Size(140, 28);
             this.btn_AlarmConnection_CreateDB.TabIndex = 17;
             this.btn_AlarmConnection_CreateDB.Text = "Создать БД";
             this.btn_AlarmConnection_CreateDB.UseVisualStyleBackColor = true;
@@ -192,10 +194,10 @@
             // 
             // btn_AlarmConnection_CheckCon
             // 
-            this.btn_AlarmConnection_CheckCon.Location = new System.Drawing.Point(456, 234);
+            this.btn_AlarmConnection_CheckCon.Location = new System.Drawing.Point(558, 322);
             this.btn_AlarmConnection_CheckCon.Margin = new System.Windows.Forms.Padding(4);
             this.btn_AlarmConnection_CheckCon.Name = "btn_AlarmConnection_CheckCon";
-            this.btn_AlarmConnection_CheckCon.Size = new System.Drawing.Size(187, 28);
+            this.btn_AlarmConnection_CheckCon.Size = new System.Drawing.Size(230, 28);
             this.btn_AlarmConnection_CheckCon.TabIndex = 16;
             this.btn_AlarmConnection_CheckCon.Text = "Проверить подключение";
             this.btn_AlarmConnection_CheckCon.UseVisualStyleBackColor = true;
@@ -204,7 +206,7 @@
             // label_AlarmConnection
             // 
             this.label_AlarmConnection.AutoSize = true;
-            this.label_AlarmConnection.Location = new System.Drawing.Point(311, 182);
+            this.label_AlarmConnection.Location = new System.Drawing.Point(311, 234);
             this.label_AlarmConnection.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
             this.label_AlarmConnection.Name = "label_AlarmConnection";
             this.label_AlarmConnection.Size = new System.Drawing.Size(259, 16);
@@ -213,7 +215,7 @@
             // 
             // textBox_AlarmConnection
             // 
-            this.textBox_AlarmConnection.Location = new System.Drawing.Point(309, 202);
+            this.textBox_AlarmConnection.Location = new System.Drawing.Point(309, 254);
             this.textBox_AlarmConnection.Margin = new System.Windows.Forms.Padding(4);
             this.textBox_AlarmConnection.Name = "textBox_AlarmConnection";
             this.textBox_AlarmConnection.ReadOnly = true;
@@ -222,12 +224,12 @@
             // 
             // btn_AlarmConnection_Change
             // 
-            this.btn_AlarmConnection_Change.Location = new System.Drawing.Point(308, 234);
+            this.btn_AlarmConnection_Change.Location = new System.Drawing.Point(308, 322);
             this.btn_AlarmConnection_Change.Margin = new System.Windows.Forms.Padding(4);
             this.btn_AlarmConnection_Change.Name = "btn_AlarmConnection_Change";
-            this.btn_AlarmConnection_Change.Size = new System.Drawing.Size(140, 28);
+            this.btn_AlarmConnection_Change.Size = new System.Drawing.Size(230, 28);
             this.btn_AlarmConnection_Change.TabIndex = 13;
-            this.btn_AlarmConnection_Change.Text = "Изменить";
+            this.btn_AlarmConnection_Change.Text = "Изменить подключение";
             this.btn_AlarmConnection_Change.UseVisualStyleBackColor = true;
             this.btn_AlarmConnection_Change.Click += new System.EventHandler(this.btn_AlarmConnection_Change_Click);
             // 
@@ -246,7 +248,7 @@
             // label_Size_Report
             // 
             this.label_Size_Report.AutoSize = true;
-            this.label_Size_Report.Location = new System.Drawing.Point(305, 114);
+            this.label_Size_Report.Location = new System.Drawing.Point(305, 73);
             this.label_Size_Report.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
             this.label_Size_Report.Name = "label_Size_Report";
             this.label_Size_Report.Size = new System.Drawing.Size(135, 16);
@@ -256,7 +258,7 @@
             // textBox_Size_Report
             // 
             this.textBox_Size_Report.BackColor = System.Drawing.SystemColors.Control;
-            this.textBox_Size_Report.Location = new System.Drawing.Point(456, 111);
+            this.textBox_Size_Report.Location = new System.Drawing.Point(456, 70);
             this.textBox_Size_Report.Margin = new System.Windows.Forms.Padding(4);
             this.textBox_Size_Report.Name = "textBox_Size_Report";
             this.textBox_Size_Report.ReadOnly = true;
@@ -265,10 +267,10 @@
             // 
             // btn_UpdateSize_Report
             // 
-            this.btn_UpdateSize_Report.Location = new System.Drawing.Point(649, 108);
+            this.btn_UpdateSize_Report.Location = new System.Drawing.Point(648, 67);
             this.btn_UpdateSize_Report.Margin = new System.Windows.Forms.Padding(4);
             this.btn_UpdateSize_Report.Name = "btn_UpdateSize_Report";
-            this.btn_UpdateSize_Report.Size = new System.Drawing.Size(139, 28);
+            this.btn_UpdateSize_Report.Size = new System.Drawing.Size(140, 28);
             this.btn_UpdateSize_Report.TabIndex = 21;
             this.btn_UpdateSize_Report.Text = "Обновить";
             this.btn_UpdateSize_Report.UseVisualStyleBackColor = true;
@@ -276,7 +278,7 @@
             // 
             // btn_UpdateSize_Alarm
             // 
-            this.btn_UpdateSize_Alarm.Location = new System.Drawing.Point(649, 270);
+            this.btn_UpdateSize_Alarm.Location = new System.Drawing.Point(649, 286);
             this.btn_UpdateSize_Alarm.Margin = new System.Windows.Forms.Padding(4);
             this.btn_UpdateSize_Alarm.Name = "btn_UpdateSize_Alarm";
             this.btn_UpdateSize_Alarm.Size = new System.Drawing.Size(139, 28);
@@ -287,7 +289,7 @@
             // 
             // textBox_Size_Alarm
             // 
-            this.textBox_Size_Alarm.Location = new System.Drawing.Point(456, 273);
+            this.textBox_Size_Alarm.Location = new System.Drawing.Point(456, 289);
             this.textBox_Size_Alarm.Margin = new System.Windows.Forms.Padding(4);
             this.textBox_Size_Alarm.Name = "textBox_Size_Alarm";
             this.textBox_Size_Alarm.ReadOnly = true;
@@ -297,19 +299,43 @@
             // label_Size_Alarm
             // 
             this.label_Size_Alarm.AutoSize = true;
-            this.label_Size_Alarm.Location = new System.Drawing.Point(304, 276);
+            this.label_Size_Alarm.Location = new System.Drawing.Point(304, 292);
             this.label_Size_Alarm.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
             this.label_Size_Alarm.Name = "label_Size_Alarm";
             this.label_Size_Alarm.Size = new System.Drawing.Size(136, 16);
             this.label_Size_Alarm.TabIndex = 22;
             this.label_Size_Alarm.Text = "Размер БД событий";
             // 
+            // btn_Clear_Report
+            // 
+            this.btn_Clear_Report.Location = new System.Drawing.Point(648, 139);
+            this.btn_Clear_Report.Margin = new System.Windows.Forms.Padding(4);
+            this.btn_Clear_Report.Name = "btn_Clear_Report";
+            this.btn_Clear_Report.Size = new System.Drawing.Size(140, 28);
+            this.btn_Clear_Report.TabIndex = 25;
+            this.btn_Clear_Report.Text = "Очистить БД";
+            this.btn_Clear_Report.UseVisualStyleBackColor = true;
+            this.btn_Clear_Report.Click += new System.EventHandler(this.btn_Clear_Report_Click);
+            // 
+            // btn_Clear_Alarm
+            // 
+            this.btn_Clear_Alarm.Location = new System.Drawing.Point(648, 358);
+            this.btn_Clear_Alarm.Margin = new System.Windows.Forms.Padding(4);
+            this.btn_Clear_Alarm.Name = "btn_Clear_Alarm";
+            this.btn_Clear_Alarm.Size = new System.Drawing.Size(140, 28);
+            this.btn_Clear_Alarm.TabIndex = 26;
+            this.btn_Clear_Alarm.Text = "Очистить БД";
+            this.btn_Clear_Alarm.UseVisualStyleBackColor = true;
+            this.btn_Clear_Alarm.Click += new System.EventHandler(this.btn_Clear_Alarm_Click);
+            // 
             // formSetting
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 16F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.BackColor = System.Drawing.SystemColors.Control;
-            this.ClientSize = new System.Drawing.Size(805, 329);
+            this.ClientSize = new System.Drawing.Size(805, 423);
+            this.Controls.Add(this.btn_Clear_Alarm);
+            this.Controls.Add(this.btn_Clear_Report);
             this.Controls.Add(this.btn_UpdateSize_Alarm);
             this.Controls.Add(this.textBox_Size_Alarm);
             this.Controls.Add(this.label_Size_Alarm);
@@ -338,7 +364,7 @@
             this.Margin = new System.Windows.Forms.Padding(4);
             this.MaximizeBox = false;
             this.MinimizeBox = false;
-            this.MinimumSize = new System.Drawing.Size(823, 376);
+            this.MinimumSize = new System.Drawing.Size(823, 470);
             this.Name = "formSetting";
             this.ShowInTaskbar = false;
             this.Text = "Настройка свойств";
@@ -374,5 +400,7 @@
         private System.Windows.Forms.Button btn_UpdateSize_Alarm;
         private System.Windows.Forms.TextBox textBox_Size_Alarm;
         private System.Windows.Forms.Label label_Size_Alarm;
+        private System.Windows.Forms.Button btn_Clear_Report;
+        private System.Windows.Forms.Button btn_Clear_Alarm;
     }
 }
