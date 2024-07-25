@@ -23,9 +23,9 @@ namespace MBS
 {
     public partial class formSetting : Form
     {
-        formSetting fSetting;
-        formCreateDB fCreateDB;
-        formClearDB fClearDB;
+        formSetting     fSetting;
+        formCreateDB    fCreateDB;
+        formClearDB     fClearDB;
 
         private const long BYTES_IN_8GB = 8L * 1024 * 1024 * 1024;
 
@@ -295,7 +295,7 @@ namespace MBS
             // Run the database query on a separate thread to avoid blocking the UI thread
             Task.Run(() =>
             {
-                long sizeDB = SQLControls.GetSizeOfDB(Settings.Default.ReportConnectionString);
+                long sizeDB = SQLControls.GetSizeOfDB(textBox_ReportConnection.Text);
 
                 // Wait for the timer to elapse
                 timer.WaitForElapsed();
@@ -329,7 +329,12 @@ namespace MBS
             // Run the database query on a separate thread to avoid blocking the UI thread
             Task.Run(() =>
             {
-                long sizeDB = SQLControls.GetSizeOfDB(Settings.Default.AlarmConnectionString);
+                long sizeDB = SQLControls.GetSizeOfDB(textBox_AlarmConnection.Text);
+
+                if (sizeDB == -1)
+                {
+                    textBox_Size_Alarm.Text = "error";
+                }
 
                 // Wait for the timer to elapse
                 timer.WaitForElapsed();
@@ -354,16 +359,50 @@ namespace MBS
 
         private void btn_Clear_Report_Click(object sender, EventArgs e)
         {
-            fClearDB = new formClearDB(Settings.Default.ReportConnectionString);
+            fClearDB = new formClearDB("Report", Settings.Default.ReportConnectionString);
             fClearDB.StartPosition = FormStartPosition.CenterScreen;
             fClearDB.ShowDialog();
         }
 
         private void btn_Clear_Alarm_Click(object sender, EventArgs e)
         {
-            fClearDB = new formClearDB(Settings.Default.AlarmConnectionString);
+            fClearDB = new formClearDB("Alarm", Settings.Default.AlarmConnectionString);
             fClearDB.StartPosition = FormStartPosition.CenterScreen;
             fClearDB.ShowDialog();
+        }
+
+        private void textBox_ReportConnection_TextChanged(object sender, EventArgs e)
+        {
+            long sizeDB = SQLControls.GetSizeOfDB(textBox_ReportConnection.Text);
+
+            if (sizeDB == -1)
+            {
+                textBox_Size_Report.Text = "error";
+            }
+
+            textBox_Size_Report.Text = (sizeDB / 1024 / 1024).ToString() + " MB";
+
+            if (sizeDB > BYTES_IN_8GB)
+            {
+                textBox_Size_Report.BackColor = Color.FromArgb(255, 128, 128);
+            }
+        }
+
+        private void textBox_AlarmConnection_TextChanged(object sender, EventArgs e)
+        {
+            long sizeDB = SQLControls.GetSizeOfDB(textBox_AlarmConnection.Text);
+
+            if (sizeDB == -1)
+            {
+                textBox_Size_Alarm.Text = "error";
+            }
+
+            textBox_Size_Alarm.Text = (sizeDB / 1024 / 1024).ToString() + " MB";
+
+            if (sizeDB > BYTES_IN_8GB)
+            {
+                textBox_Size_Alarm.BackColor = Color.FromArgb(255, 128, 128);
+            }
         }
     }
 }

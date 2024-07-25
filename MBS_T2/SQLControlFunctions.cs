@@ -27,24 +27,23 @@ namespace MBS
         public static SqlConnection CurrentConnection = new SqlConnection(CurrentConnectionString);
 
         //подключение к эталонной БД
-        public static string ModelConnectionString = $"Data Source=(LocalDB)\\v11.0;AttachDbFilename={Application.StartupPath }\\Projects.mdf;Integrated " +
+        public static string ModelConnectionString = $"Data Source=(LocalDB)\\v11.0;AttachDbFilename={Application.StartupPath}\\Projects.mdf;Integrated " +
                                                        "Security=True;MultipleActiveResultSets=True";
 
-        //public static string ModelConnectionString = "Data Source=(LocalDB)\\v11.0;AttachDbFilename=" + Application.StartupPath.Replace("\\bin\\Debug","") + "\\Projects.mdf;Integrated Security=True;MultipleActiveResultSets=True";
         public static SqlConnection ModelConnection = new SqlConnection(ModelConnectionString);
 
-        public static bool ObjExists(string ConnectionString, string strObjType, string strObjName)//проверка существования таблицы/запроса
+        public static bool ObjExists(string ConnectionString, string strObjType, string strObjName) // проверка существования таблицы/запроса
         {
             string str = null;
             switch (strObjType)
             {
-            case "Table":
+                case "Table":
                     str = $"SELECT TABLE_NAME FROM information_schema.TABLES WHERE TABLE_NAME='{strObjName}'";
-                break;
-            case "Query":             
-                break;  
-            default:      
-                break;
+                    break;
+                case "Query":
+                    break;
+                default:
+                    break;
             }
             try {
                 SqlConnection myConn = new SqlConnection(ConnectionString);
@@ -60,30 +59,30 @@ namespace MBS
             }
             finally
             {
-            } 
+            }
         }
 
-        public static int AddNewDB(string DB_Name, string ShortName, string FullName, string Username, string Password, string Source, short Mode) //создание новой БД
+        public static int AddNewDB(string DB_Name, string ShortName, string FullName, string Username, string Password, string Source, short Mode, string typeOfDB) // создание новой БД
         {
             int ErrorCode = 0;
-            //создаем БД и возвращаем строку подклчюения к ней
+            // создаем БД и возвращаем строку подклчюения к ней
             ErrorCode = CreateDB(DB_Name, Username, Password, Source, Mode);
-            if (ErrorCode != 0)// если БД не создана 
+            if (ErrorCode != 0) // если БД не создана 
             {
                 MessageBox.Show("Failed at CreateDB", "AddNewDB", MessageBoxButtons.OK, MessageBoxIcon.Information);
                 return ErrorCode;
             }
 
             // добавляем в нее таблицы
-            ErrorCode = AddTablesToNewDB(SQLControls.ConnectionString);
-            if (ErrorCode != 0) //если таблицы не добавлены 
+            ErrorCode = AddTablesToNewDB(typeOfDB, SQLControls.ConnectionString);
+            if (ErrorCode != 0) // если таблицы не добавлены 
             {
                 MessageBox.Show("Failed at AddTablesToNewDB", "AddNewDB", MessageBoxButtons.OK, MessageBoxIcon.Information);
                 return ErrorCode;
             }
 
             // добавляем информацию о проекте в таблицу
-            ErrorCode = AddInfoToNewProject(DB_Name, ShortName, FullName, SQLControls.ConnectionString);
+/*            ErrorCode = AddInfoToNewProject(DB_Name, ShortName, FullName, SQLControls.ConnectionString);
             if (ErrorCode != 0) // информация не добавлена
             {
                 MessageBox.Show("Failed at AddInfoToNewProject", "AddNewDB", MessageBoxButtons.OK, MessageBoxIcon.Information);
@@ -104,44 +103,10 @@ namespace MBS
             {
                 MessageBox.Show("Failed at ConnectDB", "AddNewDB", MessageBoxButtons.OK, MessageBoxIcon.Information);
                 return ErrorCode;
-            }
-            
+            }*/
+
             return ErrorCode;
         }
-
-        /*      public static int  AddNewDB(string DB_Name, string ShortName, string FullName, string Username, string Password, string Source, short Mode) //создание новой БД
-              {
-                  int ErrorCode=0;
-                  //создаем БД и возвращаем строку подклчюения к ней
-                  ErrorCode = CreateDB(DB_Name, Username, Password, Source, Mode);
-                  if (ErrorCode == 0)// если БД создана успешно 
-                  {                            
-                      //добавляем в нее таблицы
-                      ErrorCode = AddTablesToNewBD(SQLControls.ConnectionString);
-                      if (ErrorCode == 0) //если таблицы добавлены успешно
-                      {
-                          //добавляем информацию о проекте в таблицу
-                          ErrorCode = AddInfoToNewProject(DB_Name, ShortName, FullName, SQLControls.ConnectionString);
-                          if (ErrorCode == 0)//информация добавлена успешно
-                          {
-                              //копируем инфомарци. о проекте в эталонную таблицу (она жде перечень запомненных проектов)
-                              ErrorCode = AddInfoToModelProject(SQLControls.ConnectionString);
-                              if (ErrorCode == 0)//информация добавлена успешно
-                              {
-                                  MessageBox.Show("Проект успешно создан", "Создание нового проекта", MessageBoxButtons.OK, MessageBoxIcon.Information);
-                                  ErrorCode = ConnectDB(SQLControls.ConnectionString);
-                                  if (ErrorCode == 0)//информация добавлена успешно
-                                  { 
-                                  }
-                              }
-
-                          }
-
-                      }
-                  }
-                  else { ErrorCode = 1; }
-                  return ErrorCode;
-              }*/
 
         public static int CreateDB(string DB_Name, string Username, string Password, string Source, short Mode)
         {
@@ -152,17 +117,9 @@ namespace MBS
             switch (Mode)
             {
                 case 0:
-                    // Local DB *.mdf
+                    // Window DB
                     DefaultConnectionString     = $"Data Source={Environment.MachineName}{Source};Integrated Security=True;";
-                    // newProjectConnectionString  = $@"Data Source=DESKTOP-NGC89DL{Source};AttachDbFilename={Source}\{DB_Name}.mdf;Integrated Security=True";
                     newProjectConnectionString  = $@"Data Source={Environment.MachineName}{Source};Initial Catalog={DB_Name};Integrated Security=True;";
-                    /*sqlQuery =  $"CREATE DATABASE {DB_Name} ON PRIMARY " +
-                                $"(NAME = {DB_Name}_Data, " +
-                                $@"FILENAME = '{Source}\{DB_Name}.mdf', " +
-                                $"SIZE = 4MB, MAXSIZE = 10MB, FILEGROWTH = 10%) " +
-                                $"LOG ON (NAME = {DB_Name}_Log, " +
-                                $@"FILENAME = '{Source}\{DB_Name}_log.ldf', " +
-                                $"SIZE = 1MB, MAXSIZE = 5MB, FILEGROWTH = 10%)";*/
 
                     string sourcePath = Application.StartupPath;
 
@@ -172,18 +129,6 @@ namespace MBS
                     }
 
                     sqlQuery = $@"CREATE DATABASE [{DB_Name}]";
-
-/*                    sqlQuery = $@"CREATE DATABASE [{DB_Name}]
-                                        ON PRIMARY (
-                                            NAME={DB_Name}_Data,
-                                            FILENAME='{sourcePath}{Source}\{DB_Name}_Data.mdf'
-                                        )
-                                        LOG ON (
-                                            NAME={DB_Name}_Log,
-                                            FILENAME='{sourcePath}{Source}\{DB_Name}_Log.mdf',
-                                            SIZE=1MB, MAXSIZE=5MB, FILEGROWTH=10%
-                                        )
-                    ";*/
 
                     break;
 
@@ -211,15 +156,15 @@ namespace MBS
                     connection.Open();
 
                     string queryKill = "DECLARE @session_id INT; " +
-                        "SELECT @session_id = request_session_id " +
-                        "FROM sys.dm_tran_locks " +
-                        "WHERE resource_database_id = DB_ID('model'); " +
-                        "IF @session_id IS NOT NULL " +
-                        "BEGIN " +
-                            "DECLARE @sql NVARCHAR(100); " +
-                            "SET @sql = 'KILL ' + CAST(@session_id AS NVARCHAR(10)); " +
-                            "EXEC sp_executesql @sql; " +
-                        "END";
+                                       "SELECT @session_id = request_session_id " +
+                                       "FROM sys.dm_tran_locks " +
+                                       "WHERE resource_database_id = DB_ID('model'); " +
+                                       "IF @session_id IS NOT NULL " +
+                                       "BEGIN " +
+                                           "DECLARE @sql NVARCHAR(100); " +
+                                           "SET @sql = 'KILL ' + CAST(@session_id AS NVARCHAR(10)); " +
+                                           "EXEC sp_executesql @sql; " +
+                                       "END";
 
                     // deletes the lock
                     using (SqlCommand command = new SqlCommand(queryKill, connection))
@@ -227,12 +172,14 @@ namespace MBS
                         command.ExecuteNonQuery();
                     }
 
-
                     // Create the database
                     using (SqlCommand command = new SqlCommand(sqlQuery, connection))
                     {
                         command.ExecuteNonQuery();
                     }
+
+                    // Create GetCurrentDatabaseSize stored procedure
+                    Create_GetCurrentDBsize_func(connection);
 
                     // Set Cyrillic collation
                     using (SqlCommand command = new SqlCommand($"ALTER DATABASE [{DB_Name}] COLLATE Cyrillic_General_CI_AS", connection))
@@ -260,6 +207,216 @@ namespace MBS
             return 0;
         }
 
+        public static void Create_GetCurrentDBsize_func(SqlConnection connection)
+        {
+            string sqlQuery = "CREATE OR ALTER PROCEDURE GetCurrentDatabaseSize " +
+                               "AS " +
+                               "BEGIN " +
+                                   "SET NOCOUNT ON " +
+                                   "DECLARE @DatabaseSizeInBytes BIGINT; " +
+                                   "SELECT @DatabaseSizeInBytes = SUM(size) * 8 * 1024 " +
+                                   "FROM sys.master_files " +
+                                   "WHERE type = 0 AND database_id = DB_ID(DB_NAME()); " +
+                                   "SELECT @DatabaseSizeInBytes AS DatabaseSizeInBytes " +
+                               "END";
+
+            try
+            {
+                using (SqlCommand command = new SqlCommand(sqlQuery, connection))
+                {
+                    command.CommandType = CommandType.Text;
+                    command.ExecuteNonQuery();
+                }
+            }
+            catch (Exception ex)
+            {
+               
+                General.ErrorMessage(ex);
+                Console.WriteLine("Error on CreateGetCurrentDB");
+            }
+        }
+
+        public static void Create_CleanTables_Report_func(SqlConnection connection)
+        {
+            string sqlQuery = "CREATE OR ALTER PROCEDURE dbo.CleanTables " +
+                               "@CutoffDate char(20) " +
+                               "AS " +
+                               "BEGIN " +
+                                   "DECLARE @tableName NVARCHAR(256) " +
+                                   "DECLARE @sql NVARCHAR(MAX) " +
+                                   "DECLARE @currentDate DATE = GETDATE() " +
+                                   "DECLARE @oneYearAgo DATE = DATEADD(YEAR, -1, @currentDate) " +
+                                   "SET @CutoffDate = CONVERT(datetime, @CutoffDate) " +
+
+                                   "IF @CutoffDate > @oneYearAgo " +
+                                   "BEGIN " +
+                                       "RAISERROR('Cannot delete data within the last year.', 16, 1) " +
+                                       "RETURN " +
+                                   "END " +
+
+                                   "DECLARE tableCursor CURSOR FOR " +
+                                   "SELECT '[' + SCHEMA_NAME(schema_id) + '].[' + name + ']' AS TableName " +
+                                   "FROM sys.tables " +
+                                   "WHERE name NOT LIKE '%Label' " +
+
+                                   "OPEN tableCursor " +
+                                   "FETCH NEXT FROM tableCursor INTO @tableName " +
+
+                                   "WHILE @@FETCH_STATUS = 0 " +
+                                   "BEGIN " +
+                                       "IF EXISTS ( " +
+                                           "SELECT 1 " +
+                                           "FROM sys.columns " +
+                                           "WHERE [object_id] = OBJECT_ID(@tableName) AND [name] = 'DAT_Start_Dosing' " +
+                                       ") " +
+                                       "BEGIN " +
+                                           "SET @sql = 'DELETE FROM ' + @tableName + ' WHERE DAT_Start_Dosing < @CutoffDate' " +
+                                           "EXEC sp_executesql @sql, N'@CutoffDate DATE', @CutoffDate " +
+                                           "PRINT 'Successfully deleted DAT_Start_Dosing from TBatchs' " +
+                                       "END " +
+
+                                       "IF EXISTS ( " +
+                                           "SELECT 1 " +
+                                           "FROM sys.columns " +
+                                           "WHERE [object_id] = OBJECT_ID(@tableName) AND [name] = 'DAT_Start' " +
+                                       ") " +
+                                       "BEGIN " +
+                                           "SET @sql = 'DELETE FROM ' + @tableName + ' WHERE DAT_Start < @CutoffDate' " +
+                                           "EXEC sp_executesql @sql, N'@CutoffDate DATE', @CutoffDate " +
+                                           "PRINT 'Successfully deleted DAT_Start from TDosing' " +
+                                       "END " +
+
+                                       "FETCH NEXT FROM tableCursor INTO @tableName " +
+                                   "END " +
+                                   "CLOSE tableCursor " +
+                                   "DEALLOCATE tableCursor " +
+
+                                   "DBCC SHRINKDATABASE (0) " +
+
+                               "END";
+
+            try
+            {
+                using (SqlCommand command = new SqlCommand(sqlQuery, connection))
+                {
+                    command.CommandType = CommandType.Text;
+                    command.ExecuteNonQuery();
+                }
+            }
+            catch (Exception ex)
+            {
+
+                General.ErrorMessage(ex);
+                Console.WriteLine("Error on Create_CleanTables_Report_func");
+            }
+        }
+
+        public static void Create_CleanTables_Alarm_func(SqlConnection connection)
+        {
+            string sqlQuery = "CREATE OR ALTER PROCEDURE dbo.CleanTables_Alarm " +
+                   "@CutoffDate char(20) " +
+                   "AS " +
+                   "BEGIN " +
+                       "DECLARE @tableName NVARCHAR(256) " +
+                       "DECLARE @sql NVARCHAR(MAX) " +
+                       "DECLARE @currentDate DATE = GETDATE() " +
+                       "DECLARE @oneYearAgo DATE = DATEADD(YEAR, -1, @currentDate) " +
+                       "SET @CutoffDate = CONVERT(datetime, @CutoffDate) " +
+
+                       "IF @CutoffDate > @oneYearAgo " +
+                       "BEGIN " +
+                           "RAISERROR('Cannot delete data within the last year.', 16, 1) " +
+                           "RETURN " +
+                       "END " +
+
+                       "DECLARE tableCursor CURSOR FOR " +
+                       "SELECT '[' + SCHEMA_NAME(schema_id) + '].[' + name + ']' AS TableName " +
+                       "FROM sys.tables " +
+                       "WHERE name NOT LIKE '%Label' " +
+
+                       "OPEN tableCursor " +
+                       "FETCH NEXT FROM tableCursor INTO @tableName " +
+
+                       "WHILE @@FETCH_STATUS = 0 " +
+                       "BEGIN " +
+                           "IF EXISTS ( " +
+                               "SELECT 1 " +
+                               "FROM sys.columns " +
+                               "WHERE [object_id] = OBJECT_ID(@tableName) AND [name] = 'plctime' " +
+                           ") " +
+                           "BEGIN " +
+                               "SET @sql = 'DELETE FROM ' + @tableName + ' WHERE plctime < @CutoffDate' " +
+                               "EXEC sp_executesql @sql, N'@CutoffDate DATE', @CutoffDate " +
+                               "PRINT 'Successfully deleted plctime from TBatchs' " +
+                           "END " +
+
+                           "IF EXISTS ( " +
+                               "SELECT 1 " +
+                               "FROM sys.columns " +
+                               "WHERE [object_id] = OBJECT_ID(@tableName) AND [name] = 'TimeString' " +
+                           ") " +
+                           "BEGIN " +
+                               "SET @sql = 'DELETE FROM ' + @tableName + ' WHERE TimeString < @CutoffDate' " +
+                               "EXEC sp_executesql @sql, N'@CutoffDate DATE', @CutoffDate " +
+                               "PRINT 'Successfully deleted TimeString from TDosing' " +
+                           "END " +
+
+                           "FETCH NEXT FROM tableCursor INTO @tableName " +
+                       "END " +
+                       "CLOSE tableCursor " +
+                       "DEALLOCATE tableCursor " +
+
+                       "DBCC SHRINKDATABASE (0) " +
+
+                   "END";
+
+            try
+            {
+                using (SqlCommand command = new SqlCommand(sqlQuery, connection))
+                {
+                    command.CommandType = CommandType.Text;
+                    command.ExecuteNonQuery();
+                }
+            }
+            catch (Exception ex)
+            {
+
+                General.ErrorMessage(ex);
+                Console.WriteLine("Error on Create_CleanTables_Alarm_func");
+            }
+        }
+
+        public static int CleanTablesDB(string typeOfDB, string connectionString)
+        {
+            try
+            {
+                using (SqlConnection connection = new SqlConnection(connectionString))
+                {
+                    connection.Open();
+
+                    if (typeOfDB == "Alarm")
+                    {
+                        using (SqlCommand command = new SqlCommand("CleanTables_Alarm", connection))
+                        {
+                            command.CommandType = CommandType.StoredProcedure;
+
+                            object result = command.ExecuteScalar();
+                        }
+                    }
+                    else
+                    {
+                        using (SqlCommand command = new SqlCommand("CleanTables", connection))
+                        {
+
+                        }
+                    }
+                }
+            }
+            catch (Exception ex) { General.ErrorMessage(ex); }
+
+            return 0;
+        }
+
         public static long GetSizeOfDB(string connectionString)
         {
             long databaseSize = 0;
@@ -269,10 +426,12 @@ namespace MBS
             {
                 using (SqlConnection connection = new SqlConnection(connectionString))
                 {
+                    connection.Open();
+                    Create_GetCurrentDBsize_func(connection);
+
                     using (SqlCommand command = new SqlCommand("GetCurrentDatabaseSize", connection)) // calling procedure by name
                     {
                         command.CommandType = CommandType.StoredProcedure;
-                        connection.Open();
 
                         object result = command.ExecuteScalar();
                         if (result != DBNull.Value)
@@ -448,88 +607,346 @@ namespace MBS
             return 0;
         }
 
-        public static int AddTablesToNewDB(string NewProjectConnectionString) // добавление таблиц в БД
+        public static int AddTablesToNewDB(string typeOfDB ,string NewProjectConnectionString) // добавление таблиц в БД
         {
-            SqlConnection NewProjectConnection = new SqlConnection(NewProjectConnectionString); // подключение к создаваемой БД
+            string sqlQuery = "";
 
-            // SqlConnection ModelConnection = new SqlConnection("Data Source=(LocalDB)\\v11.0;AttachDbFilename=" 
-            //                                                    + Application.StartupPath 
-            //                                                    + "\\Projects.mdf;Integrated Security=True"); // подключение к эталонной БД
 
             try
             {
-                // открываем подключения
-                NewProjectConnection.Open();
-                // ModelConnection.Open();
-
-                // запрашиваем названия таблиц из эталонной БД
-
-                SqlCommand ReadTablesCommand = new SqlCommand("SELECT TABLE_NAME FROM information_schema.TABLES", NewProjectConnection);
-                // SqlCommand ReadTablesCommand = new SqlCommand("SELECT * FROM sysobjects WHERE xtype = 'U';", NewProjectConnection);
-                SqlDataReader SqlReader = ReadTablesCommand.ExecuteReader();
-                ProgressControl.Progress = 0;
-                ProgressControl.Operation = "Добавление таблиц в проект";
-
-                while (SqlReader.Read())
+                using (SqlConnection connection = new SqlConnection(NewProjectConnectionString))
                 {
-                    // get rows
-                    ProgressControl.Count++;
-                }
+                    connection.Open();  
 
-                List<string> readerStrings = new List<string>();
-
-                SqlReader.Close();
-                SqlReader = ReadTablesCommand.ExecuteReader();
-
-                while (SqlReader.Read())
-                {
-                    if (!SqlReader.IsDBNull(0))
+                    if (typeOfDB == "Alarm")
                     {
-                        // запрашиваем текст скрипта создания таблицы по образцу
-                        readerStrings.Add(SqlReader.GetString(0));
+                        Create_CleanTables_Alarm_func(connection);
 
-                        //string SQLCommandText = SQLScript_CreateTable(SqlReader.GetString(0));
-                        // передаем текст в команду и выполняем ее
-                        //SqlCommand mySQLCommand = new SqlCommand(SQLCommandText, NewProjectConnection);
-                        //mySQLCommand.ExecuteNonQuery();
-                      
-                        // fMain.ProgressBar("Добавление таблиц в проект", count, i);
+                        sqlQuery = "CREATE TABLE dbo.alams_connect_source (" +
+                                       "id INT NOT NULL, " +
+                                       "fname VARCHAR(50) NULL " +
+                                   ")";
+
+                        try
+                        {
+                            using (SqlCommand command = new SqlCommand(sqlQuery, connection))
+                            {
+                                command.ExecuteNonQuery();
+                            }
+                        }
+                        catch (Exception ex)
+                        {
+                            Console.WriteLine("Error on alams_connect_source");
+                            General.ErrorMessage(ex);
+                        }
+
+                        sqlQuery = "CREATE TABLE dbo.Alarm_log_10 (" +
+                                       "Time_ms float NULL, " +
+                                       "MsgProc smallint NULL, " +
+                                       "StateAfter smallint NULL, " +
+                                       "MsgClass smallint NULL, " +
+                                       "MsgNumber int NULL, " +
+                                       "Var1 varchar(255) NULL, " +
+                                       "Var2 varchar(255) NULL, " +
+                                       "Var3 varchar(255) NULL, " +
+                                       "Var4 varchar(255) NULL, " +
+                                       "Var5 varchar(255) NULL, " +
+                                       "Var6 varchar(255) NULL, " +
+                                       "Var7 varchar(255) NULL, " +
+                                       "Var8 varchar(255) NULL, " +
+                                       "TimeString char(26) NULL, " +
+                                       "MsgText varchar(255) NULL, " +
+                                       "PLC varchar(255) NULL " +
+                                   ")";
+
+                        try
+                        {
+                            using (SqlCommand command = new SqlCommand(sqlQuery, connection))
+                            {
+                                command.ExecuteNonQuery();
+                            }
+                        }
+                        catch (Exception ex)
+                        {
+                            Console.WriteLine("Error on Alarm_log_10");
+                            General.ErrorMessage(ex);
+                        }
+
+                        sqlQuery = "CREATE TABLE dbo.alarms (" +
+                                       "plctime datetime2(3) NOT NULL, " +
+                                       "rtime datetime2(3) NOT NULL, " +
+                                       "mnumber int NULL, " +
+                                       "mproc smallint NULL, " +
+                                       "mclass smallint NULL, " +
+                                       "mtext varchar(255) NULL, " +
+                                       "stateafter smallint NULL, " +
+                                       "v01 varchar(128) NULL, " +
+                                       "v02 varchar(128) NULL, " +
+                                       "v03 varchar(128) NULL " +
+                                   ")";
+
+                        try
+                        {
+                            using (SqlCommand command = new SqlCommand(sqlQuery, connection))
+                            {
+                                command.ExecuteNonQuery();
+                            }
+                        }
+                        catch (Exception ex)
+                        {
+                            Console.WriteLine("Error on alarms");
+                            General.ErrorMessage(ex);
+                        }
+
+                        sqlQuery = "CREATE TABLE dbo.alarms_tested (" +
+                                       "plctime datetime2(3) NOT NULL, " +
+                                       "rtime datetime2(3) NOT NULL, " +
+                                       "mnumber int NULL, " +
+                                       "mproc smallint NULL, " +
+                                       "mclass smallint NULL, " +
+                                       "mtext varchar(255) NULL, " +
+                                       "stateafter smallint NULL, " +
+                                       "v01 varchar(128) NULL, " +
+                                       "v02 varchar(128) NULL, " +
+                                       "v03 varchar(128) NULL " +
+                                   ")";
+
+                        try
+                        {
+                            using (SqlCommand command = new SqlCommand(sqlQuery, connection))
+                            {
+                                command.ExecuteNonQuery();
+                            }
+                        }
+                        catch (Exception ex)
+                        {
+                            Console.WriteLine("Error on alarms_tested");
+                            General.ErrorMessage(ex);
+                        }
+
+                        sqlQuery = "CREATE TABLE dbo.Data_log_10 (" +
+                                       "VarName varchar(255) NULL, " +
+                                       "TimeString char(26) NULL, " +
+                                       "VarValue float NULL, " +
+                                       "Validity smallint NULL, " +
+                                       "Time_ms float NULL " +
+                                   ")";
+                        try
+                        {
+                            using (SqlCommand command = new SqlCommand(sqlQuery, connection))
+                            {
+                                command.ExecuteNonQuery();
+                            }
+                        }
+                        catch (Exception ex)
+                        {
+                            Console.WriteLine("Error on Data_log_10");
+                            General.ErrorMessage(ex);
+                        }
+
+                        sqlQuery = "CREATE TABLE dbo.Data_log_SQL0 (" +
+                                       "VarName varchar(255) NULL, " +
+                                       "TimeString char(26) NULL, " +
+                                       "VarValue float NULL, " +
+                                       "Validity smallint NULL, " +
+                                       "Time_ms float NULL " +
+                                   ")";
+
+                        try
+                        {
+                            using (SqlCommand command = new SqlCommand(sqlQuery, connection))
+                            {
+                                command.ExecuteNonQuery();
+                            }
+                        }
+                        catch (Exception ex)
+                        {
+                            Console.WriteLine("Error on Data_log_SQL0");
+                            General.ErrorMessage(ex);
+                        }
+
                     }
+                    else
+                    {
+                        Create_CleanTables_Report_func(connection);
+
+                        sqlQuery = "CREATE TABLE dbo.tBatchs (" +
+                                       "ID int NOT NULL PRIMARY KEY, " +
+                                       "OrderID int NULL, " +
+                                       "BatchN int NULL, " +
+                                       "Sts int NULL, " +
+                                       "DAT_Start_Dosing datetime NULL, " +
+                                       "DAT_Start_Mixing datetime NULL, " +
+                                       "DAT_Start_Unload datetime NULL, " +
+                                       "DAT_End datetime NULL, " +
+                                       "VolumeSet real NULL, " +
+                                       "VolumeDone real NULL, " +
+                                       "MixingTime int NULL, " +
+                                       "OperatorID int NULL " +
+                                   ")";
+
+
+                        try
+                        {
+                            using (SqlCommand command = new SqlCommand(sqlQuery, connection))
+                            {
+                                command.ExecuteNonQuery();
+                            }
+                        }
+                        catch (Exception ex)
+                        {
+                            Console.WriteLine("Error on tBatchs");
+                            General.ErrorMessage(ex);
+                        }
+
+                        sqlQuery = "CREATE TABLE dbo.tDosing (" +
+                                       "SilosType int NULL, " +
+                                       "Sts int NULL, " +
+                                       "DAT_Start datetime NULL, " +
+                                       "DAT_End datetime NULL, " +
+                                       "SRC bit NULL, " +
+                                       "BatchID int NULL, " +
+                                       "BatchStep int NULL, " +
+                                       "BatchRank int NULL, " +
+                                       "SilosN int NULL, " +
+                                       "SilosLabelID int NULL, " +
+                                       "WeightSet real NULL, " +
+                                       "WeightDose real NULL, " +
+                                       "OperatorID int NULL " +
+                                   ")";
+
+                        try
+                        {
+                            using (SqlCommand command = new SqlCommand(sqlQuery, connection))
+                            {
+                                command.ExecuteNonQuery();
+                            }
+                        }
+                        catch (Exception ex)
+                        {
+                            Console.WriteLine("Error on tDosing");
+                            General.ErrorMessage(ex);
+                        }
+
+                        sqlQuery = "CREATE TABLE dbo.tOperator (" +
+                                       "ID int NOT NULL PRIMARY KEY, " +
+                                       "Operator nvarchar(50) NULL " +
+                                   ")";
+
+                        try
+                        {
+                            using (SqlCommand command = new SqlCommand(sqlQuery, connection))
+                            {
+                                command.ExecuteNonQuery();
+                            }
+                        }
+                        catch (Exception ex)
+                        {
+                            Console.WriteLine("Error on tOperator");
+                            General.ErrorMessage(ex);
+                        }
+
+                        sqlQuery = "CREATE TABLE dbo.tOrders (" +
+                                       "ID int NOT NULL PRIMARY KEY, " +
+                                       "Sts int NULL, " +
+                                       "DAT_Create datetime NULL, " +
+                                       "DAT_Start datetime NULL, " +
+                                       "DAT_End datetime NULL, " +
+                                       "Recipe int NULL, " +
+                                       "RecipeLabelID int NULL, " +
+                                       "BatchSet int NULL, " +
+                                       "BatchDone int NULL, " +
+                                       "VolumeSet real NULL, " +
+                                       "VolumeDone real NULL, " +
+                                       "Line int NULL, " +
+                                       "UnloadPlace bit NULL, " +
+                                       "OperatorID int NULL " +
+                                   ")";
+
+                        try
+                        {
+                            using (SqlCommand command = new SqlCommand(sqlQuery, connection))
+                            {
+                                command.ExecuteNonQuery();
+                            }
+                        }
+                        catch (Exception ex)
+                        {
+                            Console.WriteLine("Error on tOrders");
+                            General.ErrorMessage(ex);
+                        }
+
+                        sqlQuery = "CREATE TABLE dbo.tRecipe (" +
+                                       "ID int NOT NULL PRIMARY KEY, " +
+                                       "RecipeN int NULL, " +
+                                       "RecipeLabel nvarchar(35) NULL, " +
+                                       "DAT_Create datetime NULL, " +
+                                       "UnloadPlace bit NULL, " +
+                                       "TimeMixing1_s int NULL, " +
+                                       "TimeMixing2_s int NULL, " +
+                                       "TimeMixing3_s int NULL, " +
+                                       "TimeMixing4_s int NULL, " +
+                                       "TimeMixing5_s int NULL, " +
+                                       "TimeMixing6_s int NULL, " +
+                                       "TimeMixing7_s int NULL, " +
+                                       "TimeMixing8_s int NULL, " +
+                                       "TimeMixing9_s int NULL, " +
+                                       "TimeMixingEnd_s int NULL, " +
+                                       "UseActiator1 bit NULL, " +
+                                       "UseActiator2 bit NULL, " +
+                                       "UseActiator3 bit NULL, " +
+                                       "TimeActatorWork_s int NULL, " +
+                                       "OperatorID int NULL " +
+                                   ")";
+
+                        try
+                        {
+                            using (SqlCommand command = new SqlCommand(sqlQuery, connection))
+                            {
+                                command.ExecuteNonQuery();
+                            }
+                        }
+                        catch (Exception ex)
+                        {
+                            Console.WriteLine("Error on tRecipe");
+                            General.ErrorMessage(ex);
+                        }
+
+                        sqlQuery = "CREATE TABLE dbo.tSilosLabel (" +
+                                       "ID int NOT NULL PRIMARY KEY, " +
+                                       "SilosLabel nvarchar(35) NULL, " +
+                                       "DAT_Create datetime NULL, " +
+                                       "SilosN int NULL, " +
+                                       "SilosType bit NULL " +
+                                   ")";
+
+                        try
+                        {
+                            using (SqlCommand command = new SqlCommand(sqlQuery, connection))
+                            {
+                                command.ExecuteNonQuery();
+                            }
+                        }
+                        catch (Exception ex)
+                        {
+                            Console.WriteLine("Error on tSilosLabel");
+                            General.ErrorMessage(ex);
+                        }
+                    }
+
+                    connection.Close();
                 }
-                // закрываем все после использования
-                ProgressControl.Clear();
-                SqlReader.Close();
 
-                foreach (string str in readerStrings)
-                {
-                    string SQLCommandText = SQLScript_CreateTable(str, NewProjectConnection);
-                    Console.WriteLine($"Those strs: {SQLCommandText}");
-                    SqlCommand mySQLCommand = new SqlCommand(SQLCommandText, NewProjectConnection);
-                    mySQLCommand.ExecuteNonQuery();
-                }
-
-
-                // ModelConnection.Close();
-                NewProjectConnection.Close();
-                MessageBox.Show("Successfully finished the function", "AddTablesToNewDB", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                MessageBox.Show("Таблицы успешно добавлены в БД", "Таблицы добавлены", MessageBoxButtons.OK, MessageBoxIcon.Information);
                 return 0;
             }
             catch (Exception ex)
             {
-                General.ErrorMessage(ex);     
+                Console.WriteLine("Error on AddTablesToNewDB");
+                General.ErrorMessage(ex);
                 return ex.HResult;
             }
-            finally
-            {
-                /*if (ModelConnection.State == ConnectionState.Open)
-                {
-                    ModelConnection.Close();
-                }*/
-                if (NewProjectConnection.State == ConnectionState.Open)
-                {
-                    NewProjectConnection.Close();
-                }
-            }
+
         } 
 
         public static string SQLScript_CreateTable(string TableName, SqlConnection connectionString) // создание скриптов для добавления таблиц в БД на основе эталанной БД Projects (сделано для облегчения разработки)

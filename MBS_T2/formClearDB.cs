@@ -13,11 +13,12 @@ namespace MBS
     public partial class formClearDB : Form
     {
         string _connectionString = "";
+        string _typeOfDB = "";
 
-
-        public formClearDB(string connectionString)
+        public formClearDB(string typeOfDB, string connectionString)
         {
             _connectionString = connectionString;
+            _typeOfDB = typeOfDB;
 
             InitializeComponent();
         }
@@ -67,6 +68,7 @@ namespace MBS
             if (res == DialogResult.Yes)
             {
                 // clear db
+                SQLControls.CleanTablesDB(_typeOfDB, _connectionString);
             }
             else
             {

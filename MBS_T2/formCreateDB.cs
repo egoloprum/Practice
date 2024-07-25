@@ -17,7 +17,7 @@ namespace MBS
     public partial class formCreateDB : Form
     {
         // alarm or report
-        string _typeOfDb = "";
+        string _typeOfDB = "";
 
         formKeepConnection fKeepConn;
 
@@ -26,17 +26,17 @@ namespace MBS
         List<string> _theAvailableSqlServers = new List<string>();
 
         // window = 0; sql server = 1
-        short _modeOfDb = 0;
+        short _modeOfDB = 0;
         public formCreateDB(String TypeOfDB)
         {
             InitializeComponent();
 
-            _typeOfDb = TypeOfDB;
+            _typeOfDB = TypeOfDB;
         }
 
         private void formCreateDB_Load(object sender, EventArgs e)
         {
-            if (_typeOfDb == "Alarm")
+            if (_typeOfDB == "Alarm")
             {
                 comboBox_TypeDB.SelectedValue = comboBox_TypeDB.Items[0];
                 comboBox_TypeDB.Text = comboBox_TypeDB.Items[0].ToString();
@@ -90,7 +90,7 @@ namespace MBS
             textBox_Username.Enabled = false;
             textBox_Password.Enabled = false;
 
-            _modeOfDb = 0;
+            _modeOfDB = 0;
             check_nameDB();
         }
 
@@ -101,7 +101,7 @@ namespace MBS
             textBox_Username.Enabled = true;
             textBox_Password.Enabled = true;
 
-            _modeOfDb = 1;
+            _modeOfDB = 1;
             check_nameDB();
         }
 
@@ -262,14 +262,13 @@ namespace MBS
             string Password = textBox_Password.Text;
             string Source   = comboBox_NameServer.Text;
             // window = 0; sql server = 1;
-            short Mode      = _modeOfDb;
+            short Mode      = _modeOfDB;
             // int createdDB = SQLControls.CreateDB(DB_Name, Username, Password, Source, Mode);
-            int CreatedDB = SQLControls.CreateDB(DB_Name, Username, Password, Source, Mode);
-            // int AddDB = SQLControls.AddNewDB(DB_Name, "", "", Username, Password, Source, Mode);
+            int AddDB = SQLControls.AddNewDB(DB_Name, "", "", Username, Password, Source, Mode, _typeOfDB);
 
-            if (CreatedDB == 0)
+            if (AddDB == 0)
             {
-                fKeepConn = new formKeepConnection(_typeOfDb);
+                fKeepConn = new formKeepConnection(_typeOfDB);
                 fKeepConn.StartPosition = FormStartPosition.CenterScreen;
                 fKeepConn.ShowDialog();
             }
@@ -286,7 +285,7 @@ namespace MBS
                                       $"User ID={textBox_Username.Text};Password={textBox_Password.Text}";
             string strQuery = "SELECT name FROM sys.databases";
 
-            if (_modeOfDb == 0)
+            if (_modeOfDB == 0)
             {
                 // windows
                 connectionString = $"Data Source={Environment.MachineName}{comboBox_NameServer.Text};Integrated Security=True";
@@ -324,8 +323,6 @@ namespace MBS
                 comboBox_NameDB.Text = "";
                 comboBox_NameDB.DataSource = _name_Databases;
                 General.ErrorMessage(ex);
-                MessageBox.Show(ex.ToString(), "Ошибка combobox_nameDB_dropdown", MessageBoxButtons.OK, MessageBoxIcon.Error);
-                // ex.HResult;
             }
         }
     }

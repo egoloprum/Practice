@@ -18,57 +18,66 @@ namespace MBS
     {
         formCreateDB fCreateDB;
         formSetting fSetting;
-        string _typeOfDb;
+        string _typeOfDB;
 
-        public formKeepConnection(string typeOfDb)
+        public formKeepConnection(string typeOfDB)
         {
             InitializeComponent();
-            _typeOfDb = typeOfDb;
+            _typeOfDB = typeOfDB;
         }
 
         private void btn_CloseConn_Click(object sender, EventArgs e)
         {
-            this.Close();
-            Application.OpenForms["formCreateDB"].Close();
+            try {
+                this.Close();
+                Application.OpenForms["formCreateDB"].Close();
+            }
+            catch (Exception ex) {
+                General.ErrorMessage(ex);
+            }
+
         }
 
         private void btn_KeepConn_Click(object sender, EventArgs e)
         {
             string connectionString = SQLControls.ConnectionString;
             fSetting = new formSetting();
-            fCreateDB = new formCreateDB(_typeOfDb);
+            fCreateDB = new formCreateDB(_typeOfDB);
 
-            if (_typeOfDb == "Alarm")
+            if (_typeOfDB == "Alarm")
             {
                 fSetting.UpdateApp_AppConfig("MBS.Properties.Settings.AlarmConnectionString", connectionString);
                 Settings.Default.AlarmConnectionString = connectionString;
-
-                Console.WriteLine($"sett def = {Settings.Default.AlarmConnectionString}");
             }
             else
             {
                 fSetting.UpdateApp_AppConfig("MBS.Properties.Settings.ReportConnectionString", connectionString);
                 Settings.Default.ReportConnectionString = connectionString;
-
-                Console.WriteLine($"sett def = {Settings.Default.ReportConnectionString}");
             }
 
-            this.Close();
-            Application.OpenForms["formCreateDB"].Close();
-            Application.OpenForms["formSetting"].Close();
-
-            System.Timers.Timer timer = new System.Timers.Timer(1000);
-            timer.Elapsed += OnTimedEvent;
-            timer.AutoReset = false;
-            timer.Enabled = true;
-
-            void OnTimedEvent(object source, ElapsedEventArgs elaps)
+            try
             {
-                timer.Stop();
+                this.Close();
+                Application.OpenForms["formCreateDB"].Close();
+                Application.OpenForms["formSetting"].Close();
 
-                fSetting = new formSetting();
-                fSetting.StartPosition = FormStartPosition.CenterScreen;
-                fSetting.ShowDialog();
+                System.Timers.Timer timer = new System.Timers.Timer(1000);
+                timer.Elapsed += OnTimedEvent;
+                timer.AutoReset = false;
+                timer.Enabled = true;
+
+                void OnTimedEvent(object source, ElapsedEventArgs elaps)
+                {
+                    timer.Stop();
+
+                    fSetting = new formSetting();
+                    fSetting.StartPosition = FormStartPosition.CenterScreen;
+                    fSetting.ShowDialog();
+                }
+            }
+            catch (Exception ex)
+            {
+                General.ErrorMessage(ex);
             }
         }
     }
