@@ -28,6 +28,7 @@
         /// </summary>
         private void InitializeComponent()
         {
+            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(formClearDB));
             this.btn_Clear = new System.Windows.Forms.Button();
             this.btn_Close = new System.Windows.Forms.Button();
             this.radioBtn_Oneyear = new System.Windows.Forms.RadioButton();
@@ -40,9 +41,10 @@
             // 
             // btn_Clear
             // 
-            this.btn_Clear.Location = new System.Drawing.Point(16, 215);
+            this.btn_Clear.Location = new System.Drawing.Point(21, 265);
+            this.btn_Clear.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
             this.btn_Clear.Name = "btn_Clear";
-            this.btn_Clear.Size = new System.Drawing.Size(199, 23);
+            this.btn_Clear.Size = new System.Drawing.Size(265, 28);
             this.btn_Clear.TabIndex = 28;
             this.btn_Clear.Text = "Очистить";
             this.btn_Clear.UseVisualStyleBackColor = true;
@@ -50,9 +52,10 @@
             // 
             // btn_Close
             // 
-            this.btn_Close.Location = new System.Drawing.Point(15, 245);
+            this.btn_Close.Location = new System.Drawing.Point(20, 302);
+            this.btn_Close.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
             this.btn_Close.Name = "btn_Close";
-            this.btn_Close.Size = new System.Drawing.Size(199, 23);
+            this.btn_Close.Size = new System.Drawing.Size(265, 28);
             this.btn_Close.TabIndex = 27;
             this.btn_Close.Text = "Отмена";
             this.btn_Close.UseVisualStyleBackColor = true;
@@ -61,9 +64,10 @@
             // radioBtn_Oneyear
             // 
             this.radioBtn_Oneyear.AutoSize = true;
-            this.radioBtn_Oneyear.Location = new System.Drawing.Point(16, 84);
+            this.radioBtn_Oneyear.Location = new System.Drawing.Point(21, 103);
+            this.radioBtn_Oneyear.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
             this.radioBtn_Oneyear.Name = "radioBtn_Oneyear";
-            this.radioBtn_Oneyear.Size = new System.Drawing.Size(98, 17);
+            this.radioBtn_Oneyear.Size = new System.Drawing.Size(120, 20);
             this.radioBtn_Oneyear.TabIndex = 30;
             this.radioBtn_Oneyear.Text = "Старше 1 года";
             this.radioBtn_Oneyear.UseVisualStyleBackColor = true;
@@ -73,9 +77,10 @@
             // 
             this.radioBtn_TillDate.AutoSize = true;
             this.radioBtn_TillDate.Checked = true;
-            this.radioBtn_TillDate.Location = new System.Drawing.Point(16, 29);
+            this.radioBtn_TillDate.Location = new System.Drawing.Point(21, 36);
+            this.radioBtn_TillDate.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
             this.radioBtn_TillDate.Name = "radioBtn_TillDate";
-            this.radioBtn_TillDate.Size = new System.Drawing.Size(124, 17);
+            this.radioBtn_TillDate.Size = new System.Drawing.Size(154, 20);
             this.radioBtn_TillDate.TabIndex = 29;
             this.radioBtn_TillDate.TabStop = true;
             this.radioBtn_TillDate.Text = "До указанной даты";
@@ -85,9 +90,10 @@
             // radioBtn_Twoyear
             // 
             this.radioBtn_Twoyear.AutoSize = true;
-            this.radioBtn_Twoyear.Location = new System.Drawing.Point(15, 139);
+            this.radioBtn_Twoyear.Location = new System.Drawing.Point(20, 171);
+            this.radioBtn_Twoyear.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
             this.radioBtn_Twoyear.Name = "radioBtn_Twoyear";
-            this.radioBtn_Twoyear.Size = new System.Drawing.Size(92, 17);
+            this.radioBtn_Twoyear.Size = new System.Drawing.Size(113, 20);
             this.radioBtn_Twoyear.TabIndex = 31;
             this.radioBtn_Twoyear.Text = "Старше 2 лет";
             this.radioBtn_Twoyear.UseVisualStyleBackColor = true;
@@ -95,35 +101,35 @@
             // 
             // dateTimePicker_TillDate
             // 
-            this.dateTimePicker_TillDate.Location = new System.Drawing.Point(16, 51);
-            this.dateTimePicker_TillDate.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this.dateTimePicker_TillDate.Location = new System.Drawing.Point(21, 63);
+            this.dateTimePicker_TillDate.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
             this.dateTimePicker_TillDate.Name = "dateTimePicker_TillDate";
-            this.dateTimePicker_TillDate.Size = new System.Drawing.Size(200, 20);
+            this.dateTimePicker_TillDate.Size = new System.Drawing.Size(265, 22);
             this.dateTimePicker_TillDate.TabIndex = 32;
             // 
             // dateTimePicker_Oneyear
             // 
             this.dateTimePicker_Oneyear.Enabled = false;
-            this.dateTimePicker_Oneyear.Location = new System.Drawing.Point(16, 106);
-            this.dateTimePicker_Oneyear.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this.dateTimePicker_Oneyear.Location = new System.Drawing.Point(21, 130);
+            this.dateTimePicker_Oneyear.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
             this.dateTimePicker_Oneyear.Name = "dateTimePicker_Oneyear";
-            this.dateTimePicker_Oneyear.Size = new System.Drawing.Size(200, 20);
+            this.dateTimePicker_Oneyear.Size = new System.Drawing.Size(265, 22);
             this.dateTimePicker_Oneyear.TabIndex = 33;
             // 
             // dateTimePicker_Twoyear
             // 
             this.dateTimePicker_Twoyear.Enabled = false;
-            this.dateTimePicker_Twoyear.Location = new System.Drawing.Point(15, 161);
-            this.dateTimePicker_Twoyear.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this.dateTimePicker_Twoyear.Location = new System.Drawing.Point(20, 198);
+            this.dateTimePicker_Twoyear.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
             this.dateTimePicker_Twoyear.Name = "dateTimePicker_Twoyear";
-            this.dateTimePicker_Twoyear.Size = new System.Drawing.Size(200, 20);
+            this.dateTimePicker_Twoyear.Size = new System.Drawing.Size(265, 22);
             this.dateTimePicker_Twoyear.TabIndex = 34;
             // 
             // formClearDB
             // 
-            this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
+            this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 16F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(232, 288);
+            this.ClientSize = new System.Drawing.Size(307, 345);
             this.Controls.Add(this.dateTimePicker_Twoyear);
             this.Controls.Add(this.dateTimePicker_Oneyear);
             this.Controls.Add(this.dateTimePicker_TillDate);
@@ -132,9 +138,10 @@
             this.Controls.Add(this.radioBtn_TillDate);
             this.Controls.Add(this.btn_Clear);
             this.Controls.Add(this.btn_Close);
-            this.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
-            this.MaximumSize = new System.Drawing.Size(248, 327);
-            this.MinimumSize = new System.Drawing.Size(248, 327);
+            this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
+            this.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
+            this.MaximumSize = new System.Drawing.Size(325, 392);
+            this.MinimumSize = new System.Drawing.Size(325, 392);
             this.Name = "formClearDB";
             this.Text = "Очистка БД";
             this.Load += new System.EventHandler(this.formClearDB_Load);

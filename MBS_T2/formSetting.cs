@@ -124,26 +124,22 @@ namespace MBS
             if (ErrCode == 0)
             {
                 textBox_ReportConnection.Text = connectString;
+                Settings.Default.ReportConnectionString = connectString;
                 UpdateApp_AppConfig("MBS.Properties.Settings.ReportConnectionString", connectString);
             }
             else
             {
-                Console.WriteLine("failed report connection change.");
+                Console.WriteLine("Ошибка при изменении соединения.");
             }
         }
 
         private void btn_ReportConnection_CheckCon_Click(object sender, EventArgs e)
         {
-            var config = ConfigurationManager.OpenExeConfiguration(ConfigurationUserLevel.None);
-            var connectionStringsSection = (ConnectionStringsSection)config.GetSection("connectionStrings");
-
-            string connectString = connectionStringsSection.ConnectionStrings["MBS.Properties.Settings.ReportConnectionString"].ConnectionString; //.ReportConnectionString;
-
-            bool chDB = SQLControls.CheckDB(connectString);
+            bool chDB = SQLControls.CheckDB(Settings.Default.ReportConnectionString);
             
             if (chDB)
             {
-                DialogResult res = MessageBox.Show("Подключение подтверждано\n" + connectString, "БД доступна", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                DialogResult res = MessageBox.Show("Подключение подтверждано\n" + Settings.Default.ReportConnectionString, "БД доступна", MessageBoxButtons.OK, MessageBoxIcon.Information);
             }
             else
             {
@@ -165,26 +161,22 @@ namespace MBS
             if (ErrCode == 0)
             {
                 textBox_AlarmConnection.Text = connectString;
+                Settings.Default.AlarmConnectionString = connectString;
                 UpdateApp_AppConfig("MBS.Properties.Settings.AlarmConnectionString", connectString);
             }
             else
             {
-                Console.WriteLine("failed report connection change.");
+                Console.WriteLine("Ошибка при изменении соединения.");
             }
         }
 
         private void btn_AlarmConnection_CheckCon_Click(object sender, EventArgs e)
         {
-            var config = ConfigurationManager.OpenExeConfiguration(ConfigurationUserLevel.None);
-            var connectionStringsSection = (ConnectionStringsSection)config.GetSection("connectionStrings");
-
-            string connectString = connectionStringsSection.ConnectionStrings["MBS.Properties.Settings.AlarmConnectionString"].ConnectionString; //.AlarmConnectionString;
-
-            bool chDB = SQLControls.CheckDB(connectString);
+            bool chDB = SQLControls.CheckDB(Settings.Default.AlarmConnectionString);
 
             if (chDB)
             {
-                DialogResult res = MessageBox.Show("Подключение подтверждано\n" + connectString, "БД доступна", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                DialogResult res = MessageBox.Show("Подключение подтверждано\n" + Settings.Default.AlarmConnectionString, "БД доступна", MessageBoxButtons.OK, MessageBoxIcon.Information);
             }
             else
             {
@@ -373,8 +365,9 @@ namespace MBS
 
         private void textBox_ReportConnection_TextChanged(object sender, EventArgs e)
         {
-            long sizeDB = SQLControls.GetSizeOfDB(textBox_ReportConnection.Text);
+            UpdateApp_AppConfig("MBS.Properties.Settings.ReportConnectionString", textBox_ReportConnection.Text);
 
+            long sizeDB = SQLControls.GetSizeOfDB(textBox_ReportConnection.Text);
             if (sizeDB == -1)
             {
                 textBox_Size_Report.Text = "error";
@@ -390,8 +383,9 @@ namespace MBS
 
         private void textBox_AlarmConnection_TextChanged(object sender, EventArgs e)
         {
-            long sizeDB = SQLControls.GetSizeOfDB(textBox_AlarmConnection.Text);
+            UpdateApp_AppConfig("MBS.Properties.Settings.AlarmConnectionString", textBox_AlarmConnection.Text);
 
+            long sizeDB = SQLControls.GetSizeOfDB(textBox_AlarmConnection.Text);
             if (sizeDB == -1)
             {
                 textBox_Size_Alarm.Text = "error";

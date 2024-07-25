@@ -16,6 +16,7 @@ using MBS.Properties;
 using System.Xml;
 using System.IO;
 using System.Text.RegularExpressions;
+using System.Xml.Linq;
 
 namespace MBS
 {
@@ -187,7 +188,7 @@ namespace MBS
                         command.ExecuteNonQuery();
                     }
 
-                    MessageBox.Show("Database is created successfully", "MyProgram", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                    MessageBox.Show("База данных успешно создана", "MyProgram", MessageBoxButtons.OK, MessageBoxIcon.Information);
                 }
                 catch (Exception ex)
                 {
@@ -239,9 +240,9 @@ namespace MBS
         public static void Create_CleanTables_Report_func(SqlConnection connection)
         {
             string sqlQuery = "CREATE OR ALTER PROCEDURE dbo.CleanTables " +
-                               "@CutoffDate char(20) " +
-                               "AS " +
-                               "BEGIN " +
+                              "@CutoffDate char(20) " +
+                              "AS " +
+                              "BEGIN " +
                                    "DECLARE @tableName NVARCHAR(256) " +
                                    "DECLARE @sql NVARCHAR(MAX) " +
                                    "DECLARE @currentDate DATE = GETDATE() " +
@@ -293,7 +294,7 @@ namespace MBS
 
                                    "DBCC SHRINKDATABASE (0) " +
 
-                               "END";
+                              "END";
 
             try
             {
@@ -314,61 +315,61 @@ namespace MBS
         public static void Create_CleanTables_Alarm_func(SqlConnection connection)
         {
             string sqlQuery = "CREATE OR ALTER PROCEDURE dbo.CleanTables_Alarm " +
-                   "@CutoffDate char(20) " +
-                   "AS " +
-                   "BEGIN " +
-                       "DECLARE @tableName NVARCHAR(256) " +
-                       "DECLARE @sql NVARCHAR(MAX) " +
-                       "DECLARE @currentDate DATE = GETDATE() " +
-                       "DECLARE @oneYearAgo DATE = DATEADD(YEAR, -1, @currentDate) " +
-                       "SET @CutoffDate = CONVERT(datetime, @CutoffDate) " +
+                              "@CutoffDate char(20) " +
+                              "AS " +
+                              "BEGIN " +
+                                   "DECLARE @tableName NVARCHAR(256) " +
+                                   "DECLARE @sql NVARCHAR(MAX) " +
+                                   "DECLARE @currentDate DATE = GETDATE() " +
+                                   "DECLARE @oneYearAgo DATE = DATEADD(YEAR, -1, @currentDate) " +
+                                   "SET @CutoffDate = CONVERT(datetime, @CutoffDate) " +
 
-                       "IF @CutoffDate > @oneYearAgo " +
-                       "BEGIN " +
-                           "RAISERROR('Cannot delete data within the last year.', 16, 1) " +
-                           "RETURN " +
-                       "END " +
+                                   "IF @CutoffDate > @oneYearAgo " +
+                                   "BEGIN " +
+                                       "RAISERROR('Cannot delete data within the last year.', 16, 1) " +
+                                       "RETURN " +
+                                   "END " +
 
-                       "DECLARE tableCursor CURSOR FOR " +
-                       "SELECT '[' + SCHEMA_NAME(schema_id) + '].[' + name + ']' AS TableName " +
-                       "FROM sys.tables " +
-                       "WHERE name NOT LIKE '%Label' " +
+                                   "DECLARE tableCursor CURSOR FOR " +
+                                   "SELECT '[' + SCHEMA_NAME(schema_id) + '].[' + name + ']' AS TableName " +
+                                   "FROM sys.tables " +
+                                   "WHERE name NOT LIKE '%Label' " +
 
-                       "OPEN tableCursor " +
-                       "FETCH NEXT FROM tableCursor INTO @tableName " +
+                                   "OPEN tableCursor " +
+                                   "FETCH NEXT FROM tableCursor INTO @tableName " +
 
-                       "WHILE @@FETCH_STATUS = 0 " +
-                       "BEGIN " +
-                           "IF EXISTS ( " +
-                               "SELECT 1 " +
-                               "FROM sys.columns " +
-                               "WHERE [object_id] = OBJECT_ID(@tableName) AND [name] = 'plctime' " +
-                           ") " +
-                           "BEGIN " +
-                               "SET @sql = 'DELETE FROM ' + @tableName + ' WHERE plctime < @CutoffDate' " +
-                               "EXEC sp_executesql @sql, N'@CutoffDate DATE', @CutoffDate " +
-                               "PRINT 'Successfully deleted plctime from TBatchs' " +
-                           "END " +
+                                   "WHILE @@FETCH_STATUS = 0 " +
+                                   "BEGIN " +
+                                       "IF EXISTS ( " +
+                                           "SELECT 1 " +
+                                           "FROM sys.columns " +
+                                           "WHERE [object_id] = OBJECT_ID(@tableName) AND [name] = 'plctime' " +
+                                       ") " +
+                                       "BEGIN " +
+                                           "SET @sql = 'DELETE FROM ' + @tableName + ' WHERE plctime < @CutoffDate' " +
+                                           "EXEC sp_executesql @sql, N'@CutoffDate DATE', @CutoffDate " +
+                                           "PRINT 'Successfully deleted plctime from TBatchs' " +
+                                       "END " +
 
-                           "IF EXISTS ( " +
-                               "SELECT 1 " +
-                               "FROM sys.columns " +
-                               "WHERE [object_id] = OBJECT_ID(@tableName) AND [name] = 'TimeString' " +
-                           ") " +
-                           "BEGIN " +
-                               "SET @sql = 'DELETE FROM ' + @tableName + ' WHERE TimeString < @CutoffDate' " +
-                               "EXEC sp_executesql @sql, N'@CutoffDate DATE', @CutoffDate " +
-                               "PRINT 'Successfully deleted TimeString from TDosing' " +
-                           "END " +
+                                       "IF EXISTS ( " +
+                                           "SELECT 1 " +
+                                           "FROM sys.columns " +
+                                           "WHERE [object_id] = OBJECT_ID(@tableName) AND [name] = 'TimeString' " +
+                                       ") " +
+                                       "BEGIN " +
+                                           "SET @sql = 'DELETE FROM ' + @tableName + ' WHERE TimeString < @CutoffDate' " +
+                                           "EXEC sp_executesql @sql, N'@CutoffDate DATE', @CutoffDate " +
+                                           "PRINT 'Successfully deleted TimeString from TDosing' " +
+                                       "END " +
 
-                           "FETCH NEXT FROM tableCursor INTO @tableName " +
-                       "END " +
-                       "CLOSE tableCursor " +
-                       "DEALLOCATE tableCursor " +
+                                       "FETCH NEXT FROM tableCursor INTO @tableName " +
+                                   "END " +
+                                   "CLOSE tableCursor " +
+                                   "DEALLOCATE tableCursor " +
 
-                       "DBCC SHRINKDATABASE (0) " +
+                                   "DBCC SHRINKDATABASE (0) " +
 
-                   "END";
+                               "END";
 
             try
             {
@@ -386,7 +387,7 @@ namespace MBS
             }
         }
 
-        public static int CleanTablesDB(string typeOfDB, string connectionString)
+        public static int CleanTablesDB(string typeOfDB, string connectionString, DateTime date)
         {
             try
             {
@@ -399,22 +400,27 @@ namespace MBS
                         using (SqlCommand command = new SqlCommand("CleanTables_Alarm", connection))
                         {
                             command.CommandType = CommandType.StoredProcedure;
-
+                            command.Parameters.Add("@CutoffDate", SqlDbType.DateTime).Value = date;
                             object result = command.ExecuteScalar();
+
+                            return 1;
                         }
                     }
                     else
                     {
                         using (SqlCommand command = new SqlCommand("CleanTables", connection))
                         {
+                            command.CommandType = CommandType.StoredProcedure;
+                            command.Parameters.Add("@CutoffDate", SqlDbType.DateTime).Value = date;
+                            object result = command.ExecuteScalar();
 
+                            return 1;
                         }
                     }
                 }
             }
-            catch (Exception ex) { General.ErrorMessage(ex); }
 
-            return 0;
+            catch (Exception ex) { General.ErrorMessage(ex); return ex.HResult; }
         }
 
         public static long GetSizeOfDB(string connectionString)

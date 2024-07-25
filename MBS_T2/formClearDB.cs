@@ -65,10 +65,32 @@ namespace MBS
             DialogResult res = MessageBox.Show("Вы уверены, что хотите очистить БД? Восстановление данных после очистки не возможно.",
                                                "Очистка БД", MessageBoxButtons.YesNo, MessageBoxIcon.Information);
 
+            int result = 0;
+
             if (res == DialogResult.Yes)
             {
                 // clear db
-                SQLControls.CleanTablesDB(_typeOfDB, _connectionString);
+
+                if (dateTimePicker_TillDate.Enabled)
+                {
+                    result = SQLControls.CleanTablesDB(_typeOfDB, _connectionString, dateTimePicker_TillDate.Value);
+                }
+
+                if ( dateTimePicker_Oneyear.Enabled)
+                {
+                    result = SQLControls.CleanTablesDB(_typeOfDB, _connectionString, dateTimePicker_Oneyear.Value);
+                }
+
+                if (dateTimePicker_Twoyear.Enabled)
+                {
+                    result = SQLControls.CleanTablesDB(_typeOfDB, _connectionString, dateTimePicker_Twoyear.Value);
+                }
+
+                if (result == 1)
+                {
+                    MessageBox.Show("База данных успешно очищена..", "Очистка БД", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                }
+
             }
             else
             {
