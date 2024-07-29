@@ -26,35 +26,28 @@ namespace MBS.Properties {
         [global::System.Configuration.ApplicationScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
         [global::System.Configuration.SpecialSettingAttribute(global::System.Configuration.SpecialSetting.ConnectionString)]
-        [global::System.Configuration.DefaultSettingValueAttribute("Data Source=172.23.1.84\\WINCC;Initial Catalog=aaaa;User ID=a;Password=11111111")]
+        [global::System.Configuration.DefaultSettingValueAttribute("Data Source=LAPTOP-9P13TSAP\\SQLEXPRESS;Initial Catalog=new_report;Integrated Secu" +
+            "rity=True")]
         public string ReportConnectionString {
             get {
                 return ((string)(this["ReportConnectionString"]));
-            }
-            set
-            {
-                this["ReportConnectionString"] = value;
             }
         }
         
         [global::System.Configuration.ApplicationScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
         [global::System.Configuration.SpecialSettingAttribute(global::System.Configuration.SpecialSetting.ConnectionString)]
-        [global::System.Configuration.DefaultSettingValueAttribute("Data Source=172.23.1.84\\WINCC;Initial Catalog=MBS1_Alarm;User ID=a;Password=11111" +
-            "111")]
+        [global::System.Configuration.DefaultSettingValueAttribute("Data Source=LAPTOP-9P13TSAP\\SQLEXPRESS;Initial Catalog=qwe_alarm;Integrated Secur" +
+            "ity=True;")]
         public string AlarmConnectionString {
             get {
                 return ((string)(this["AlarmConnectionString"]));
-            }
-            set
-            {
-                this["AlarmConnectionString"] = value;
             }
         }
         
         [global::System.Configuration.UserScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.DefaultSettingValueAttribute("C:\\Users\\www.DESKTOP-NGC89DL\\Desktop\\practice")]
+        [global::System.Configuration.DefaultSettingValueAttribute("C:\\Users\\Omen\\Desktop\\new_age_projects")]
         public string ReportPatch {
             get {
                 return ((string)(this["ReportPatch"]));
@@ -66,7 +59,7 @@ namespace MBS.Properties {
         
         [global::System.Configuration.UserScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.DefaultSettingValueAttribute("MBS. Линия 2as")]
+        [global::System.Configuration.DefaultSettingValueAttribute("MBS. Линия 2")]
         public string ProjectName {
             get {
                 return ((string)(this["ProjectName"]));

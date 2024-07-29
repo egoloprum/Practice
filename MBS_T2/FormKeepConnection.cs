@@ -42,17 +42,15 @@ namespace MBS
         {
             string connectionString = SQLControls.ConnectionString;
             fSetting = new formSetting();
-            fCreateDB = new formCreateDB(_typeOfDB);
+            //fCreateDB = new formCreateDB(this, _typeOfDB);
 
             if (_typeOfDB == "Alarm")
             {
                 fSetting.UpdateApp_AppConfig("MBS.Properties.Settings.AlarmConnectionString", connectionString);
-                Settings.Default.AlarmConnectionString = connectionString;
             }
             else
             {
                 fSetting.UpdateApp_AppConfig("MBS.Properties.Settings.ReportConnectionString", connectionString);
-                Settings.Default.ReportConnectionString = connectionString;
             }
 
             try
@@ -61,7 +59,7 @@ namespace MBS
                 Application.OpenForms["formCreateDB"].Close();
                 Application.OpenForms["formSetting"].Close();
 
-                System.Timers.Timer timer = new System.Timers.Timer(1000);
+                System.Timers.Timer timer = new System.Timers.Timer(500);
                 timer.Elapsed += OnTimedEvent;
                 timer.AutoReset = false;
                 timer.Enabled = true;

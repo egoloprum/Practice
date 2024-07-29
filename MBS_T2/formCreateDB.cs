@@ -19,6 +19,7 @@ namespace MBS
         // alarm or report
         string _typeOfDB = "";
 
+        formSetting _fSetting;
         formKeepConnection fKeepConn;
 
         // name of DBs to check if it exists
@@ -27,10 +28,11 @@ namespace MBS
 
         // window = 0; sql server = 1
         short _modeOfDB = 0;
-        public formCreateDB(String TypeOfDB)
+        public formCreateDB(formSetting fSetting, string TypeOfDB)
         {
             InitializeComponent();
 
+            _fSetting = fSetting;
             _typeOfDB = TypeOfDB;
         }
 
@@ -83,6 +85,7 @@ namespace MBS
                 DialogResult res = MessageBox.Show("Выбранная БД недоступна. Все равно сохранить подключение?", "БД недоступна", MessageBoxButtons.YesNo, MessageBoxIcon.Information);
             }
         }
+
         private void radioButton_Windows_CheckedChanged(object sender, EventArgs e)
         {
             label_User.Enabled = false;
@@ -268,9 +271,24 @@ namespace MBS
 
             if (AddDB == 0)
             {
-                fKeepConn = new formKeepConnection(_typeOfDB);
+                /* fKeepConn = new formKeepConnection(_typeOfDB);
                 fKeepConn.StartPosition = FormStartPosition.CenterScreen;
-                fKeepConn.ShowDialog();
+                fKeepConn.ShowDialog();*/
+
+                DialogResult res = MessageBox.Show("Вы хотите сохранить подключение ?", 
+                    "Сохранить подключение", MessageBoxButtons.YesNo, MessageBoxIcon.Information);
+
+                if (res == DialogResult.Yes)
+                {
+                    string connectionString = SQLControls.ConnectionString;
+                    _fSetting.changeConnectionString(connectionString, _typeOfDB);
+
+                    this.Close();
+                }
+                else
+                {
+                    this.Close();
+                }
             }
             else
             {

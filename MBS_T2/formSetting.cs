@@ -34,6 +34,18 @@ namespace MBS
             InitializeComponent();
         }
 
+        public void changeConnectionString(string connectionString, string reportOrAlarm)
+        {
+            if (reportOrAlarm == "Alarm")
+            {
+                textBox_AlarmConnection.Text = connectionString;
+            }
+            else
+            {
+                textBox_ReportConnection.Text = connectionString;
+            }
+        }
+
         private void formSetting_Load(object sender, EventArgs e)
         {
             textBox_ProjectName.Text        = Settings.Default.ProjectName;
@@ -88,7 +100,6 @@ namespace MBS
         }
 
         // ReportPatch
-
         private void btn_ReportPatch_Change_Click(object sender, EventArgs e)
         {
             textBox_ReportPatch.ReadOnly = false;
@@ -112,19 +123,17 @@ namespace MBS
         }
 
         // Report Connection
-
         private void btn_ReportConnection_Change_Click(object sender, EventArgs e)
         {
             int ErrCode = SQLControls.GetConnectionString("ReportConnectionString");
 
             var config = ConfigurationManager.OpenExeConfiguration(ConfigurationUserLevel.None);
             var connectionStringsSection = (ConnectionStringsSection)config.GetSection("connectionStrings");
-
             string connectString = connectionStringsSection.ConnectionStrings["MBS.Properties.Settings.ReportConnectionString"].ConnectionString; //.ReportConnectionString;
+            
             if (ErrCode == 0)
             {
                 textBox_ReportConnection.Text = connectString;
-                Settings.Default.ReportConnectionString = connectString;
                 UpdateApp_AppConfig("MBS.Properties.Settings.ReportConnectionString", connectString);
             }
             else
@@ -161,7 +170,7 @@ namespace MBS
             if (ErrCode == 0)
             {
                 textBox_AlarmConnection.Text = connectString;
-                Settings.Default.AlarmConnectionString = connectString;
+                //Settings.Default.AlarmConnectionString = connectString;
                 UpdateApp_AppConfig("MBS.Properties.Settings.AlarmConnectionString", connectString);
             }
             else
@@ -263,14 +272,14 @@ namespace MBS
 
         private void btn_ReportConnection_CreateDB_Click(object sender, EventArgs e)
         {
-            fCreateDB = new formCreateDB("Report");
+            fCreateDB = new formCreateDB(this, "Report");
             fCreateDB.StartPosition = FormStartPosition.CenterScreen;
             fCreateDB.ShowDialog();
         }
 
         private void btn_AlarmConnection_CreateDB_Click(object sender, EventArgs e)
         {
-            fCreateDB = new formCreateDB("Alarm");
+            fCreateDB = new formCreateDB(this, "Alarm");
             fCreateDB.StartPosition = FormStartPosition.CenterScreen;
             fCreateDB.ShowDialog();
         }
